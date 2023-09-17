@@ -1,4 +1,4 @@
 package entities;
 
-public class PnmP6File extends AbstractPnmFile {
+public class PnmP6File extends PnmFile {
 }
