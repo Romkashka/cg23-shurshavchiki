@@ -6,7 +6,7 @@ public class ManualControllerMediator implements ControllerMediator {
     private MenuBarController menuBarController;
     private ToolsSectionController toolsSectionController;
     private PictureSectionController pictureSectionController;
-    private InformaionSectionController informaionSectionController;
+    private InformationSectionController informaionSectionController;
     private LowerBarController lowerBarController;
     @Override
     public void setMenuBarController(MenuBarController menuBarController) {
@@ -24,12 +24,25 @@ public class ManualControllerMediator implements ControllerMediator {
     }
 
     @Override
-    public void setInformationSectionController(InformaionSectionController informationSectionController) {
+    public void setInformationSectionController(InformationSectionController informationSectionController) {
         this.informaionSectionController = informationSectionController;
     }
 
     @Override
     public void setLowerBarController(LowerBarController lowerBarController) {
         this.lowerBarController = lowerBarController;
+    }
+
+//    TODO: change fileName to actual file object
+    public void newFile(String fileName) {
+        lowerBarController.fileOpened(fileName);
+    }
+
+    public static ManualControllerMediator getInstance() {
+        return MediatorHolder.INSTANCE;
+    }
+
+    private static class MediatorHolder {
+        private static final ManualControllerMediator INSTANCE = new ManualControllerMediator();
     }
 }

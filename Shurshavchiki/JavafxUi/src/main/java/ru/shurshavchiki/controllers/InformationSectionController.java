@@ -3,9 +3,9 @@ package ru.shurshavchiki.controllers;
 import javafx.fxml.FXML;
 import ru.shurshavchiki.util.ManualControllerMediator;
 
-public class ToolsSectionController {
+public class InformationSectionController {
     @FXML
     public void initialize() {
-        ManualControllerMediator.getInstance().setToolsSectionController(this);
+        ManualControllerMediator.getInstance().setInformationSectionController(this);
     }
 }

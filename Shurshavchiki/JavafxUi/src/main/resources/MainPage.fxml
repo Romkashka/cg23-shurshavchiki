@@ -9,7 +9,7 @@
 
 <VBox prefHeight="599.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.shurshavchiki.controllers.MenuBarController">
   <children>
-    <MenuBar fx:id="mainMenuBar" cache="true" VBox.vgrow="NEVER">
+    <MenuBar cache="true" VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -55,6 +55,6 @@
         <fx:include source="InformationSection.fxml" />
       </items>
     </SplitPane>
-    <fx:include source="LowerBar.fxml" />
+    <fx:include source="LowerBar.fxml"/>
   </children>
 </VBox>

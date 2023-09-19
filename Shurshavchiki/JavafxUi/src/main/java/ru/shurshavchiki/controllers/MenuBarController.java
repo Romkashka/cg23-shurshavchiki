@@ -2,15 +2,18 @@ package ru.shurshavchiki.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ru.shurshavchiki.util.ManualControllerMediator;
 
 public class MenuBarController {
     private Stage stage;
 
     @FXML
     public void initialize() {
+        ManualControllerMediator.getInstance().setMenuBarController(this);
     }
 
     public void createNewFile(ActionEvent actionEvent) {
@@ -23,6 +26,10 @@ public class MenuBarController {
     }
 
     public void openExistingFile(ActionEvent actionEvent) {
+        ManualControllerMediator.getInstance().newFile("Aboba");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open picture");
+        fileChooser.showOpenDialog(stage);
     }
 
     public void closeCurrentFile(ActionEvent actionEvent) {
