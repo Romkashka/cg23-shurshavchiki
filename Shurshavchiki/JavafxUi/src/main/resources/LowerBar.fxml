@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ru.shurshavchiki.controllers.LowerBarController">
+    <children>
+        <Label maxHeight="1.7976931348623157E308" text="Left status" HBox.hgrow="ALWAYS">
+            <font>
+                <Font size="11.0" fx:id="lowerBarFont"/>
+            </font>
+            <textFill>
+                <Color red="0.625" green="0.625" blue="0.625" fx:id="lowerBarColor" />
+            </textFill>
+        </Label>
+        <Pane HBox.hgrow="ALWAYS" />
+        <Label font="$lowerBarFont" text="Right status" textFill="$lowerBarColor" HBox.hgrow="NEVER" />
+    </children>
+    <padding>
+        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+    </padding>
+</HBox>
