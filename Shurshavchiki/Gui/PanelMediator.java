@@ -40,4 +40,10 @@ public class PanelMediator {
 	
 	public void saveAsNewImage(File file) {
 	}
+	
+	public void closeImage() {
+	}
+	
+	public void exit() {
+	}
 }

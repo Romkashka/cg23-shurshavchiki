@@ -39,6 +39,7 @@ public class InstrumentPanel extends JPanel {
 	}
 	
 	private class ButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			// if (clearButton.getModel().isArmed()) {
 			// }

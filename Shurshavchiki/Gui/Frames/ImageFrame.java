@@ -17,9 +17,8 @@ public class ImageFrame extends JFrame {
     }
     
     public void create(){
-    	
-        this.getContentPane().add(PanelMediator.INSTANCE.getSettingPanel(), BorderLayout.NORTH);
-        this.getContentPane().add(PanelMediator.INSTANCE.getOneToolPanel(), BorderLayout.EAST);
+    	this.setJMenuBar(PanelMediator.INSTANCE.getSettingPanel().getMenuBar());
+    	this.getContentPane().add(PanelMediator.INSTANCE.getOneToolPanel(), BorderLayout.EAST);
         this.getContentPane().add(PanelMediator.INSTANCE.getInstrumentPanel(), BorderLayout.WEST);
         this.getContentPane().add(PanelMediator.INSTANCE.getDrawingPanel(), BorderLayout.CENTER);
 
