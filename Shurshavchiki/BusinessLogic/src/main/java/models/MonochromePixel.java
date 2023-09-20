@@ -1,18 +1,18 @@
 package models;
 
-public record MonochromePixel(short Gray) implements RgbConvertable {
+public record MonochromePixel(int Gray) implements RgbConvertable {
     @Override
-    public short Red() {
+    public int Red() {
         return Gray;
     }
 
     @Override
-    public short Green() {
+    public int Green() {
         return Gray;
     }
 
     @Override
-    public short Blue() {
+    public int Blue() {
         return Gray;
     }
 }

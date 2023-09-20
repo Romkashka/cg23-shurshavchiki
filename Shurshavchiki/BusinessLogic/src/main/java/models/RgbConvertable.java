@@ -1,7 +1,7 @@
 package models;
 
 public interface RgbConvertable {
-    short Red();
-    short Green();
-    short Blue();
+    int Red();
+    int Green();
+    int Blue();
 }
