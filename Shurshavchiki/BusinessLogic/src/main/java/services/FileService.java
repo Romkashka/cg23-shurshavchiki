@@ -6,6 +6,7 @@ import exceptions.OpenFileException;
 import util.PnmFileBuilder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class FileService {
@@ -18,8 +19,10 @@ public class FileService {
             throw OpenFileException.fileCantBeRead(file.getName());
         }
 
-        PnmFileBuilder fileBuilder = new PnmFileBuilder();
-
         return new PnmFile("P6", "mockFile.pnm", 0, 0, 0, new ArrayList<>());
+    }
+
+    public void saveFile(PnmFile pnmFile, File destination) {
+
     }
 }
