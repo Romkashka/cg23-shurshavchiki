@@ -32,7 +32,7 @@ public class MenuBarController {
         System.out.println(file.getName());
         System.out.println("Readable: " + file.canRead());
         System.out.println("Writable: " + file.canWrite());
-        ManualControllerMediator.getInstance().newFile(file.getName());
+        ManualControllerMediator.getInstance().newFile(file);
     }
 
     public void closeCurrentFile(ActionEvent actionEvent) {
@@ -45,5 +45,6 @@ public class MenuBarController {
     }
 
     public void quitApplication(ActionEvent actionEvent) {
+        throw new RuntimeException("aboba");
     }
 }

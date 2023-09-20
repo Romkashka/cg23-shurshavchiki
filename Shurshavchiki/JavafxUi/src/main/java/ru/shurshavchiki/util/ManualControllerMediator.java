@@ -2,11 +2,13 @@ package ru.shurshavchiki.util;
 
 import ru.shurshavchiki.controllers.*;
 
+import java.io.File;
+
 public class ManualControllerMediator implements ControllerMediator {
     private MenuBarController menuBarController;
     private ToolsSectionController toolsSectionController;
     private PictureSectionController pictureSectionController;
-    private InformationSectionController informaionSectionController;
+    private InformationSectionController informationSectionController;
     private LowerBarController lowerBarController;
     @Override
     public void setMenuBarController(MenuBarController menuBarController) {
@@ -25,7 +27,7 @@ public class ManualControllerMediator implements ControllerMediator {
 
     @Override
     public void setInformationSectionController(InformationSectionController informationSectionController) {
-        this.informaionSectionController = informationSectionController;
+        this.informationSectionController = informationSectionController;
     }
 
     @Override
@@ -33,9 +35,10 @@ public class ManualControllerMediator implements ControllerMediator {
         this.lowerBarController = lowerBarController;
     }
 
-//    TODO: change fileName to actual file object
-    public void newFile(String fileName) {
-        lowerBarController.fileOpened(fileName);
+//    TODO: add communication with service
+    public void newFile(File file) {
+        lowerBarController.fileOpened(file.getName());
+
     }
 
     public static ManualControllerMediator getInstance() {
