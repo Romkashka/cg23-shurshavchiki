@@ -2,11 +2,11 @@ package ru.shurshavchiki.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ru.shurshavchiki.util.ManualControllerMediator;
+
+import java.io.File;
 
 public class MenuBarController {
     private Stage stage;
@@ -26,10 +26,13 @@ public class MenuBarController {
     }
 
     public void openExistingFile(ActionEvent actionEvent) {
-        ManualControllerMediator.getInstance().newFile("Aboba");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open picture");
-        fileChooser.showOpenDialog(stage);
+        File file = fileChooser.showOpenDialog(stage);
+        System.out.println(file.getName());
+        System.out.println("Readable: " + file.canRead());
+        System.out.println("Writable: " + file.canWrite());
+        ManualControllerMediator.getInstance().newFile(file.getName());
     }
 
     public void closeCurrentFile(ActionEvent actionEvent) {
