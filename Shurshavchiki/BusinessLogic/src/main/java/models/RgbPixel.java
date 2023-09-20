@@ -1,3 +1,5 @@
 package models;
 
-public record RgbPixel(short Red, short Green, short Blue) implements RgbConvertable { }
+public record RgbPixel(int Red, int Green, int Blue) implements RgbConvertable {
+
+}
