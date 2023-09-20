@@ -4,7 +4,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-import ru.shurshavchiki.controllers.MenuBarController;
 
 import java.io.IOException;
 
@@ -16,6 +15,7 @@ public class Application extends javafx.application.Application {
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setTitle("Shurshavchiki");
             stage.show();
 
         } catch (IOException e) {
