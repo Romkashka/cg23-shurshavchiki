@@ -4,14 +4,15 @@ import entities.PnmDisplayable;
 import entities.PnmFile;
 import exceptions.OpenFileException;
 import util.PnmFileBuilder;
+import util.PnmFileWriter;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class FileService {
-    public PnmDisplayable readFile(File file) {
-        if (file.isFile()) {
+    public PnmDisplayable readFile(File file) throws IOException {
+        if (!file.isFile()) {
             throw OpenFileException.fileIsCorrupted(file.getName());
         }
 
@@ -19,10 +20,10 @@ public class FileService {
             throw OpenFileException.fileCantBeRead(file.getName());
         }
 
-        return new PnmFile("P6", "mockFile.pnm", 0, 0, 0, new ArrayList<>());
+        return new PnmFileBuilder(file).GetFile();
     }
 
-    public void saveFile(PnmFile pnmFile, File destination) {
-
+    public void saveFile(PnmFile pnmFile, File destination) throws IOException {
+        new PnmFileWriter().saveAs(pnmFile, destination);
     }
 }
