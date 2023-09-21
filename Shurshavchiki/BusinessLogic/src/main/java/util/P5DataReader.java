@@ -6,6 +6,7 @@ import models.MonochromePixel;
 import models.RgbConvertable;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class P5DataReader implements PixelDataReader {
 
@@ -32,15 +33,20 @@ public class P5DataReader implements PixelDataReader {
     }
 
     @Override
-    public @NonNull RgbConvertable nextPixel() throws IOException {
-        MonochromePixel monochromePixel;
+    public ArrayList<RgbConvertable> nextPixel() throws IOException {
+        ArrayList<RgbConvertable> monochromePixelArrayList  = new ArrayList<>();
+        byte[] byteData = new byte[header.getHeight() * header.getWidth() * (((header.getMaxValue() < 256) ? 1 : 0) + 1)];
+        dataInputStream.read(byteData);
         if (header.getMaxValue() < 256){
-            monochromePixel = new MonochromePixel(dataInputStream.readUnsignedByte());
+            for (int i = 0; i < header.getHeight() * header.getWidth(); i++){
+                monochromePixelArrayList.add(new MonochromePixel(byteData[i] & 0xff));
+            }
         } else {
-            monochromePixel = new MonochromePixel(dataInputStream.readUnsignedShort());
+            for (int i = 0; i < header.getHeight() * header.getWidth(); i++){
+                monochromePixelArrayList.add(new MonochromePixel((byteData[2*i]) & 0xff * 256 + byteData[2*i+1] & 0xff));
+            }
         }
-        readPixels++;
-        return monochromePixel;
+        return monochromePixelArrayList;
     }
 
     @Override

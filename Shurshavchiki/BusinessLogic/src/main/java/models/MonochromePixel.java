@@ -1,6 +1,10 @@
 package models;
 
-public record MonochromePixel(int Gray) implements RgbConvertable {
+public class MonochromePixel implements RgbConvertable {
+    private int Gray;
+    public MonochromePixel(int Gray){
+        this.Gray = Gray;
+    }
     @Override
     public int Red() {
         return Gray;

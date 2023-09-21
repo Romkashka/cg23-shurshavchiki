@@ -4,8 +4,9 @@ import lombok.NonNull;
 import models.RgbConvertable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public interface PixelDataReader {
-    @NonNull RgbConvertable nextPixel() throws IOException;
+    ArrayList<RgbConvertable> nextPixel() throws IOException;
     boolean hasNext();
 }
