@@ -10,4 +10,9 @@ public class P5DataEncoder implements PnmImageDataEncoder {
     public char nextChar() {
         return 0;
     }
+
+    @Override
+    public char[] createCharBuffer() {
+        return new char[0];
+    }
 }
