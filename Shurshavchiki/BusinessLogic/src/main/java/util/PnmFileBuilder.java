@@ -34,9 +34,10 @@ public class PnmFileBuilder {
         for (int i = 0; i < _header.getHeight(); i++){
             pixels.add(new ArrayList<RgbConvertable>());
         }
+        ArrayList<RgbConvertable> pixelData = dataReader.nextPixel();
         for (int y = 0; y < _header.getHeight(); y++){
             for (int x = 0; x < _header.getWidth(); x++){
-                pixels.get(y).add(x, dataReader.nextPixel());
+                pixels.get(y).add(x, pixelData.get(y * _header.getWidth() + x));
             }
         }
     }
