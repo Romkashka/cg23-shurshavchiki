@@ -1,11 +1,14 @@
 package Gui;
 
 import java.io.File;
-import service.FileService;
+import java.io.IOException;
+
+import entities.PnmFile;
 import Gui.Panels.DrawingPanel;
 import Gui.Panels.InstrumentPanel;
 import Gui.Panels.OneToolPanel;
 import Gui.Panels.SettingPanel;
+import services.FileService;
 
 public class PanelMediator {
 	
@@ -36,20 +39,22 @@ public class PanelMediator {
 	public void openNewImage(File file) {
 		if (file == null) {
 			
-		}else {
+		} else {
 			var pnmDisplayable = fileService.readFile(file);
 		}
 	}
-	
-	public void saveImage(PnmFile pnmFile, File file) {
+
+	//TODO: handle exception properly
+	public void saveImage(PnmFile pnmFile, File file) throws IOException {
 		if (file == null) {
 			
-		}else {
+		} else {
 			var pnmDisplayable = fileService.saveFile(pnmFile, file);
 		}
 	}
-	
-	public void saveAsImage(PnmFile pnmFile, File file) {
+
+	//TODO: handle exception properly
+	public void saveAsImage(PnmFile pnmFile, File file) throws IOException {
 		if (file == null) {
 			
 		}else {
