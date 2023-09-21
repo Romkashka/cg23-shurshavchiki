@@ -1,13 +1,14 @@
 package Gui;
 
 import java.io.File;
-
+import service.FileService;
 import Gui.Panels.DrawingPanel;
 import Gui.Panels.InstrumentPanel;
 import Gui.Panels.OneToolPanel;
 import Gui.Panels.SettingPanel;
 
 public class PanelMediator {
+	private FileService fileService = new FileService();
 	private DrawingPanel drawingPanel = new DrawingPanel();
 	private InstrumentPanel instrumentPanel = new InstrumentPanel();
 	private OneToolPanel oneToolPanel = new OneToolPanel();
@@ -33,6 +34,7 @@ public class PanelMediator {
 	}
 	
 	public void openNewImage(File file) {
+		var pnmDisplayable = fileService.readFile(file);
 	}
 	
 	public void saveNewImage() {
