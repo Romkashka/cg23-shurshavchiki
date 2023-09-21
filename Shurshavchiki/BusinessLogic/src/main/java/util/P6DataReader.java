@@ -2,12 +2,14 @@ package util;
 
 import lombok.NonNull;
 import models.Header;
+import models.MonochromePixel;
 import models.RgbConvertable;
 import models.RgbPixel;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class P6DataReader implements PixelDataReader {
 
@@ -34,20 +36,23 @@ public class P6DataReader implements PixelDataReader {
     }
 
     @Override
-    public @NonNull RgbConvertable nextPixel() throws IOException {
+    public ArrayList<RgbConvertable> nextPixel() throws IOException {
+
+        ArrayList<RgbConvertable> rgbPixelsList  = new ArrayList<>();
+        byte[] byteData = new byte[header.getHeight() * header.getWidth() * 3 * (((header.getMaxValue() < 256) ? 1 : 0) + 1)];
+        dataInputStream.read(byteData);;
+
         int red, green, blue;
         if (header.getMaxValue() < 256){
-            red = dataInputStream.readUnsignedByte();
-            green = dataInputStream.readUnsignedByte();;
-            blue = dataInputStream.readUnsignedByte();
+            for (int i = 0; i < header.getHeight() * header.getWidth() ; i++){
+                rgbPixelsList.add(new RgbPixel(byteData[3*i] & 0xff, byteData[3*i+1] & 0xff, byteData[3*i+2] & 0xff));
+            }
         } else {
-            red = dataInputStream.readUnsignedShort();
-            green = dataInputStream.readUnsignedShort();;
-            blue = dataInputStream.readUnsignedShort();
+            for (int i = 0; i < header.getHeight() * header.getWidth(); i++){
+                rgbPixelsList.add(new RgbPixel((byteData[6*i] & 0xff) * 256 + byteData[6*i+1]  & 0xff, (byteData[6*i+2] & 0xff) * 256 + byteData[6*i+3] & 0xff, (byteData[6*i+4] & 0xff) * 256 + byteData[6*i+5] & 0xff));
+            }
         }
-        RgbPixel rgbPixel = new RgbPixel(red, green, blue);
-        readPixels++;
-        return rgbPixel;
+        return rgbPixelsList;
     }
 
     @Override
