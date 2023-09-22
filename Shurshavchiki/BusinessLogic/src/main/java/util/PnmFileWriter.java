@@ -1,6 +1,8 @@
 package util;
 
+import entities.Displayable;
 import entities.PnmDisplayable;
+import entities.PnmFile;
 import exceptions.WriteFileException;
 
 import java.io.File;
@@ -9,7 +11,15 @@ import java.io.IOException;
 
 public class PnmFileWriter {
 
-    public void saveAs(PnmDisplayable pnmFile, File file) throws IOException {
+    public void saveAs(Displayable displayableFile, File file) throws IOException {
+        if (!(displayableFile instanceof PnmDisplayable)) {
+            throw WriteFileException.unsupportedFileFormat();
+        }
+
+        PnmDisplayable pnmFile = (PnmDisplayable) displayableFile;
+
+        System.out.println("converted");
+
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         writeHeader(fileOutputStream, pnmFile);
         PnmImageDataEncoder dataEncoder = chooseDataEncoder(pnmFile);

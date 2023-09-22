@@ -1,4 +1,4 @@
-package Gui.Panels;
+package ru.shurshavchiki.Panels;
 
 import javax.swing.JPanel;
 

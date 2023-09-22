@@ -1,16 +1,10 @@
-package Gui.Panels;
+package ru.shurshavchiki.Panels;
 
-import java.awt.*;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 
 public class InstrumentPanel extends JPanel {
 

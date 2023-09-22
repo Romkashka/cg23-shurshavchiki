@@ -8,4 +8,8 @@ public class WriteFileException extends GeneralPhotoshopException {
     public static WriteFileException unsupportedFileVersion(String version) {
         return new WriteFileException(version + " version files are not supported");
     }
+
+    public static WriteFileException unsupportedFileFormat() {
+        return new WriteFileException("Unsupported file format");
+    }
 }

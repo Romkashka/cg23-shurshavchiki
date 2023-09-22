@@ -1,6 +1,7 @@
-package Gui;
+package ru.shurshavchiki;
 
-import Gui.Frames.ImageFrame;
+
+import ru.shurshavchiki.Frames.ImageFrame;
 
 public class Main {
 
