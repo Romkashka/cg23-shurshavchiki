@@ -17,25 +17,39 @@ import javax.swing.JRadioButton;
 
 public class DrawingPanel extends JPanel {
 	
-	private ArrayList <Point> drawingList;
-	private ImageIcon image;
+	private PnmFile pnmFile = null;
 	
 	public DrawingPanel(){
 		setBackground(Color.WHITE);
 		drawingList = new ArrayList<Point>();
 	}
 	
-	public void loadImage() {
-		//System.out.print(path);
-        //image = new ImageIcon(path);
-        repaint();
+	public void loadImage(PnmFile pnmFile) {
+		this.setPnmFile(pnmFile);
+		this.drawImage();
+	}
+	
+	public void setPnmFile(PnmFile pnmFile) {
+		this.pnmFile = pnmFile;
+	}
+	
+	public PnmFile getPnmFile() {
+		return this.pnmFile;
 	}
 	
 	@Override
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
-	    if (image != null) {
-	    	g.drawImage(image.getImage(), 0, 0, getWidth (), getHeight (), this);
-	    }
-	}
+    public void paintComponent(Graphics g){
+        setSize(this.pnmFile.getWidth(), this.pnmFile.getHeight());
+        setBackground(Color.WHITE);
+        
+        for (int x = 0; x < this.pnmFile.getWidth(); x++) {
+        	for (int y = 0; y < this.pnmFile.getHeight(); y++) {
+        		var pixel = this.pnmFile.getPixel(x, y);
+            	g.setColor(new Color(pixel.Red(), pixel.Green(), pixel.Blue()));
+                g.fillOval(x, y, 1, 1);
+            }
+        }
+
+        repaint();
+    }
 }

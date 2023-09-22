@@ -20,6 +20,7 @@ import Gui.PanelMediator;
 public class SettingPanel extends JPanel{
 
 	private JMenuBar menuBar = new JMenuBar();
+	private File selectedFile = null;
 	
 	public SettingPanel(){
 	    JMenu fileMenu = new JMenu("File");
@@ -62,8 +63,12 @@ public class SettingPanel extends JPanel{
 	    menuBar.add(editMenu);
 	}
 	
+	public File getSelectedFile() {
+		return this.selectedFile;
+	}
+	
 	public JMenuBar getMenuBar() {
-		return menuBar;
+		return this.menuBar;
 	}
 	
 	private class ButtonListener implements ActionListener {
@@ -75,13 +80,13 @@ public class SettingPanel extends JPanel{
 				int result = fileChooser.showOpenDialog(SettingPanel.this);
 				
 				if (result == JFileChooser.APPROVE_OPTION) {
-				    File selectedFile = fileChooser.getSelectedFile();
-					PanelMediator.INSTANCE.openNewImage(selectedFile);
+				    selectedFile = fileChooser.getSelectedFile();
+					PanelMediator.INSTANCE.openImage(selectedFile);
 				}
 			}
 			
 			if(event.getActionCommand().equals("Save")) {
-				PanelMediator.INSTANCE.saveNewImage();
+				PanelMediator.INSTANCE.saveImage(selectedFile);
 			}
 			
 			if(event.getActionCommand().equals("SaveAs")) {
@@ -90,8 +95,8 @@ public class SettingPanel extends JPanel{
 				int result = fileChooser.showSaveDialog(SettingPanel.this);
 				
 				if (result == JFileChooser.APPROVE_OPTION) {
-				    File selectedFile = fileChooser.getSelectedFile();
-					PanelMediator.INSTANCE.saveAsNewImage(selectedFile);
+				    selectedFile = fileChooser.getSelectedFile();
+					PanelMediator.INSTANCE.saveAsImage(selectedFile);
 				}
 			}
 

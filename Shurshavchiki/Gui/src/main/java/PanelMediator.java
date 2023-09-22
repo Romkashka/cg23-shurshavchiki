@@ -8,12 +8,12 @@ import Gui.Panels.OneToolPanel;
 import Gui.Panels.SettingPanel;
 
 public class PanelMediator {
+	
 	private FileService fileService = new FileService();
 	private DrawingPanel drawingPanel = new DrawingPanel();
 	private InstrumentPanel instrumentPanel = new InstrumentPanel();
 	private OneToolPanel oneToolPanel = new OneToolPanel();
 	private SettingPanel settingPanel = new SettingPanel();
-	
 	
 	public static final PanelMediator INSTANCE = new PanelMediator();
 	
@@ -34,13 +34,27 @@ public class PanelMediator {
 	}
 	
 	public void openNewImage(File file) {
-		var pnmDisplayable = fileService.readFile(file);
+		if (file == null) {
+			
+		}else {
+			var pnmDisplayable = fileService.readFile(file);
+		}
 	}
 	
-	public void saveNewImage() {
+	public void saveImage(PnmFile pnmFile, File file) {
+		if (file == null) {
+			
+		}else {
+			var pnmDisplayable = fileService.saveFile(pnmFile, file);
+		}
 	}
 	
-	public void saveAsNewImage(File file) {
+	public void saveAsImage(PnmFile pnmFile, File file) {
+		if (file == null) {
+			
+		}else {
+			var pnmDisplayable = fileService.saveFile(pnmFile, file);
+		}
 	}
 	
 	public void closeImage() {
