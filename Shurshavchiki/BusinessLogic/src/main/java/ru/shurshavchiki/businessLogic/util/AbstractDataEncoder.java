@@ -1,7 +1,7 @@
-package util;
+package ru.shurshavchiki.businessLogic.util;
 
-import entities.PnmDisplayable;
-import models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
+import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
     protected static final int MIN_BITS_PER_COLOR = 8;

@@ -6,8 +6,10 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
+import ru.shurshavchiki.businessLogic.services.FileService;
 import ru.shurshavchiki.controllers.ErrorController;
 import ru.shurshavchiki.exceptionHandling.GuiExceptionHandler;
+import ru.shurshavchiki.util.ManualControllerMediator;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +20,7 @@ public class Application extends javafx.application.Application {
     public void start(Stage stage) {
         try {
             Thread.setDefaultUncaughtExceptionHandler(Application::showError);
+            ManualControllerMediator.getInstance().setFileService(new FileService());
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("MainPage.fxml"));
             Parent root = fxmlLoader.load();

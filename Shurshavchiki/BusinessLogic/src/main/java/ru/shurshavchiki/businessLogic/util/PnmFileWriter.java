@@ -1,9 +1,8 @@
-package util;
+package ru.shurshavchiki.businessLogic.util;
 
-import entities.Displayable;
-import entities.PnmDisplayable;
-import entities.PnmFile;
-import exceptions.WriteFileException;
+import ru.shurshavchiki.businessLogic.entities.Displayable;
+import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
+import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 
 import java.io.File;
 import java.io.FileOutputStream;

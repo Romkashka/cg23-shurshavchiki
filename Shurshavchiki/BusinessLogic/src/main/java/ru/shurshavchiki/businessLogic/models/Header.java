@@ -1,4 +1,4 @@
-package models;
+package ru.shurshavchiki.businessLogic.models;
 
 import lombok.Getter;
 

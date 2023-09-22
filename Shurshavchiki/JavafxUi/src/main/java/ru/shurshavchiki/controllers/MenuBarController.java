@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import ru.shurshavchiki.util.ManualControllerMediator;
 
 import java.io.File;
+import java.io.IOException;
 
 public class MenuBarController {
     private Stage stage;
@@ -25,14 +26,14 @@ public class MenuBarController {
         fileChooser.showOpenDialog(stage);
     }
 
-    public void openExistingFile(ActionEvent actionEvent) {
+    public void openExistingFile(ActionEvent actionEvent) throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open picture");
         File file = fileChooser.showOpenDialog(stage);
         System.out.println(file.getName());
         System.out.println("Readable: " + file.canRead());
         System.out.println("Writable: " + file.canWrite());
-        ManualControllerMediator.getInstance().newFile(file);
+        ManualControllerMediator.getInstance().fileOpened(file);
     }
 
     public void closeCurrentFile(ActionEvent actionEvent) {
@@ -41,7 +42,8 @@ public class MenuBarController {
     public void saveExistingFile(ActionEvent actionEvent) {
     }
 
-    public void saveFileAs(ActionEvent actionEvent) {
+    public void saveFileAs(ActionEvent actionEvent) throws IOException {
+
     }
 
     public void quitApplication(ActionEvent actionEvent) {

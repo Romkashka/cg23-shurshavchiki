@@ -1,12 +1,9 @@
 package ru.shurshavchiki.Panels;
 
-import entities.Displayable;
-import entities.PnmFile;
+import ru.shurshavchiki.businessLogic.entities.Displayable;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 

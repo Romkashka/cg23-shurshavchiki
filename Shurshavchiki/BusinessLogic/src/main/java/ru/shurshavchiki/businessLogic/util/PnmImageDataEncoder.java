@@ -1,4 +1,4 @@
-package util;
+package ru.shurshavchiki.businessLogic.util;
 
 public interface PnmImageDataEncoder {
     boolean hasNext();

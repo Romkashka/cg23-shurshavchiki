@@ -1,5 +1,6 @@
 package ru.shurshavchiki.util;
 
+import ru.shurshavchiki.businessLogic.services.FileService;
 import ru.shurshavchiki.controllers.*;
 
 public interface ControllerMediator {
@@ -8,6 +9,6 @@ public interface ControllerMediator {
     void setPictureSectionController(PictureSectionController pictureSectionController);
     void setInformationSectionController(InformationSectionController informationSectionController);
     void setLowerBarController(LowerBarController lowerBarController);
-
+    void setFileService(FileService fileService);
 
 }

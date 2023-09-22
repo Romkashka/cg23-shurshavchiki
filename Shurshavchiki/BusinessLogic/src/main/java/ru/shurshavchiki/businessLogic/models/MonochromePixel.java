@@ -1,4 +1,4 @@
-package models;
+package ru.shurshavchiki.businessLogic.models;
 
 public class MonochromePixel implements RgbConvertable {
     private int Gray;

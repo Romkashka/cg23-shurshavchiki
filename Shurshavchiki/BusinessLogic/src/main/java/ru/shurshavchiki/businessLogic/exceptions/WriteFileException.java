@@ -1,4 +1,4 @@
-package exceptions;
+package ru.shurshavchiki.businessLogic.exceptions;
 
 public class WriteFileException extends GeneralPhotoshopException {
     protected WriteFileException(String message) {

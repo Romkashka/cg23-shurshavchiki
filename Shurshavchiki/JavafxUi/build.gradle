@@ -1,5 +1,5 @@
 plugins {
-    id 'application'
+    id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.9'
     id 'org.beryx.jlink' version '2.12.0'
 }
@@ -19,6 +19,7 @@ javafx {
 mainClassName = "$moduleName/ru/shurshavchiki/Application"
 
 dependencies {
+    implementation project(path: ':BusinessLogic')
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }

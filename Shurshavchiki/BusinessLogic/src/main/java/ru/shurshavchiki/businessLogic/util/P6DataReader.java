@@ -1,10 +1,8 @@
-package util;
+package ru.shurshavchiki.businessLogic.util;
 
-import lombok.NonNull;
-import models.Header;
-import models.MonochromePixel;
-import models.RgbConvertable;
-import models.RgbPixel;
+import ru.shurshavchiki.businessLogic.models.Header;
+import ru.shurshavchiki.businessLogic.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.models.RgbPixel;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;

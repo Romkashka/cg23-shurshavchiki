@@ -2,8 +2,6 @@ package ru.shurshavchiki.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import ru.shurshavchiki.util.ManualControllerMediator;
 
 public class LowerBarController {

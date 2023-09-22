@@ -7,7 +7,7 @@ import ru.shurshavchiki.Panels.DrawingPanel;
 import ru.shurshavchiki.Panels.InstrumentPanel;
 import ru.shurshavchiki.Panels.OneToolPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
-import services.FileService;
+import ru.shurshavchiki.businessLogic.services.FileService;
 
 public class PanelMediator {
 

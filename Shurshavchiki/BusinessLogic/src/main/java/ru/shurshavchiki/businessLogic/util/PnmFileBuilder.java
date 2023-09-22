@@ -1,9 +1,9 @@
-package util;
+package ru.shurshavchiki.businessLogic.util;
 
-import entities.PnmFile;
+import ru.shurshavchiki.businessLogic.entities.PnmFile;
 import lombok.Getter;
-import models.Header;
-import models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.models.Header;
+import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 import java.io.FileInputStream;
 import java.io.IOException;

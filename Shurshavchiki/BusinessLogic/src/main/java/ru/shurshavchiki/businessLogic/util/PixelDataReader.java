@@ -1,7 +1,6 @@
-package util;
+package ru.shurshavchiki.businessLogic.util;
 
-import lombok.NonNull;
-import models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,9 +1,8 @@
-package util;
+package ru.shurshavchiki.businessLogic.util;
 
-import lombok.NonNull;
-import models.Header;
-import models.MonochromePixel;
-import models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.models.Header;
+import ru.shurshavchiki.businessLogic.models.MonochromePixel;
+import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 import java.io.*;
 import java.util.ArrayList;

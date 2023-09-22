@@ -1,15 +1,13 @@
-package services;
+package ru.shurshavchiki.businessLogic.services;
 
-import entities.Displayable;
-import entities.PnmDisplayable;
-import entities.PnmFile;
-import exceptions.OpenFileException;
-import util.PnmFileBuilder;
-import util.PnmFileWriter;
+import ru.shurshavchiki.businessLogic.entities.Displayable;
+import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
+import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
+import ru.shurshavchiki.businessLogic.util.PnmFileBuilder;
+import ru.shurshavchiki.businessLogic.util.PnmFileWriter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class FileService {
     public PnmDisplayable readFile(File file) throws IOException {

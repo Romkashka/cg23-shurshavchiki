@@ -1,4 +1,4 @@
-package exceptions;
+package ru.shurshavchiki.businessLogic.exceptions;
 
 public class OpenFileException extends GeneralPhotoshopException {
     protected OpenFileException(String message) {

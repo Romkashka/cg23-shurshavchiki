@@ -1,8 +1,7 @@
-package entities;
+package ru.shurshavchiki.businessLogic.entities;
 
 import lombok.NonNull;
-import models.RgbConvertable;
-import models.RgbPixel;
+import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 public interface Displayable {
     int getHeight();
