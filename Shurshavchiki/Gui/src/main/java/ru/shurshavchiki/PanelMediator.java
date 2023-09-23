@@ -53,7 +53,7 @@ public class PanelMediator {
 		if (file == null) {
 
 		} else {
-			fileService.saveFile(drawingPanel.getPnmFile(), file);
+			fileService.saveFile(drawingPanel.getDisplayable(), file);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class PanelMediator {
 		if (file == null) {
 
 		}else {
-			fileService.saveFile(drawingPanel.getPnmFile(), file);
+			fileService.saveFile(drawingPanel.getDisplayable(), file);
 		}
 	}
 
