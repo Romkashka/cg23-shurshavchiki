@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileService {
-    public PnmDisplayable readFile(File file) throws IOException {
+    public Displayable readFile(File file) throws IOException {
         System.out.println("service read");
         if (!file.isFile()) {
             throw OpenFileException.fileIsCorrupted(file.getName());

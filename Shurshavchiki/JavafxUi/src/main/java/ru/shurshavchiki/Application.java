@@ -35,6 +35,7 @@ public class Application extends javafx.application.Application {
     }
 
     public static void main(String[] args) {
+        System.getProperties().setProperty("prism.maxvram", "2G");
         launch();
     }
 
