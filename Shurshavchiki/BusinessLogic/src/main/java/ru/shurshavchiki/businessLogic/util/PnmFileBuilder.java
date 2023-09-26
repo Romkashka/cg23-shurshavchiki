@@ -47,12 +47,20 @@ public class PnmFileBuilder {
         Scanner scan = new Scanner(fileInputStream);
         String magicNumber;
         int picWidth, picHeight, maxValue;
-        magicNumber = scan.nextLine();
+        magicNumber = validateMagicNumber(scan.nextLine());
         picWidth = scan.nextInt();
         picHeight = scan.nextInt();
         maxValue = scan.nextInt();
         Header header = new Header(magicNumber, picWidth, picHeight, maxValue);
         fileInputStream.close();
         return header;
+    }
+
+    private String validateMagicNumber(String magicNumber) {
+        if (!magicNumber.equals("P5") && !magicNumber.equals("P6")) {
+            throw OpenFileException.fileCantBeRead();
+        }
+
+        return magicNumber;
     }
 }

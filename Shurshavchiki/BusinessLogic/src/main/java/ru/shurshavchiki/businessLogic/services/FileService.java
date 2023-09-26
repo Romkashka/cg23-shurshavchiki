@@ -17,7 +17,7 @@ public class FileService {
         }
 
         if (!file.canRead()) {
-            throw OpenFileException.fileCantBeRead(file.getName());
+            throw OpenFileException.fileCantBeRead();
         }
 
         return new PnmFileBuilder(file).GetFile();

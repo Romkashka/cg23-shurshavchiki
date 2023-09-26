@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class ExceptionHandler {
 
-    public void handleException(Exception exp) {
+    public void handleException(Throwable exp) {
         if (exp instanceof NullPointerException) {
             JOptionPane.showMessageDialog(null,
                     "File Missing", "Error 404",
@@ -25,6 +25,10 @@ public class ExceptionHandler {
         } else if (exp instanceof IOException) {
             javax.swing.JOptionPane.showMessageDialog(null,
                     exp.getMessage(), "Input or output error",
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof OutOfMemoryError) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Out of RAM",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp != null) {
             javax.swing.JOptionPane.showMessageDialog(null,
