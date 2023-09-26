@@ -9,15 +9,22 @@ import ru.shurshavchiki.Panels.OneToolPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
 import ru.shurshavchiki.businessLogic.services.FileService;
 
+import javax.swing.*;
+
 public class PanelMediator {
 
 	private FileService fileService = new FileService();
+
 	private DrawingPanel drawingPanel = new DrawingPanel();
+
 	private InstrumentPanel instrumentPanel = new InstrumentPanel();
+
 	private OneToolPanel oneToolPanel = new OneToolPanel();
+
 	private SettingPanel settingPanel = new SettingPanel();
 
-//	public static final PanelMediator INSTANCE = new PanelMediator();
+	private JScrollPane scrollPane = new JScrollPane(drawingPanel);
+
 
 	public DrawingPanel getDrawingPanel() {
 		return this.drawingPanel;
@@ -35,36 +42,31 @@ public class PanelMediator {
 		return this.settingPanel;
 	}
 
+	public JScrollPane getScrollPane() {
+		return this.scrollPane;
+	}
+
 
 	//TODO: handle exception properly
 	public void openNewImage(File file) throws IOException {
-		if (file == null) {
-
-		} else {
-			System.out.println("start reading");
-			drawingPanel.noteImageChanged();
+		if (file != null) {
 			drawingPanel.loadImage(fileService.readFile(file));
-			System.out.println("read");
 		}
 	}
 
 	//TODO: handle exception properly
 	public void saveImage(File file) throws IOException {
-		if (file == null) {
-
-		} else {
-			fileService.saveFile(drawingPanel.getDisplayable(), file);
-		}
-	}
+        if (file != null) {
+            fileService.saveFile(drawingPanel.getDisplayable(), file);
+        }
+    }
 
 	//TODO: handle exception properly
 	public void saveAsImage(File file) throws IOException {
-		if (file == null) {
-
-		}else {
-			fileService.saveFile(drawingPanel.getDisplayable(), file);
-		}
-	}
+        if (file != null) {
+            fileService.saveFile(drawingPanel.getDisplayable(), file);
+        }
+    }
 
 	public void closeImage() {
 	}
@@ -72,11 +74,15 @@ public class PanelMediator {
 	public void exit() {
 	}
 
+	public void validateScrollPane(){
+		scrollPane.setViewportView(drawingPanel);
+	}
+
 	public static PanelMediator getInstance() {
 		return MediatorHolder.INSTANCE;
 	}
 
-	private class MediatorHolder {
+	private static class MediatorHolder {
 		private static final PanelMediator INSTANCE = new PanelMediator();
 	}
 }
