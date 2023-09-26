@@ -13,7 +13,7 @@ public class FileService {
     public Displayable readFile(File file) throws IOException {
         System.out.println("service read");
         if (!file.isFile()) {
-            throw OpenFileException.fileIsCorrupted(file.getName());
+            throw OpenFileException.notAFile(file.getName());
         }
 
         if (!file.canRead()) {

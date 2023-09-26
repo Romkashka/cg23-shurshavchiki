@@ -2,6 +2,7 @@ package ru.shurshavchiki.businessLogic.util;
 
 import ru.shurshavchiki.businessLogic.entities.PnmFile;
 import lombok.Getter;
+import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
@@ -23,7 +24,7 @@ public class PnmFileBuilder {
         switch (header.getMagicNumber()) {
             case "P5" -> dataReader = new P5DataReader(header, pnmFile);
             case "P6" -> dataReader = new P6DataReader(header, pnmFile);
-            default -> throw new UnsupportedOperationException();
+            default -> throw OpenFileException.unsupportedFileVersion(header.getMagicNumber());
         }
         pixels = new ArrayList<>();
         for (int i = 0; i < header.getHeight(); i++){

@@ -38,7 +38,7 @@ public class P6DataReader implements PixelDataReader {
 
         ArrayList<RgbConvertable> rgbPixelsList  = new ArrayList<>();
         byte[] byteData = new byte[header.getHeight() * header.getWidth() * 3 * (((header.getMaxValue() < 256) ? 1 : 0) + 1)];
-        dataInputStream.read(byteData);;
+        dataInputStream.read(byteData);
 
         int red, green, blue;
         if (header.getMaxValue() < 256){
@@ -55,10 +55,6 @@ public class P6DataReader implements PixelDataReader {
 
     @Override
     public boolean hasNext() {
-        if (readPixels < totalPixels){
-            return true;
-        }else{
-            return false;
-        }
+        return readPixels < totalPixels;
     }
 }

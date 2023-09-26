@@ -11,11 +11,9 @@ import java.io.IOException;
 public class PnmFileWriter {
 
     public void saveAs(Displayable displayableFile, File file) throws IOException {
-        if (!(displayableFile instanceof PnmDisplayable)) {
+ку        if (!(displayableFile instanceof PnmDisplayable pnmFile)) {
             throw WriteFileException.unsupportedFileFormat();
         }
-
-        PnmDisplayable pnmFile = (PnmDisplayable) displayableFile;
 
         System.out.println("converted");
 
