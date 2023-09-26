@@ -12,19 +12,19 @@ public class ExceptionHandler {
     public void handleException(Exception exp) {
         if (exp instanceof NullPointerException) {
             JOptionPane.showMessageDialog(null,
-                    "File Missing", "File Missing",
+                    "File Missing", "Error 404",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp instanceof WriteFileException) {
             javax.swing.JOptionPane.showMessageDialog(null,
-                    "Test1", "Test2",
+                    exp.getMessage(), "Write error",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp instanceof OpenFileException) {
             javax.swing.JOptionPane.showMessageDialog(null,
-                    "Test1", "Test2",
+                    exp.getMessage(), "Open error",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp instanceof IOException) {
             javax.swing.JOptionPane.showMessageDialog(null,
-                    "Test1", "Test2",
+                    exp.getMessage(), "Input or output error",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp != null) {
             javax.swing.JOptionPane.showMessageDialog(null,
