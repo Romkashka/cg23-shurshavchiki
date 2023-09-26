@@ -47,25 +47,16 @@ public class PanelMediator {
 	}
 
 
-	//TODO: handle exception properly
 	public void openNewImage(File file) throws IOException {
-		if (file != null) {
-			drawingPanel.loadImage(fileService.readFile(file));
-		}
+		drawingPanel.loadImage(fileService.readFile(file));
 	}
 
-	//TODO: handle exception properly
 	public void saveImage(File file) throws IOException {
-        if (file != null) {
-            fileService.saveFile(drawingPanel.getDisplayable(), file);
-        }
+		fileService.saveFile(drawingPanel.getDisplayable(), file);
     }
 
-	//TODO: handle exception properly
 	public void saveAsImage(File file) throws IOException {
-        if (file != null) {
-            fileService.saveFile(drawingPanel.getDisplayable(), file);
-        }
+		fileService.saveFile(drawingPanel.getDisplayable(), file);
     }
 
 	public void closeImage() {

@@ -1,5 +1,6 @@
 package ru.shurshavchiki.Panels;
 
+import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.PanelMediator;
 
 import java.awt.event.ActionEvent;
@@ -73,15 +74,15 @@ public class SettingPanel extends JPanel{
 		public void actionPerformed(ActionEvent event) {
 			if (event.getActionCommand().equals("Open")) {
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("E:\\Data\\HW\\ISy25\\3\\6sem\\CG\\cg23-shurshavchiki\\Shurshavchiki\\BusinessLogic\\src\\main\\resources"));
+				fileChooser.setCurrentDirectory(new File("C:/Users/1/Desktop"));
 				int result = fileChooser.showOpenDialog(SettingPanel.this);
 
 				if (result == JFileChooser.APPROVE_OPTION) {
 					selectedFile = fileChooser.getSelectedFile();
 					try {
 						PanelMediator.getInstance().openNewImage(selectedFile);
-					} catch (IOException e) {
-						System.err.println(e.getMessage());
+					} catch (Exception e) {
+						new ExceptionHandler().handleException(e);
 					}
 				}
 			}
@@ -89,8 +90,8 @@ public class SettingPanel extends JPanel{
 			if(event.getActionCommand().equals("Save")) {
 				try {
 					PanelMediator.getInstance().saveImage(selectedFile);
-				} catch (IOException e) {
-					System.err.println(e.getMessage());
+				} catch (Exception e) {
+					new ExceptionHandler().handleException(e);
 				}
 			}
 
@@ -103,8 +104,8 @@ public class SettingPanel extends JPanel{
 					selectedFile = fileChooser.getSelectedFile();
 					try {
 						PanelMediator.getInstance().saveAsImage(selectedFile);
-					} catch (IOException e) {
-						System.err.println(e.getMessage());
+					} catch (Exception e) {
+						new ExceptionHandler().handleException(e);
 					}
 				}
 			}
