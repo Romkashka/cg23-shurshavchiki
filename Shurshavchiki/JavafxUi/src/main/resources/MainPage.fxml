@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="599.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.shurshavchiki.controllers.MenuBarController">
+  <children>
+    <MenuBar cache="true" VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#createNewFile" text="New" />
+            <MenuItem mnemonicParsing="false" onAction="#openExistingFile" text="Open…" />
+<!--            <Menu mnemonicParsing="false" text="Open Recent" />-->
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#closeCurrentFile" text="Close" />
+            <MenuItem mnemonicParsing="false" onAction="#saveExistingFile" text="Save" />
+            <MenuItem mnemonicParsing="false" onAction="#saveFileAs" text="Save As…" />
+<!--            <MenuItem mnemonicParsing="false" text="Revert" />-->
+<!--            <SeparatorMenuItem mnemonicParsing="false" />-->
+<!--            <MenuItem mnemonicParsing="false" text="Preferences…" />-->
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#quitApplication" text="Quit" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+<!--            <MenuItem mnemonicParsing="false" text="Undo" />-->
+<!--            <MenuItem mnemonicParsing="false" text="Redo" />-->
+<!--            <SeparatorMenuItem mnemonicParsing="false" />-->
+<!--            <MenuItem mnemonicParsing="false" text="Cut" />-->
+<!--            <MenuItem mnemonicParsing="false" text="Copy" />-->
+<!--            <MenuItem mnemonicParsing="false" text="Paste" />-->
+<!--            <MenuItem mnemonicParsing="false" text="Delete" />-->
+<!--            <SeparatorMenuItem mnemonicParsing="false" />-->
+<!--            <MenuItem mnemonicParsing="false" text="Select All" />-->
+<!--            <MenuItem mnemonicParsing="false" text="Unselect All" />-->
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="663.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
+      <items>
+        <fx:include source="ToolsSection.fxml" />
+        <fx:include source="PictureSection.fxml" />
+        <fx:include source="InformationSection.fxml" />
+      </items>
+    </SplitPane>
+    <fx:include source="LowerBar.fxml"/>
+  </children>
+</VBox>
