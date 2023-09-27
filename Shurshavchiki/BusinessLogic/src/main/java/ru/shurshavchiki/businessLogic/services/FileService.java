@@ -11,7 +11,6 @@ import java.io.IOException;
 
 public class FileService {
     public Displayable readFile(File file) throws IOException {
-        System.out.println("service read");
         if (!file.isFile()) {
             throw OpenFileException.notAFile(file.getName());
         }
