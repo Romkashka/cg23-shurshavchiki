@@ -7,14 +7,15 @@ import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
     protected static final int MIN_BITS_PER_COLOR = 8;
     protected static final int MIN_DATA_SIZE = (int) Math.pow(2, MIN_BITS_PER_COLOR) - 1;
-    protected Header header;
+//    protected Header header;
+    protected Displayable displayable;
     protected int x;
     protected int y;
     protected final int colorDataSize;
     protected final int channelsCount;
 
-    protected AbstractDataEncoder(Header header, int channelsCount) {
-        this.header = header;
+    protected AbstractDataEncoder(Displayable displayable, int channelsCount) {
+        this.displayable = displayable;
         this.channelsCount = channelsCount;
         x = 0;
         y = 0;
@@ -23,12 +24,12 @@ public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
 
     @Override
     public boolean hasNext() {
-        return y < header.getHeight();
+        return y < displayable.getHeight();
     }
 
     @Override
     public byte[] createCharBuffer() {
-        byte[] data = new byte[header.getHeight() * header.getWidth() * colorDataSize * channelsCount];
+        byte[] data = new byte[displayable.getHeight() * displayable.getWidth() * colorDataSize * channelsCount];
         int offset = 0;
         while (hasNext()) {
             offset = convertPixel(getCurrentPixel(), offset, data);
@@ -49,16 +50,16 @@ public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
     }
 
     protected RgbConvertable getCurrentPixel() {
-        RgbConvertable result = pnmFile.getPixel(x, y);
+        RgbConvertable result = displayable.getPixel(x, y);
         moveToNextPixel();
         return result;
     }
 
     protected void moveToNextPixel() {
         x++;
-        if (x == pnmFile.getWidth()) {
+        if (x == displayable.getWidth()) {
             y++;
-            x %= pnmFile.getWidth();
+            x %= displayable.getWidth();
         }
     }
 

@@ -5,8 +5,8 @@ import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 public class P6DataEncoder extends AbstractDataEncoder implements PnmImageDataEncoder {
-    public P6DataEncoder(Header header) {
-        super(header, 3);
+    public P6DataEncoder(Displayable displayable) {
+        super(displayable, 3);
         System.out.println("P6");
     }
 

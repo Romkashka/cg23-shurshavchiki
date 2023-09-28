@@ -16,7 +16,7 @@ public class PnmFileWriter {
             throw WriteFileException.noFile();
         }
 
-        PnmImageDataEncoder dataEncoder = chooseDataEncoder(displayableFile.getHeader());
+        PnmImageDataEncoder dataEncoder = chooseDataEncoder(displayableFile);
         saveFromRawData(file, displayableFile.getHeader(), dataEncoder.createCharBuffer());
     }
 
@@ -34,11 +34,11 @@ public class PnmFileWriter {
         fileOutputStream.write((255 + "\n").getBytes());
     }
 
-    private PnmImageDataEncoder chooseDataEncoder(Header header) {
-        return switch (header.getMagicNumber()) {
-            case "P5" -> new P5DataEncoder(header);
-            case "P6" -> new P6DataEncoder(header);
-            default -> throw WriteFileException.unsupportedFileVersion(header.getMagicNumber());
+    private PnmImageDataEncoder chooseDataEncoder(Displayable displayable) {
+        return switch (displayable.getVersion()) {
+            case "P5" -> new P5DataEncoder(displayable);
+            case "P6" -> new P6DataEncoder(displayable);
+            default -> throw WriteFileException.unsupportedFileVersion(displayable.getVersion());
         };
     }
 }
