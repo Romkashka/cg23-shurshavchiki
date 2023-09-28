@@ -30,6 +30,18 @@ public class ExceptionHandler {
             javax.swing.JOptionPane.showMessageDialog(null,
                     exp.getMessage(), "Out of RAM",
                     JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof IllegalAccessException) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Illegal access",
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof ClassNotFoundException) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Class not found",
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof UnsupportedLookAndFeelException) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Unsupported view type",
+                    JOptionPane.ERROR_MESSAGE);
         } else if (exp != null) {
             javax.swing.JOptionPane.showMessageDialog(null,
                     exp.getClass(), "Unexpected exception",
