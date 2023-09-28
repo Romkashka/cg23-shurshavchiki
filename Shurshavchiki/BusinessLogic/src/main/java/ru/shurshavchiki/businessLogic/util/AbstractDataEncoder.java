@@ -1,7 +1,6 @@
 package ru.shurshavchiki.businessLogic.util;
 
 import ru.shurshavchiki.businessLogic.entities.Displayable;
-import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
@@ -12,7 +11,7 @@ public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
     protected int y;
     protected final int colorDataSize;
 
-    protected AbstractDataEncoder(PnmDisplayable pnmFile) {
+    protected AbstractDataEncoder(Displayable pnmFile) {
         this.pnmFile = pnmFile;
         x = 0;
         y = 0;

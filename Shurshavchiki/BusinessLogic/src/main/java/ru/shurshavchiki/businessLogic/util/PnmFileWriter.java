@@ -1,7 +1,6 @@
 package ru.shurshavchiki.businessLogic.util;
 
 import ru.shurshavchiki.businessLogic.entities.Displayable;
-import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
 import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 
 import java.io.File;
@@ -15,24 +14,21 @@ public class PnmFileWriter {
             throw WriteFileException.noFile();
         }
 
-        if (!(displayableFile instanceof PnmDisplayable pnmFile)) {
-            throw WriteFileException.unsupportedFileFormat();
-        }
-
         FileOutputStream fileOutputStream = new FileOutputStream(file);
-        writeHeader(fileOutputStream, pnmFile);
-        PnmImageDataEncoder dataEncoder = chooseDataEncoder(pnmFile);
+        writeHeader(fileOutputStream, displayableFile);
+        PnmImageDataEncoder dataEncoder = chooseDataEncoder(displayableFile);
         fileOutputStream.write(dataEncoder.createCharBuffer());
         fileOutputStream.close();
     }
 
-    private void writeHeader(FileOutputStream fileOutputStream, PnmDisplayable pnmFile) throws IOException {
+    //TODO: erase magic constant
+    private void writeHeader(FileOutputStream fileOutputStream, Displayable pnmFile) throws IOException {
         fileOutputStream.write((pnmFile.getVersion() + "\n").getBytes());
         fileOutputStream.write((pnmFile.getWidth() + " " + pnmFile.getHeight() + "\n").getBytes());
-        fileOutputStream.write((pnmFile.getMaxval() + "\n").getBytes());
+        fileOutputStream.write((255 + "\n").getBytes());
     }
 
-    private PnmImageDataEncoder chooseDataEncoder(PnmDisplayable pnmFile) {
+    private PnmImageDataEncoder chooseDataEncoder(Displayable pnmFile) {
         return switch (pnmFile.getVersion()) {
             case "P5" -> new P5DataEncoder(pnmFile);
             case "P6" -> new P6DataEncoder(pnmFile);
