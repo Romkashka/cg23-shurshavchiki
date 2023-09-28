@@ -9,10 +9,10 @@ import java.util.List;
 
 public class ChannelChooserBuilder {
     private ColorSpace colorSpace;
-    private List<Double> constants;
+    private List<Float> constants;
     private List<Integer> channelMask;
 
-    public ChannelChooserBuilder(ColorSpace colorSpace, List<Double> constants) {
+    public ChannelChooserBuilder(ColorSpace colorSpace, List<Float> constants) {
         this.colorSpace = colorSpace;
         this.constants = constants;
         channelMask = List.of(1, 1, 1);

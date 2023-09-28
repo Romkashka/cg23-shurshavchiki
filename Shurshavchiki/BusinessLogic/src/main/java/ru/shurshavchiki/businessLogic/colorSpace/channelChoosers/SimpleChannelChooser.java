@@ -11,10 +11,10 @@ public class SimpleChannelChooser implements ChannelChooser {
     private final int MASK_LENGTH = 3;
     @Getter
     private List<Integer> channelMask;
-    private final List<Double> constants;
+    private final List<Float> constants;
     private int chosenChannelsAmount;
 
-    public SimpleChannelChooser(List<Double> constants, List<Integer> channelMask) {
+    public SimpleChannelChooser(List<Float> constants, List<Integer> channelMask) {
         this.constants = constants;
         setChannelMask(channelMask);
     }
@@ -34,12 +34,16 @@ public class SimpleChannelChooser implements ChannelChooser {
     }
 
     @Override
-    public byte[] apply(byte[] allChannelsData) {
-        byte[] result =  new byte[allChannelsData.length * chosenChannelsAmount / MASK_LENGTH];
+    public float[] apply(float[] allChannelsData) {
+        float[] result =  new float[allChannelsData.length * chosenChannelsAmount / MASK_LENGTH];
 
+        int offset = 0;
         for (int i = 0; i < allChannelsData.length; i += MASK_LENGTH) {
             for (int j = 0; j < MASK_LENGTH; j++) {
-                result[i + j] = (byte) (allChannelsData[i + j] * channelMask.get(j));
+                if (channelMask.get(j) == 1) {
+                    result[offset] = allChannelsData[i + j] * channelMask.get(j);
+                    offset++;
+                }
             }
         }
 
@@ -47,13 +51,13 @@ public class SimpleChannelChooser implements ChannelChooser {
     }
 
     @Override
-    public byte[] fillAllChannels(byte[] rawData) {
-        byte[] result = new byte[rawData.length * (MASK_LENGTH / chosenChannelsAmount)];
+    public float[] fillAllChannels(float[] rawData) {
+        float[] result = new float[rawData.length * (MASK_LENGTH / chosenChannelsAmount)];
 
         for (int i = 0; i < rawData.length; i += chosenChannelsAmount) {
-            byte[] currentPart = Arrays.copyOfRange(rawData, i, i + chosenChannelsAmount);
+            float[] currentPart = Arrays.copyOfRange(rawData, i, i + chosenChannelsAmount);
             for (int j = 0; j < chosenChannelsAmount; j++) {
-                result[i + j] = (byte) (currentPart[j % currentPart.length] * channelMask.get(j) + constants.get(j));
+                result[i + j] = currentPart[j % currentPart.length] * channelMask.get(j) + constants.get(j);
             }
         }
 

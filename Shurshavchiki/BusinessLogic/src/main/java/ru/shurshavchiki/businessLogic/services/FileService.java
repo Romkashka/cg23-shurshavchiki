@@ -2,6 +2,7 @@ package ru.shurshavchiki.businessLogic.services;
 
 import ru.shurshavchiki.businessLogic.entities.Displayable;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
+import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.util.PnmFileBuilder;
 import ru.shurshavchiki.businessLogic.util.PnmFileWriter;
 
@@ -22,6 +23,10 @@ public class FileService {
     }
 
     public void saveFile(Displayable displayable, File file) throws IOException {
-        new PnmFileWriter().saveAs(displayable, file);
+        new PnmFileWriter().save(displayable, file);
+    }
+
+    public void saveFromRawData(File file, Header header, byte[] data) throws IOException {
+        new PnmFileWriter().saveFromRawData(file, header, data);
     }
 }

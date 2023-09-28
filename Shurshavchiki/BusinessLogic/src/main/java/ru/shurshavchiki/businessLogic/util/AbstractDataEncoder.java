@@ -1,18 +1,21 @@
 package ru.shurshavchiki.businessLogic.util;
 
 import ru.shurshavchiki.businessLogic.entities.Displayable;
+import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
     protected static final int MIN_BITS_PER_COLOR = 8;
     protected static final int MIN_DATA_SIZE = (int) Math.pow(2, MIN_BITS_PER_COLOR) - 1;
-    protected Displayable pnmFile;
+    protected Header header;
     protected int x;
     protected int y;
     protected final int colorDataSize;
+    protected final int channelsCount;
 
-    protected AbstractDataEncoder(Displayable pnmFile) {
-        this.pnmFile = pnmFile;
+    protected AbstractDataEncoder(Header header, int channelsCount) {
+        this.header = header;
+        this.channelsCount = channelsCount;
         x = 0;
         y = 0;
         colorDataSize = calculateColorDataSize();
@@ -20,12 +23,12 @@ public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
 
     @Override
     public boolean hasNext() {
-        return y < pnmFile.getHeight();
+        return y < header.getHeight();
     }
 
     @Override
     public byte[] createCharBuffer() {
-        byte[] data = new byte[pnmFile.getHeight() * pnmFile.getWidth() * colorDataSize * 3];
+        byte[] data = new byte[header.getHeight() * header.getWidth() * colorDataSize * channelsCount];
         int offset = 0;
         while (hasNext()) {
             offset = convertPixel(getCurrentPixel(), offset, data);

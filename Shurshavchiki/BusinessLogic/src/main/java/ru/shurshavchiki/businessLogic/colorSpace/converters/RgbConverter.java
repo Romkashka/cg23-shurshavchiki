@@ -11,7 +11,7 @@ public class RgbConverter implements ColorSpaceConverter {
     private static final int RAW_DATA_LENGTH_IN_BYTES = 3;
 
     @Override
-    public List<RgbConvertable> toRgb(byte[] rawData) {
+    public List<RgbConvertable> toRgb(float[] rawData) {
         if (rawData.length % RAW_DATA_LENGTH_IN_BYTES != 0) {
             throw ColorSpaceException.invalidDataLength();
         }
@@ -25,23 +25,21 @@ public class RgbConverter implements ColorSpaceConverter {
     }
 
     @Override
-    public byte[] toRawData(List<List<RgbConvertable>> pixels) {
-        byte[] result = new byte[pixels.size() * pixels.get(0).size() * RAW_DATA_LENGTH_IN_BYTES];
+    public float[] toRawData(List<RgbConvertable> pixels) {
+        float[] result = new float[pixels.size()];
 
         int currenIndex = 0;
-        for (List<RgbConvertable> row : pixels) {
-            for (RgbConvertable pixel : row) {
-                currenIndex = writeByteWithOffset(result, currenIndex, pixel.Red());
-                currenIndex = writeByteWithOffset(result, currenIndex, pixel.Green());
-                currenIndex = writeByteWithOffset(result, currenIndex, pixel.Blue());
-            }
+        for (RgbConvertable pixel : pixels) {
+            currenIndex = writeByteWithOffset(result, currenIndex, pixel.Red());
+            currenIndex = writeByteWithOffset(result, currenIndex, pixel.Green());
+            currenIndex = writeByteWithOffset(result, currenIndex, pixel.Blue());
         }
 
         return result;
     }
 
-    private int writeByteWithOffset(byte[] destination, int offset, int data) {
-        destination[offset] = (byte) data;
+    private int writeByteWithOffset(float[] destination, int offset, int data) {
+        destination[offset] = data;
         offset++;
         return offset;
     }

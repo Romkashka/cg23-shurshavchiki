@@ -43,11 +43,15 @@ public class ImageChangingService {
                 splitToRows(header, convertToPixels(convertToRawData(source.getAllPixels()))));
     }
 
-    private byte[] convertToRawData(List<List<RgbConvertable>> pixels) {
-        return channelChooser.apply(colorSpaceConverter.toRawData(pixels));
+    public String getMagicNumber() {
+        return channelChooser.getMagicNumber();
     }
 
-    private List<RgbConvertable> convertToPixels(byte[] rawData) {
+    private float[] convertToRawData(List<List<RgbConvertable>> pixels) {
+        return channelChooser.apply(colorSpaceConverter.toRawData(concatenateRows(pixels)));
+    }
+
+    private List<RgbConvertable> convertToPixels(float[] rawData) {
         return colorSpaceConverter.toRgb(channelChooser.fillAllChannels(rawData));
     }
 
@@ -65,6 +69,16 @@ public class ImageChangingService {
                 offset++;
             }
             result.add(currentRow);
+        }
+
+        return result;
+    }
+
+    private List<RgbConvertable> concatenateRows(List<List<RgbConvertable>> pixels) {
+        List<RgbConvertable> result = new ArrayList<>();
+
+        for (List<RgbConvertable> row: pixels) {
+            result.addAll(row);
         }
 
         return result;

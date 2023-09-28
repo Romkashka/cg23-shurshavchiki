@@ -24,7 +24,7 @@ public class RGBColorSpaceFactory implements ColorSpaceFactory {
 
     @Override
     public ChannelChooserBuilder getChannelChooserBuilder() {
-        return new ChannelChooserBuilder(getColorSpace(), List.of(0.0, 0.0, 0.0));
+        return new ChannelChooserBuilder(getColorSpace(), List.of((float) 0.0, (float) 0.0, (float) 0.0));
     }
 
     @Override
