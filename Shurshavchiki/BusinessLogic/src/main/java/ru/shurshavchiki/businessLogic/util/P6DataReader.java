@@ -66,8 +66,8 @@ public class P6DataReader implements PixelDataReader {
         return result;
     }
 
-    private int normalizeChannel(int value) {
-        return (int) (value * (255.0 / header.getMaxValue()));
+    private double normalizeChannel(double value) {
+        return value * 255.0 / header.getMaxValue();
     }
 
     @Override

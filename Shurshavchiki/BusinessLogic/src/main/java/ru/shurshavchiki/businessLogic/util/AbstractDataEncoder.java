@@ -1,12 +1,13 @@
 package ru.shurshavchiki.businessLogic.util;
 
+import ru.shurshavchiki.businessLogic.entities.Displayable;
 import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
     protected static final int MIN_BITS_PER_COLOR = 8;
     protected static final int MIN_DATA_SIZE = (int) Math.pow(2, MIN_BITS_PER_COLOR) - 1;
-    protected PnmDisplayable pnmFile;
+    protected Displayable pnmFile;
     protected int x;
     protected int y;
     protected final int colorDataSize;
@@ -39,9 +40,6 @@ public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
     protected int writeColor(int colorValue, int offset, byte[] data) {
         for (int i = colorDataSize-1; i >= 0; i--) {
             data[offset] = (byte) (colorValue & (MIN_DATA_SIZE << MIN_BITS_PER_COLOR * i));
-            if (x == 1 && y == 0) {
-                System.out.println((colorValue & (MIN_DATA_SIZE << MIN_BITS_PER_COLOR * i)) + " " + (int) data[offset]);
-            }
             offset++;
         }
 
@@ -63,7 +61,7 @@ public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
     }
 
     protected int calculateColorDataSize() {
-        if (pnmFile.getMaxval() <= MIN_DATA_SIZE) {
+        if (255 <= MIN_DATA_SIZE) {
             return 1;
         }
         else {

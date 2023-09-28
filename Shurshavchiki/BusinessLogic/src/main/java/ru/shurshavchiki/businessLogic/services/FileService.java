@@ -1,7 +1,6 @@
 package ru.shurshavchiki.businessLogic.services;
 
 import ru.shurshavchiki.businessLogic.entities.Displayable;
-import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 import ru.shurshavchiki.businessLogic.util.PnmFileBuilder;
 import ru.shurshavchiki.businessLogic.util.PnmFileWriter;
@@ -11,7 +10,6 @@ import java.io.IOException;
 
 public class FileService {
     public Displayable readFile(File file) throws IOException {
-        System.out.println("service read");
         if (!file.isFile()) {
             throw OpenFileException.notAFile(file.getName());
         }
@@ -20,10 +18,10 @@ public class FileService {
             throw OpenFileException.fileCantBeRead();
         }
 
-        return new PnmFileBuilder(file).GetFile();
+        return new PnmFileBuilder(file).getFile();
     }
 
-    public void saveFile(Displayable pnmFile, File destination) throws IOException {
-        new PnmFileWriter().saveAs(pnmFile, destination);
+    public void saveFile(Displayable displayable, File file) throws IOException {
+        new PnmFileWriter().saveAs(displayable, file);
     }
 }
