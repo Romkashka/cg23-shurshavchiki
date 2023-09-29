@@ -52,7 +52,7 @@ public class P5DataReader implements PixelDataReader {
     private ArrayList<RgbConvertable> normalize(List<RgbConvertable> rawData) {
         ArrayList<RgbConvertable> result = new ArrayList<>(rawData.size());
         for (RgbConvertable pixel: rawData) {
-            result.add(new MonochromePixel((int) (pixel.Red() * (255.0 / header.getMaxValue()))));
+            result.add(new MonochromePixel((((double) pixel.Red()) * (255.0 / header.getMaxValue()))));
         }
 
         return result;

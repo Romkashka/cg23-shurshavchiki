@@ -1,24 +1,29 @@
 package ru.shurshavchiki.businessLogic.util;
 
+import ru.shurshavchiki.businessLogic.entities.Displayable;
 import ru.shurshavchiki.businessLogic.entities.PnmFile;
 import lombok.Getter;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class PnmFileBuilder {
     @Getter
     private Header header;
     private String name;
-    private ArrayList<ArrayList<RgbConvertable>> pixels;
+    private File file;
+    private List<List<RgbConvertable>> pixels;
 
     public PnmFileBuilder(java.io.File pnmFile) throws IOException {
-        header = HeaderReader(pnmFile);
+        file = pnmFile;
+        header = readHeader(pnmFile);
         name = pnmFile.getName();
         PixelDataReader dataReader;
         switch (header.getMagicNumber()) {
@@ -28,7 +33,7 @@ public class PnmFileBuilder {
         }
         pixels = new ArrayList<>();
         for (int i = 0; i < header.getHeight(); i++){
-            pixels.add(new ArrayList<RgbConvertable>());
+            pixels.add(new ArrayList<>());
         }
         ArrayList<RgbConvertable> pixelData = dataReader.nextPixel();
         for (int y = 0; y < header.getHeight(); y++){
@@ -38,11 +43,11 @@ public class PnmFileBuilder {
         }
     }
 
-    public PnmFile GetFile(){
-        return new PnmFile(name, header, pixels);
+    public Displayable getFile(){
+        return new PnmFile(header, pixels);
     }
 
-    private Header HeaderReader(java.io.File pnmFile) throws IOException {
+    private Header readHeader(java.io.File pnmFile) throws IOException {
         FileInputStream fileInputStream = new FileInputStream(pnmFile);
         Scanner scan = new Scanner(fileInputStream);
         String magicNumber;

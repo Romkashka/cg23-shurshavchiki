@@ -1,22 +1,37 @@
 package ru.shurshavchiki.businessLogic.models;
 
 public class MonochromePixel implements RgbConvertable {
-    private int Gray;
-    public MonochromePixel(int Gray){
-        this.Gray = Gray;
+    private double gray;
+    public MonochromePixel(double Gray){
+        this.gray = Gray;
     }
     @Override
     public int Red() {
-        return Gray;
+        return (int) gray;
     }
 
     @Override
     public int Green() {
-        return Gray;
+        return (int) gray;
     }
 
     @Override
     public int Blue() {
-        return Gray;
+        return (int) gray;
+    }
+
+    @Override
+    public float FloatRed() {
+        return (float) gray;
+    }
+
+    @Override
+    public float FloatGreen() {
+        return (float) gray;
+    }
+
+    @Override
+    public float FloatBlue() {
+        return (float) gray;
     }
 }

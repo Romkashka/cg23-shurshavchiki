@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
 import ru.shurshavchiki.businessLogic.entities.Displayable;
+import ru.shurshavchiki.businessLogic.entities.FileWrapper;
 import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 import ru.shurshavchiki.util.ManualControllerMediator;
@@ -14,7 +15,7 @@ public class PictureSectionController {
     @FXML
     Canvas mainCanvas;
 
-    private Displayable displayable;
+    private FileWrapper fileWrapper;
     @FXML
     public void initialize() {
         ManualControllerMediator.getInstance().setPictureSectionController(this);

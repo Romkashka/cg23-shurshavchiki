@@ -1,11 +1,12 @@
 package ru.shurshavchiki.businessLogic.util;
 
-import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
+import ru.shurshavchiki.businessLogic.entities.Displayable;
+import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 public class P6DataEncoder extends AbstractDataEncoder implements PnmImageDataEncoder {
-    public P6DataEncoder(PnmDisplayable pnmFile) {
-        super(pnmFile);
+    public P6DataEncoder(Displayable displayable) {
+        super(displayable, 3);
         System.out.println("P6");
     }
 
