@@ -2,6 +2,7 @@ package ru.shurshavchiki.Frames;
 
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.PanelMediator;
+import ru.shurshavchiki.Panels.SettingPanel;
 
 import java.awt.*;
 import java.io.File;
@@ -24,6 +25,8 @@ public class ImageFrame extends JFrame {
         }catch (Exception e){
             new ExceptionHandler().handleException(e);
         }
+
+        PanelMediator.getInstance().setSettingPanel(new SettingPanel());
 
         this.setJMenuBar(PanelMediator.getInstance().getSettingPanel().getMenuBar());
 //    	this.getContentPane().add(PanelMediator.getInstance().getOneToolPanel(), BorderLayout.EAST);

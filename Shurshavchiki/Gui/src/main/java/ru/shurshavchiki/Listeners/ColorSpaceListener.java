@@ -20,7 +20,6 @@ public class ColorSpaceListener extends AbstractAction {
             if (!settingPanel.getChosenColorSpace().equals(colorSpace)){
                 settingPanel.changeChosenColorSpace(colorSpace);
                 action.colorSpace = colorSpace;
-                System.out.println(colorSpace);
             }
         };
     }

@@ -20,7 +20,6 @@ public class ColorChannelListener extends AbstractAction {
             if (!settingPanel.getChosenChannels().equals(colorChannel)){
                 settingPanel.changeChosenChannels(colorChannel);
                 action.colorChannel = colorChannel;
-                System.out.println(colorChannel);
             }
         };
     }

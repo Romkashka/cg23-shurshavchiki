@@ -1,5 +1,7 @@
 package ru.shurshavchiki.Panels;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.shurshavchiki.Listeners.ColorChannelListener;
 import ru.shurshavchiki.Listeners.ColorSpaceListener;
 import ru.shurshavchiki.Listeners.FileButtonListener;
@@ -8,6 +10,7 @@ import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.services.ImageChangingService;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,33 +18,24 @@ import javax.swing.*;
 
 public class SettingPanel extends JPanel{
 
+	@Getter
 	private JMenuBar menuBar = new JMenuBar();
+
+	@Getter
+	@Setter
 	private File selectedFile = null;
 
 	private JMenu menuColorChannels;
 
-	private ImageChangingService imageChangingService
-			= new ImageChangingService(new ColorSpaceRegistry());
-
+	@Getter
 	private String chosenColorSpace;
 
+	@Getter
 	private String chosenChannels;
 
 	public SettingPanel(){
 		configureMenuFile();
 		configureMenuEdit();
-	}
-
-	public File getSelectedFile() {
-		return this.selectedFile;
-	}
-
-	public void setSelectedFile(File selectedFile) {
-		this.selectedFile = selectedFile;
-	}
-
-	public JMenuBar getMenuBar() {
-		return this.menuBar;
 	}
 
 	private void configureMenuFile(){
@@ -90,7 +84,7 @@ public class SettingPanel extends JPanel{
 	}
 
 	private void createColorSpaceBox(JMenu editMenu){
-		List<String> list = getListColorSpaces();
+		List<String> list = PanelMediator.getInstance().getListColorSpaces();
 		JMenu menuColorSpace = new JMenu("Color Space");
 
 		ColorSpaceListener.Observer observer = new ColorSpaceListener.Observer(this);
@@ -104,7 +98,9 @@ public class SettingPanel extends JPanel{
 	}
 
 	private void createColorChannels(JMenu editMenu){
-		List<String> list = getListColorChannels(chosenColorSpace);
+		List<String> list = new ArrayList<>();
+		list.add("All");
+		list.addAll(PanelMediator.getInstance().getListColorChannels(chosenColorSpace));
 		menuColorChannels = new JMenu("Color Channels");
 
 		ColorChannelListener.Observer observer = new ColorChannelListener.Observer(this);
@@ -120,11 +116,14 @@ public class SettingPanel extends JPanel{
 	public void changeChosenColorSpace(String space){
 		PanelMediator.getInstance().changeColorSpace(space);
 		chosenColorSpace = space;
-		changeChannelList(space);
+		changeChannelList();
+		PanelMediator.getInstance().createPreview(chosenColorSpace, chosenChannels);
 	}
 
-	public void changeChannelList(String space){
-		List<String> list = getListColorChannels(chosenColorSpace);
+	public void changeChannelList(){
+		List<String> list = new ArrayList<>();
+		list.add("All");
+		list.addAll(PanelMediator.getInstance().getListColorChannels(chosenColorSpace));
 		menuColorChannels.removeAll();
 
 		ColorChannelListener.Observer observer = new ColorChannelListener.Observer(this);
@@ -138,22 +137,5 @@ public class SettingPanel extends JPanel{
 
 	public void changeChosenChannels(String channel){
 
-	}
-
-	public String getChosenColorSpace() {
-		return chosenColorSpace;
-	}
-
-	public String getChosenChannels() {
-		return chosenChannels;
-	}
-
-	public List<String>getListColorSpaces(){
-		return imageChangingService.getColorSpacesNames();
-	}
-
-	public static List<String> getListColorChannels(String space){
-		return new ColorSpaceRegistry().getFactoryByName(space)
-				.getColorSpace().Channels().stream().map(Enum::name).toList();
 	}
 }
