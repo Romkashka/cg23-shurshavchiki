@@ -2,12 +2,16 @@ package ru.shurshavchiki;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Vector;
 
 import ru.shurshavchiki.Panels.DrawingPanel;
 import ru.shurshavchiki.Panels.InstrumentPanel;
 import ru.shurshavchiki.Panels.OneToolPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
+import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.services.FileService;
+import ru.shurshavchiki.businessLogic.services.ImageChangingService;
 
 import javax.swing.*;
 
@@ -21,10 +25,9 @@ public class PanelMediator {
 
 	private OneToolPanel oneToolPanel = new OneToolPanel();
 
-	private SettingPanel settingPanel = new SettingPanel();
+	private SettingPanel settingPanel = new SettingPanel();;
 
 	private JScrollPane scrollPane = new JScrollPane(drawingPanel);
-
 
 	public DrawingPanel getDrawingPanel() {
 		return this.drawingPanel;
@@ -46,7 +49,6 @@ public class PanelMediator {
 		return this.scrollPane;
 	}
 
-
 	public void openNewImage(File file) throws IOException {
 		drawingPanel.loadImage(fileService.readFile(file));
 	}
@@ -63,6 +65,12 @@ public class PanelMediator {
 	}
 
 	public void exit() {
+	}
+
+	public void changeColorSpace(String newSpace){
+		// notify service
+		// take displayable
+//		drawingPanel.loadImage(newDisplayable);
 	}
 
 	public void validateScrollPane(){

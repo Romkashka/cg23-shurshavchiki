@@ -1,5 +1,7 @@
 package ru.shurshavchiki.Listeners;
 
+import ru.shurshavchiki.Panels.SettingPanel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,9 +10,18 @@ public class ColorSpaceListener extends AbstractAction {
     private static Observer Observer;
 
     public static class Observer {
+        private SettingPanel settingPanel;
+
+        public Observer(SettingPanel settingPanel){
+            this.settingPanel = settingPanel;
+        }
+
         public void setColorSpace(ColorSpaceListener action, String colorSpace){
-            action.colorSpace = colorSpace;
-            System.out.println(colorSpace);
+            if (!settingPanel.getChosenColorSpace().equals(colorSpace)){
+                settingPanel.changeChosenColorSpace(colorSpace);
+                action.colorSpace = colorSpace;
+                System.out.println(colorSpace);
+            }
         };
     }
 
