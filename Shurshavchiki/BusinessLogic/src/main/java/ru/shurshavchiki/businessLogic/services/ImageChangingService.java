@@ -1,13 +1,15 @@
 package ru.shurshavchiki.businessLogic.services;
 
 import lombok.Getter;
-import lombok.Setter;
 import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
+import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooserBuilder;
 import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
 import ru.shurshavchiki.businessLogic.colorSpace.factories.ColorSpaceFactory;
+import ru.shurshavchiki.businessLogic.colorSpace.models.Channel;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.entities.Displayable;
 import ru.shurshavchiki.businessLogic.entities.PnmFile;
+import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
 import ru.shurshavchiki.businessLogic.exceptions.ColorSpaceException;
 import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
@@ -18,10 +20,9 @@ import java.util.List;
 public class ImageChangingService {
     @Getter
     private final ColorSpaceRegistry colorSpaceRegistry;
-    @Setter
+    private ColorSpaceFactory colorSpaceFactory;
+    @Getter
     private ChannelChooser channelChooser;
-    @Setter
-    private ColorSpaceConverter colorSpaceConverter;
 
     public ImageChangingService(ColorSpaceRegistry colorSpaceRegistry) {
         this.colorSpaceRegistry = colorSpaceRegistry;
@@ -29,6 +30,15 @@ public class ImageChangingService {
 
     public List<String> getColorSpacesNames() {
         return colorSpaceRegistry.getFactories().stream().map(ColorSpaceFactory::getColorSpaceName).toList();
+    }
+
+    public Channel getChannelFromName(String channelName) {
+        for (Channel channel: Channel.values()) {
+            if (channel.name().equals(channelName))
+                return channel;
+        }
+
+        throw ChannelException.noSuchChannel(channelName);
     }
 
     public Displayable getPreview(Displayable source) {
@@ -44,12 +54,27 @@ public class ImageChangingService {
         return channelChooser.getMagicNumber();
     }
 
+    public void chooseChannel(String channelName) {
+        Channel channel = getChannelFromName(channelName);
+        ChannelChooserBuilder builder = colorSpaceFactory.getChannelChooserBuilder();
+        builder.withChannel(channel);
+        channelChooser = builder.build();
+    }
+
+    public void chooseColorSpace(String colorSpaceName) {
+        this.colorSpaceFactory = colorSpaceRegistry.getFactoryByName(colorSpaceName);
+    }
+
+    public ColorSpaceConverter getColorSpaceConverter() {
+        return colorSpaceFactory.getColorSpaceConverter();
+    }
+
     private float[] convertToRawData(List<List<RgbConvertable>> pixels) {
-        return channelChooser.apply(colorSpaceConverter.toRawData(concatenateRows(pixels)));
+        return channelChooser.apply(getColorSpaceConverter().toRawData(concatenateRows(pixels)));
     }
 
     private List<RgbConvertable> convertToPixels(float[] rawData) {
-        return colorSpaceConverter.toRgb(channelChooser.fillAllChannels(rawData));
+        return getColorSpaceConverter().toRgb(channelChooser.fillAllChannels(rawData));
     }
 
     private List<List<RgbConvertable>> splitToRows(Header header, List<RgbConvertable> pixels) {

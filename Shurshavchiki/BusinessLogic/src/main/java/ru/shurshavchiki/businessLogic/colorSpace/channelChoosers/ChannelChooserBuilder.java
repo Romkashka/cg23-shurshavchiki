@@ -24,7 +24,7 @@ public class ChannelChooserBuilder {
         }
 
         if (!colorSpace.Channels().contains(channel)) {
-            throw ChannelException.noSuchChannel(colorSpace.Name(), channel);
+            throw ChannelException.noSuchChannelInColorSpace(colorSpace.Name(), channel);
         }
 
         int index = colorSpace.Channels().indexOf(channel);
