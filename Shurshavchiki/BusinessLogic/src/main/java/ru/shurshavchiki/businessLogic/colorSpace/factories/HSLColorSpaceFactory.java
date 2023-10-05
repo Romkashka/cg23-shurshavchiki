@@ -34,12 +34,14 @@ public class HSLColorSpaceFactory implements ColorSpaceFactory {
                     float Cmax = Collections.max(Arrays.asList(input));
                     float Cmin = Collections.min(Arrays.asList(input));
                     float H;
-                    if (Cmax == input[0]) {
-                        H = Math.abs(input[1] - input[2]) / (Cmax - Cmin) * 255 / 6;
+                    if (Cmax == input[0] && input[1] >= input[2]) {
+                        H = (input[1] - input[2]) / (Cmax - Cmin) * 255 / 6;
+                    } else if (Cmax == input[0]) {
+                        H = (input[1] - input[2]) / (Cmax - Cmin) * 255 / 6 + 256F;
                     } else if (Cmax == input[1]) {
-                        H = (input[2] - input[0]) / (Cmax - Cmin) * 255 / 6;
+                        H = (input[2] - input[0]) / (Cmax - Cmin) * 255 / 6 + 85.3F;
                     } else {
-                        H = (input[0] - input[1]) / (Cmax - Cmin) * 255 / 6;
+                        H = (input[0] - input[1]) / (Cmax - Cmin) * 255 / 6 + 170.67F;
                     }
                     float L = (Cmin + Cmax) / 2;
                     float S = (Cmax - Cmin) / (255 - Math.abs(255 - Cmax - Cmin)) * 255F;
