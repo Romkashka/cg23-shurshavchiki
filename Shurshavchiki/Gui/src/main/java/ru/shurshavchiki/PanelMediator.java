@@ -1,10 +1,8 @@
 package ru.shurshavchiki;
 
-import java.awt.color.ColorSpace;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Vector;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +10,8 @@ import ru.shurshavchiki.Panels.DrawingPanel;
 import ru.shurshavchiki.Panels.InstrumentPanel;
 import ru.shurshavchiki.Panels.OneToolPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
-import ru.shurshavchiki.businessLogic.colorSpace.factories.ColorSpaceFactory;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.services.FileService;
-import ru.shurshavchiki.businessLogic.services.ImageChangingService;
 
 import javax.swing.*;
 

@@ -5,6 +5,7 @@ import ru.shurshavchiki.businessLogic.entities.PnmFile;
 import lombok.Getter;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 import ru.shurshavchiki.businessLogic.models.Header;
+import ru.shurshavchiki.businessLogic.models.ImageDataHolder;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 import java.io.File;
@@ -14,21 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PnmFileBuilder {
+public class PnmFileReader {
     @Getter
     private Header header;
     private String name;
     private File file;
     private List<List<RgbConvertable>> pixels;
 
-    public PnmFileBuilder(java.io.File pnmFile) throws IOException {
-        file = pnmFile;
-        header = readHeader(pnmFile);
-        name = pnmFile.getName();
+    public PnmFileReader(java.io.File file) throws IOException {
+        this.file = file;
+        header = readHeader(file);
+        name = file.getName();
         PixelDataReader dataReader;
         switch (header.getMagicNumber()) {
-            case "P5" -> dataReader = new P5DataReader(header, pnmFile);
-            case "P6" -> dataReader = new P6DataReader(header, pnmFile);
+            case "P5" -> dataReader = new P5DataReader(header, file);
+            case "P6" -> dataReader = new P6DataReader(header, file);
             default -> throw OpenFileException.unsupportedFileVersion(header.getMagicNumber());
         }
         pixels = new ArrayList<>();
@@ -45,6 +46,10 @@ public class PnmFileBuilder {
 
     public Displayable getFile(){
         return new PnmFile(header, pixels);
+    }
+
+    public ImageDataHolder getImageDataHolder(java.io.File file) {
+        throw new UnsupportedOperationException("Саша, сделай уже это");
     }
 
     private Header readHeader(java.io.File pnmFile) throws IOException {
