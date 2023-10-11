@@ -95,6 +95,7 @@ public class SettingPanel extends JPanel{
 		}
 
 		chosenColorSpace = list.get(0);
+		PanelMediator.getInstance().getFileService().chooseColorSpace(chosenColorSpace);
 		editMenu.add(menuColorSpace);
 	}
 

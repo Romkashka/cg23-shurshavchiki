@@ -21,6 +21,7 @@ public class PanelMediator {
 	@Getter
 	private Boolean somethingChanged = false;
 
+	@Getter
 	private FileService fileService = new FileService();
 
 	@Getter
@@ -106,12 +107,14 @@ public class PanelMediator {
 
 	public void changeChannel(String channel) {
 		fileService.chooseChannel(channel);
-		somethingChanged = true;
+		if (drawingPanel.getDisplayable() != null)
+			somethingChanged = true;
 	}
 
 	public void changeColorSpace(String newSpace){
 		fileService.chooseColorSpace(newSpace);
-		somethingChanged = true;
+		if (drawingPanel.getDisplayable() != null)
+			somethingChanged = true;
 	}
 
 	public static PanelMediator getInstance() {
