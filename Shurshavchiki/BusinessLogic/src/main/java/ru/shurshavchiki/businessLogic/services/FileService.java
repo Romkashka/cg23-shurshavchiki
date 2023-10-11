@@ -12,6 +12,9 @@ import ru.shurshavchiki.businessLogic.entities.PnmFile;
 import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
 import ru.shurshavchiki.businessLogic.exceptions.ColorSpaceException;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
+import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
+import ru.shurshavchiki.businessLogic.gamma.util.GammaConvertersRegistry;
+import ru.shurshavchiki.businessLogic.gamma.util.PlainGammaConvertersRegistry;
 import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.models.ImageDataHolder;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
@@ -27,12 +30,17 @@ import java.util.List;
 public class FileService {
     @Getter
     private final ColorSpaceRegistry colorSpaceRegistry;
+    @Getter
+    private final GammaConvertersRegistry gammaConvertersRegistry;
     private ColorSpaceFactory colorSpaceFactory;
     @Getter
     private ChannelChooser channelChooser;
+    @Getter
+    private GammaConverter gammaConverter;
 
     public FileService() {
         colorSpaceRegistry = new ColorSpaceRegistry();
+        gammaConvertersRegistry = new PlainGammaConvertersRegistry();
     }
 
     public Displayable readFile(File file) throws IOException {
@@ -80,6 +88,15 @@ public class FileService {
 
     public void chooseColorSpace(String colorSpaceName) {
         this.colorSpaceFactory = colorSpaceRegistry.getFactoryByName(colorSpaceName);
+    }
+
+    public void assignGamma(float gamma) {
+        GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
+
+    }
+
+    public void convertGamma(float gamma) {
+        
     }
 
     public ColorSpaceConverter getColorSpaceConverter() {
