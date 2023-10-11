@@ -21,19 +21,19 @@ public class ColorChannelListener extends JMenuItem{
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-            settingPanel.changeChosenChannels(colorChannelListener.getColorChannel(), colorChannelListener);
+        public void actionPerformed(ActionEvent event) {
+            settingPanel.changeChosenChannels(colorChannelListener);
         }
     }
 
     @Getter
     private String colorChannel;
 
-    public ColorChannelListener(String text, String colorChannel, SettingPanel settingPanel) {
+    public ColorChannelListener(String text, String colorChannel, SettingPanel settingPanel, Color selected) {
         super(text);
         this.colorChannel = colorChannel;
         this.addActionListener(new Observer(settingPanel, this));
         this.setOpaque(true);
-        this.setBackground(Color.GRAY);
+        this.setBackground(selected);
     }
 }

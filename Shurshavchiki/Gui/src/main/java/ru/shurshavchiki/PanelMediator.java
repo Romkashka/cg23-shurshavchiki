@@ -49,6 +49,7 @@ public class PanelMediator {
 
 	public void openNewImage(File file) throws IOException {
 		drawingPanel.loadImage(fileService.readFile(file));
+		setGammaDefault();
 	}
 
 	public void saveImage(File file) throws IOException {
@@ -115,6 +116,18 @@ public class PanelMediator {
 		fileService.chooseColorSpace(newSpace);
 		if (drawingPanel.getDisplayable() != null)
 			somethingChanged = true;
+	}
+
+	public void assignGamma(float displayGamma) {
+		fileService.assignGamma(displayGamma);
+	}
+
+	public void convertGamma(float fileGamma) {
+		fileService.convertGamma(fileGamma);
+	}
+
+	private void setGammaDefault(){
+		settingPanel.setFileGamma(0F);
 	}
 
 	public static PanelMediator getInstance() {

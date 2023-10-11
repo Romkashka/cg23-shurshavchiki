@@ -2,6 +2,7 @@ package ru.shurshavchiki.Panels;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Listeners.ColorChannelListener;
 import ru.shurshavchiki.Listeners.ColorSpaceListener;
 import ru.shurshavchiki.Listeners.FileButtonListener;
@@ -26,6 +27,8 @@ public class SettingPanel extends JPanel{
 	@Setter
 	private File selectedFile = null;
 
+	private JMenu menuColorSpace;
+
 	private JMenu menuColorChannels;
 
 	@Getter
@@ -33,6 +36,13 @@ public class SettingPanel extends JPanel{
 
 	@Getter
 	private List<String> chosenChannels;
+
+	@Setter
+	private float fileGamma = 0;
+
+	private float displayGamma = 0;
+
+	private final Color selected = new Color(179, 255, 179);
 
 	public SettingPanel(){
 		configureMenuFile();
@@ -68,9 +78,11 @@ public class SettingPanel extends JPanel{
 
 		fileMenu.add(newMenuItem);
 		fileMenu.add(openMenuItem);
+		fileMenu.addSeparator();
 		fileMenu.add(saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(closeMenuItem);
+		fileMenu.addSeparator();
 		fileMenu.add(exitMenuItem);
 
 		menuBar.add(fileMenu);
@@ -80,22 +92,23 @@ public class SettingPanel extends JPanel{
 		JMenu editMenu = new JMenu("Edit");
 		createColorSpaceBox(editMenu);
 		createColorChannels(editMenu);
-
+		editMenu.addSeparator();
+		createGammaConvert(editMenu);
+		createGammaAssign(editMenu);
 		menuBar.add(editMenu);
 	}
 
 	private void createColorSpaceBox(JMenu editMenu){
 		List<String> list = PanelMediator.getInstance().getListColorSpaces();
-		JMenu menuColorSpace = new JMenu("Color Space");
-
-		ColorSpaceListener.Observer observer = new ColorSpaceListener.Observer(this);
+		menuColorSpace = new JMenu("Color Space");
 
 		for (var o : list){
-			menuColorSpace.add(new ColorSpaceListener(o, o, observer));
+			menuColorSpace.add(new ColorSpaceListener(o, o, this));
 		}
 
 		chosenColorSpace = list.get(0);
 		PanelMediator.getInstance().getFileService().chooseColorSpace(chosenColorSpace);
+		menuColorSpace.getItem(0).setBackground(selected);
 		editMenu.add(menuColorSpace);
 	}
 
@@ -105,42 +118,82 @@ public class SettingPanel extends JPanel{
 		menuColorChannels = new JMenu("Color Channels");
 
 		for (var o : list){
-			menuColorChannels.add(new ColorChannelListener(o, o, this));
+			menuColorChannels.add(new ColorChannelListener(o, o, this, selected));
 		}
 
 		chosenChannels = list;
 		editMenu.add(menuColorChannels);
 	}
 
-	public void changeChosenColorSpace(String space){
-		PanelMediator.getInstance().changeColorSpace(space);
-		chosenColorSpace = space;
+	public void changeChosenColorSpace(ColorSpaceListener colorSpaceListener){
+		for (var menuItem = 0; menuItem < menuColorSpace.getItemCount(); ++menuItem){
+			menuColorSpace.getItem(menuItem).setBackground(Color.white);
+		}
+		PanelMediator.getInstance().changeColorSpace(colorSpaceListener.getColorSpace());
+		chosenColorSpace = colorSpaceListener.getColorSpace();
+		colorSpaceListener.setBackground(selected);
 		changeChannelList();
 		PanelMediator.getInstance().createPreview();
 	}
 
-	public void changeChannelList(){
+	private void changeChannelList(){
         List<String> list = new ArrayList<>
 				(PanelMediator.getInstance().getListColorChannels(chosenColorSpace));
 		menuColorChannels.removeAll();
 
 		for (var o : list){
-			menuColorChannels.add(new ColorChannelListener(o, o, this));
+			menuColorChannels.add(new ColorChannelListener(o, o, this, selected));
 		}
 
 		chosenChannels = list;
 	}
 
-	public void changeChosenChannels(String channel, ColorChannelListener colorChannelListener){
-		PanelMediator.getInstance().changeChannel(channel);
-		if (chosenChannels.contains(channel)){
-			chosenChannels.remove(channel);
-			colorChannelListener.setBackground(Color.lightGray);
+	public void changeChosenChannels(ColorChannelListener colorChannelListener){
+		PanelMediator.getInstance().changeChannel(colorChannelListener.getColorChannel());
+		if (chosenChannels.contains(colorChannelListener.getColorChannel())){
+			chosenChannels.remove(colorChannelListener.getColorChannel());
+			colorChannelListener.setBackground(Color.white);
 		} else {
-			chosenChannels.add(channel);
-			colorChannelListener.setBackground(Color.GRAY);
+			chosenChannels.add(colorChannelListener.getColorChannel());
+			colorChannelListener.setBackground(selected);
 		}
 
 		PanelMediator.getInstance().createPreview();
+	}
+
+	public void createGammaConvert(JMenu editMenu){
+		editMenu.add(new AbstractAction("Convert Gamma") {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				String input = JOptionPane.showInputDialog("Enter gamma to convert");
+				try {
+					fileGamma = Float.parseFloat(input);
+					if (fileGamma != 0 && fileGamma < 1)
+						throw new NumberFormatException("Gamma can not equals " + fileGamma);
+					PanelMediator.getInstance().convertGamma(fileGamma);
+					PanelMediator.getInstance().createPreview();
+				}catch (Exception exception){
+					new ExceptionHandler().handleException(exception);
+				}
+			}
+		});
+	}
+
+	public void createGammaAssign(JMenu editMenu){
+		editMenu.add(new AbstractAction("Assign Gamma") {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				String input = JOptionPane.showInputDialog("Enter gamma to assign");
+				try {
+					displayGamma = Float.parseFloat(input);
+					if (displayGamma != 0 && displayGamma < 1)
+						throw new NumberFormatException("Gamma can not equals " + displayGamma);
+					PanelMediator.getInstance().assignGamma(displayGamma);
+					PanelMediator.getInstance().createPreview();
+				}catch (Exception exception){
+					new ExceptionHandler().handleException(exception);
+				}
+			}
+		});
 	}
 }
