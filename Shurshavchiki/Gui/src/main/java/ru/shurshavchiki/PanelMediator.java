@@ -1,11 +1,13 @@
 package ru.shurshavchiki;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.shurshavchiki.Frames.ImageFrame;
 import ru.shurshavchiki.Panels.DrawingPanel;
 import ru.shurshavchiki.Panels.InstrumentPanel;
 import ru.shurshavchiki.Panels.OneToolPanel;
@@ -16,6 +18,8 @@ import ru.shurshavchiki.businessLogic.services.FileService;
 import javax.swing.*;
 
 public class PanelMediator {
+	@Getter
+	private Boolean somethingChanged = false;
 
 	private FileService fileService = new FileService();
 
@@ -33,10 +37,14 @@ public class PanelMediator {
 	private SettingPanel settingPanel;
 
 	@Getter
+	private ImageFrame imageFrame = new ImageFrame();
+
+	@Getter
 	private JScrollPane scrollPane = new JScrollPane(drawingPanel);
 
-    private ImageChangingService imageChangingService
-            = new ImageChangingService(new ColorSpaceRegistry());
+	public void run(){
+		imageFrame.create();
+	}
 
 	public void openNewImage(File file) throws IOException {
 		drawingPanel.loadImage(fileService.readFile(file));
@@ -44,27 +52,42 @@ public class PanelMediator {
 
 	public void saveImage(File file) throws IOException {
 		fileService.saveFile(drawingPanel.getDisplayable(), file);
-    }
+    	somethingChanged = false;
+	}
 
 	public void saveAsImage(File file) throws IOException {
 		fileService.saveFile(drawingPanel.getDisplayable(), file);
-    }
+    	somethingChanged = false;
+	}
 
 	public void closeImage() {
+		if (somethingChanged){
+			int answer = JOptionPane.showConfirmDialog(null,
+					"Some changes weren't save. Are you sure you want to close the picture?",
+					"close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			if (answer == JOptionPane.YES_OPTION){
+				drawingPanel.closeImage();
+			}
+		}else {
+			drawingPanel.closeImage();
+		}
 	}
 
 	public void exit() {
-	}
-
-	public void changeColorSpace(String newSpace){
-
-		// notify service
-		// take displayable
-//		drawingPanel.loadImage(newDisplayable);
+		if (somethingChanged){
+			int answer = JOptionPane.showConfirmDialog(null,
+					"Some changes weren't save. Are you sure you want to close the window?",
+					"close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			if (answer == JOptionPane.YES_OPTION){
+				imageFrame.dispose();
+			}
+		}else {
+			imageFrame.dispose();
+		}
 	}
 
     public List<String>getListColorSpaces(){
-        return imageChangingService.getColorSpacesNames();
+        return fileService.getColorSpacesNames();
     }
 
     public List<String> getListColorChannels(String space){
@@ -72,15 +95,23 @@ public class PanelMediator {
                 .getColorSpace().Channels().stream().map(Enum::name).toList();
     }
 
-    public void createPreview(String space, String channels){
-//		imageChangingService.setColorSpaceConverter();
-//
-//        imageChangingService.setChannelChooser();
-//        var image = imageChangingService.getPreview(drawingPanel.getDisplayable());
+    public void createPreview(){
+		if (drawingPanel.getDisplayable() != null)
+			drawingPanel.loadImage(fileService.getPreview(drawingPanel.getDisplayable()));
     }
 
 	public void validateScrollPane(){
 		scrollPane.setViewportView(drawingPanel);
+	}
+
+	public void changeChannel(String channel) {
+		fileService.chooseChannel(channel);
+		somethingChanged = true;
+	}
+
+	public void changeColorSpace(String newSpace){
+		fileService.chooseColorSpace(newSpace);
+		somethingChanged = true;
 	}
 
 	public static PanelMediator getInstance() {

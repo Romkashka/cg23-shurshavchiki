@@ -5,10 +5,14 @@ import ru.shurshavchiki.PanelMediator;
 import ru.shurshavchiki.Panels.SettingPanel;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -33,21 +37,37 @@ public class ImageFrame extends JFrame {
 //        this.getContentPane().add(PanelMediator.getInstance().getInstrumentPanel(), BorderLayout.WEST);
         this.getContentPane().add(PanelMediator.getInstance().getScrollPane(), BorderLayout.CENTER);
 
-        var icon = new ImageIcon("/Resources/icon.png");
-        
-        this.setIconImage(icon.getImage());
-        
-        setTitle("Paint by shurshavchiki");
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource("icon.png");
+        if (resource != null) {
+            var icon = new ImageIcon(resource.getPath());
+            this.setIconImage(icon.getImage());
+        }
+
+        var rand = new Random();
+        if (Math.abs(rand.nextLong()) % 10 == 4){
+            setTitle("Shurshavchiki: Also try Draw.Me!");
+        }else{
+            setTitle("Shurshavchiki");
+        }
 
         Toolkit kit = Toolkit.getDefaultToolkit();
 
 
         this.setSize(Math.min(kit.getScreenSize().getSize().width, 800), Math.min(kit.getScreenSize().getSize().height, 600));
         
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         this.setLocationRelativeTo(null);
 
         this.setVisible(true);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                PanelMediator.getInstance().exit();
+            }
+        });
     }
 }

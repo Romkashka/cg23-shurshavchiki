@@ -1,47 +1,39 @@
 package ru.shurshavchiki.Listeners;
 
+import lombok.Getter;
 import ru.shurshavchiki.Panels.SettingPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class ColorChannelListener extends AbstractAction {
+public class ColorChannelListener extends JMenuItem{
 
-    private static Observer Observer;
-
-    public static class Observer {
+    public static class Observer implements ActionListener {
         private SettingPanel settingPanel;
 
-        public Observer(SettingPanel settingPanel){
+        private ColorChannelListener colorChannelListener;
+
+        public Observer(SettingPanel settingPanel, ColorChannelListener colorChannelListener){
             this.settingPanel = settingPanel;
+            this.colorChannelListener = colorChannelListener;
         }
 
-        public void setColorChannel(ColorChannelListener action, String colorChannel){
-            if (!settingPanel.getChosenChannels().equals(colorChannel)){
-                settingPanel.changeChosenChannels(colorChannel);
-                action.colorChannel = colorChannel;
-            }
-        };
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            settingPanel.changeChosenChannels(colorChannelListener.getColorChannel(), colorChannelListener);
+        }
     }
 
+    @Getter
     private String colorChannel;
-    private Observer observer;
 
-    public ColorChannelListener(String text, String colorChannel, Observer observer) {
+    public ColorChannelListener(String text, String colorChannel, SettingPanel settingPanel) {
         super(text);
         this.colorChannel = colorChannel;
-        this.observer = observer;
-    }
-
-    public String getColorChannel() {
-        return colorChannel;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (observer == null) {
-            return;
-        }
-        observer.setColorChannel(this, getColorChannel());
+        this.addActionListener(new Observer(settingPanel, this));
+        this.setOpaque(true);
+        this.setBackground(Color.GRAY);
     }
 }

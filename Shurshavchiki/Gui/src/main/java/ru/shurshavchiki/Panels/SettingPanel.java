@@ -7,8 +7,12 @@ import ru.shurshavchiki.Listeners.ColorSpaceListener;
 import ru.shurshavchiki.Listeners.FileButtonListener;
 import ru.shurshavchiki.PanelMediator;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.*;
@@ -28,7 +32,7 @@ public class SettingPanel extends JPanel{
 	private String chosenColorSpace;
 
 	@Getter
-	private String chosenChannels;
+	private List<String> chosenChannels;
 
 	public SettingPanel(){
 		configureMenuFile();
@@ -95,18 +99,15 @@ public class SettingPanel extends JPanel{
 	}
 
 	private void createColorChannels(JMenu editMenu){
-		List<String> list = new ArrayList<>();
-		list.add("All");
-		list.addAll(PanelMediator.getInstance().getListColorChannels(chosenColorSpace));
+        List<String> list = new ArrayList<>
+				(PanelMediator.getInstance().getListColorChannels(chosenColorSpace));
 		menuColorChannels = new JMenu("Color Channels");
 
-		ColorChannelListener.Observer observer = new ColorChannelListener.Observer(this);
-
 		for (var o : list){
-			menuColorChannels.add(new ColorChannelListener(o, o, observer));
+			menuColorChannels.add(new ColorChannelListener(o, o, this));
 		}
 
-		chosenChannels = list.get(0);
+		chosenChannels = list;
 		editMenu.add(menuColorChannels);
 	}
 
@@ -114,25 +115,31 @@ public class SettingPanel extends JPanel{
 		PanelMediator.getInstance().changeColorSpace(space);
 		chosenColorSpace = space;
 		changeChannelList();
-		PanelMediator.getInstance().createPreview(chosenColorSpace, chosenChannels);
+		PanelMediator.getInstance().createPreview();
 	}
 
 	public void changeChannelList(){
-		List<String> list = new ArrayList<>();
-		list.add("All");
-		list.addAll(PanelMediator.getInstance().getListColorChannels(chosenColorSpace));
+        List<String> list = new ArrayList<>
+				(PanelMediator.getInstance().getListColorChannels(chosenColorSpace));
 		menuColorChannels.removeAll();
 
-		ColorChannelListener.Observer observer = new ColorChannelListener.Observer(this);
-
 		for (var o : list){
-			menuColorChannels.add(new ColorChannelListener(o, o, observer));
+			menuColorChannels.add(new ColorChannelListener(o, o, this));
 		}
 
-		chosenChannels = list.get(0);
+		chosenChannels = list;
 	}
 
-	public void changeChosenChannels(String channel){
+	public void changeChosenChannels(String channel, ColorChannelListener colorChannelListener){
+		PanelMediator.getInstance().changeChannel(channel);
+		if (chosenChannels.contains(channel)){
+			chosenChannels.remove(channel);
+			colorChannelListener.setBackground(Color.lightGray);
+		} else {
+			chosenChannels.add(channel);
+			colorChannelListener.setBackground(Color.GRAY);
+		}
 
+		PanelMediator.getInstance().createPreview();
 	}
 }

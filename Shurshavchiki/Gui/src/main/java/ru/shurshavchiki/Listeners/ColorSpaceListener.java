@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ColorSpaceListener extends AbstractAction {
-    private static Observer Observer;
 
     public static class Observer {
         private SettingPanel settingPanel;
