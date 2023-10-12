@@ -51,7 +51,6 @@ public class FileService {
     public Displayable readFile(File file) throws IOException {
         checkFileIsReadable(file);
         ImageDataHolder imageDataHolder = new PnmFileReader(file).getImageDataHolder();
-
         Displayable pnmFile = new PnmFile(imageDataHolder.getHeader(),
                 splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getData())));
         dataHolder.setFile(file);
@@ -114,6 +113,7 @@ public class FileService {
     }
 
     private List<RgbConvertable> convertToPixels(float[] rawData) {
+        //System.out.println("Raw Data size" + rawData.length);
         return getColorSpaceConverter().toRgb(channelChooser.fillAllChannels(rawData));
     }
 

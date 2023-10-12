@@ -46,7 +46,6 @@ public class P5DataReader implements PixelDataReader {
                 monochromePixelArrayList.add(new MonochromePixel((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff));
             }
         }
-        System.out.println(normalize(monochromePixelArrayList));
         return normalize(monochromePixelArrayList);
     }
 

@@ -20,7 +20,6 @@ public class RgbConverter implements ColorSpaceConverter {
         for (int i = 0; i < rawData.length; i += 3) {
             result.add(new RgbPixel(rawData[i], rawData[i+1], rawData[i+2]));
         }
-
         return result;
     }
 

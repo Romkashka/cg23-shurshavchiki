@@ -7,7 +7,6 @@ import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 public class P6DataEncoder extends AbstractDataEncoder implements PnmImageDataEncoder {
     public P6DataEncoder(Displayable displayable) {
         super(displayable, 3);
-        System.out.println("P6");
     }
 
     public int convertPixel(RgbConvertable pixel, int offset, byte[] data) {

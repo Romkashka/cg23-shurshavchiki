@@ -41,8 +41,6 @@ public class P6DataReader implements PixelDataReader {
         ArrayList<RgbConvertable> rgbPixelsList  = new ArrayList<>();
         byte[] byteData = new byte[header.getHeight() * header.getWidth() * 3 * (((header.getMaxValue() < 256) ? 1 : 0) + 1)];
         dataInputStream.read(byteData);
-
-        int red, green, blue;
         if (header.getMaxValue() < 256){
             for (int i = 0; i < header.getHeight() * header.getWidth() ; i++){
                 rgbPixelsList.add(new RgbPixel(byteData[3*i] & 0xff, byteData[3*i+1] & 0xff, byteData[3*i+2] & 0xff));
