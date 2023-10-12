@@ -31,7 +31,7 @@ public class PredicateBasedConverter implements ColorSpaceConverter {
 
     @Override
     public float[] toRawData(List<RgbConvertable> pixels) {
-        float[] result = new float[pixels.size()];
+        float[] result = new float[pixels.size() * 3];
         int offset = 0;
 
         for (RgbConvertable pixel: pixels) {

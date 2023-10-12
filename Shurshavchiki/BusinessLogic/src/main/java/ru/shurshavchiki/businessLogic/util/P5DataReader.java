@@ -1,8 +1,8 @@
 package ru.shurshavchiki.businessLogic.util;
 
 import ru.shurshavchiki.businessLogic.models.Header;
-import ru.shurshavchiki.businessLogic.models.MonochromePixel;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.models.RgbPixel;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -39,11 +39,11 @@ public class P5DataReader implements PixelDataReader {
         dataInputStream.read(byteData);
         if (header.getMaxValue() < 256) {
             for (int i = 0; i < header.getHeight() * header.getWidth(); i++) {
-                monochromePixelArrayList.add(new MonochromePixel(byteData[i] & 0xff));
+                monochromePixelArrayList.add(new RgbPixel(byteData[i] & 0xff));
             }
         } else {
             for (int i = 0; i < header.getHeight() * header.getWidth(); i++) {
-                monochromePixelArrayList.add(new MonochromePixel((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff));
+                monochromePixelArrayList.add(new RgbPixel((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff));
             }
         }
         return normalize(monochromePixelArrayList);
@@ -51,28 +51,41 @@ public class P5DataReader implements PixelDataReader {
 
     @Override
     public float[] getFloatPixels() throws IOException {
-        float[] floatPixelsArray = new float[totalPixels];
+        float[] floatPixelsArray = new float[totalPixels * 3];
         byte[] byteData = new byte[header.getHeight() * header.getWidth() * (((header.getMaxValue() < 256) ? 1 : 0) + 1)];
         dataInputStream.read(byteData);
         if (header.getMaxValue() < 256) {
             for (int i = 0; i < header.getHeight() * header.getWidth(); i++) {
-                floatPixelsArray[i] = (float) (byteData[i] & 0xff);
+                floatPixelsArray[3*i] = (float) (byteData[i] & 0xff);
+                floatPixelsArray[3*i+1] = (float) (byteData[i] & 0xff);
+                floatPixelsArray[3*i+2] = (float) (byteData[i] & 0xff);
             }
         } else {
             for (int i = 0; i < header.getHeight() * header.getWidth(); i++) {
                 floatPixelsArray[i] = (float) ((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff);
+                floatPixelsArray[i+1] = (float) ((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff);
+                floatPixelsArray[i+2] = (float) ((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff);
             }
         }
-        return floatPixelsArray;
+
+        float[] result = new float[floatPixelsArray.length];
+        for (int i = 0; i < floatPixelsArray.length; i++) {
+            result[i] = normalizeChannel(floatPixelsArray[i]);
+        }
+        return result;
     }
 
     private ArrayList<RgbConvertable> normalize(List<RgbConvertable> rawData) {
         ArrayList<RgbConvertable> result = new ArrayList<>(rawData.size());
         for (RgbConvertable pixel : rawData) {
-            result.add(new MonochromePixel((((double) pixel.Red()) * (255.0 / header.getMaxValue()))));
+            result.add(new RgbPixel(pixel.FloatRed() * 255.0F / header.getMaxValue()));
         }
 
         return result;
+    }
+
+    private float normalizeChannel(float value) {
+        return (float) (value / header.getMaxValue());
     }
 
     @Override
