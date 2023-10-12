@@ -53,7 +53,6 @@ public class SimpleChannelChooser implements ChannelChooser {
     @Override
     public float[] fillAllChannels(float[] rawData) {
         float[] result = new float[rawData.length * (MASK_LENGTH / chosenChannelsAmount)];
-
         for (int i = 0; i < rawData.length; i += chosenChannelsAmount) {
             float[] currentPart = Arrays.copyOfRange(rawData, i, i + chosenChannelsAmount);
             for (int j = 0; j < chosenChannelsAmount; j++) {
