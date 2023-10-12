@@ -102,11 +102,16 @@ public class PanelMediator {
 			drawingPanel.loadImage(fileService.getPreview(drawingPanel.getDisplayable()));
     }
 
+	public void createGammaPreview(){
+		if (drawingPanel.getDisplayable() != null)
+			drawingPanel.loadImage(fileService.getDataHolder().getDisplayable());
+	}
+
 	public void validateScrollPane(){
 		scrollPane.setViewportView(drawingPanel);
 	}
 
-	public void changeChannel(String channel) {
+	public void changeChannel(List<String> channel) {
 		fileService.chooseChannel(channel);
 		if (drawingPanel.getDisplayable() != null)
 			somethingChanged = true;

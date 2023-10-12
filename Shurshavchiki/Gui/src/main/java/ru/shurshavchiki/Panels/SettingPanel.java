@@ -90,7 +90,7 @@ public class SettingPanel extends JPanel{
 
 	public void configureMenuEdit(){
 		JMenu editMenu = new JMenu("Edit");
-		createColorSpaceBox(editMenu);
+		createColorSpace(editMenu);
 		createColorChannels(editMenu);
 		editMenu.addSeparator();
 		createGammaConvert(editMenu);
@@ -98,7 +98,7 @@ public class SettingPanel extends JPanel{
 		menuBar.add(editMenu);
 	}
 
-	private void createColorSpaceBox(JMenu editMenu){
+	private void createColorSpace(JMenu editMenu){
 		List<String> list = PanelMediator.getInstance().getListColorSpaces();
 		menuColorSpace = new JMenu("Color Space");
 
@@ -122,6 +122,7 @@ public class SettingPanel extends JPanel{
 		}
 
 		chosenChannels = list;
+		PanelMediator.getInstance().getFileService().chooseChannel(chosenChannels);
 		editMenu.add(menuColorChannels);
 	}
 
@@ -149,7 +150,6 @@ public class SettingPanel extends JPanel{
 	}
 
 	public void changeChosenChannels(ColorChannelListener colorChannelListener){
-		PanelMediator.getInstance().changeChannel(colorChannelListener.getColorChannel());
 		if (chosenChannels.contains(colorChannelListener.getColorChannel())){
 			chosenChannels.remove(colorChannelListener.getColorChannel());
 			colorChannelListener.setBackground(Color.white);
@@ -157,6 +157,7 @@ public class SettingPanel extends JPanel{
 			chosenChannels.add(colorChannelListener.getColorChannel());
 			colorChannelListener.setBackground(selected);
 		}
+		PanelMediator.getInstance().changeChannel(chosenChannels);
 
 		PanelMediator.getInstance().createPreview();
 	}
@@ -171,7 +172,7 @@ public class SettingPanel extends JPanel{
 					if (fileGamma != 0 && fileGamma < 1)
 						throw new NumberFormatException("Gamma can not equals " + fileGamma);
 					PanelMediator.getInstance().convertGamma(fileGamma);
-					PanelMediator.getInstance().createPreview();
+					PanelMediator.getInstance().createGammaPreview();
 				}catch (Exception exception){
 					new ExceptionHandler().handleException(exception);
 				}
@@ -189,7 +190,7 @@ public class SettingPanel extends JPanel{
 					if (displayGamma != 0 && displayGamma < 1)
 						throw new NumberFormatException("Gamma can not equals " + displayGamma);
 					PanelMediator.getInstance().assignGamma(displayGamma);
-					PanelMediator.getInstance().createPreview();
+					PanelMediator.getInstance().createGammaPreview();
 				}catch (Exception exception){
 					new ExceptionHandler().handleException(exception);
 				}
