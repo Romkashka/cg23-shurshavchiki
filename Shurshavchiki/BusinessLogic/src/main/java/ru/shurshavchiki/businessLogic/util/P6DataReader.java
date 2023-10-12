@@ -16,12 +16,12 @@ public class P6DataReader implements PixelDataReader {
     private Header header;
     private DataInputStream dataInputStream;
 
-    private long totalPixels;
-    private long readPixels;
+    private int totalPixels;
+    private int readPixels;
 
     public P6DataReader(Header header, java.io.File file) throws IOException {
         this.header = header;
-        this.totalPixels = (long) header.getHeight() * header.getWidth();
+        this.totalPixels = header.getHeight() * header.getWidth();
         FileInputStream fileInputStream = new FileInputStream(file);
         this.dataInputStream = new DataInputStream(fileInputStream);
 
@@ -55,6 +55,26 @@ public class P6DataReader implements PixelDataReader {
         return normalize(rgbPixelsList);
     }
 
+    public float[] getFloatPixels() throws IOException {
+        float[] floatPixelsArray = new float[totalPixels * 3];
+        byte[] byteData = new byte[header.getHeight() * header.getWidth() * 3 * (((header.getMaxValue() < 256) ? 1 : 0) + 1)];
+        dataInputStream.read(byteData);
+        if (header.getMaxValue() < 256) {
+            for (int i = 0; i < header.getHeight() * header.getWidth(); i++) {
+                floatPixelsArray[3*i] = (float) (byteData[3*i] & 0xff);
+                floatPixelsArray[3*i+1] = (float) (byteData[3*i+1] & 0xff);
+                floatPixelsArray[3*i+2] = (float) (byteData[3*i+2] & 0xff);
+            }
+        } else {
+            for (int i = 0; i < header.getHeight() * header.getWidth(); i++) {
+                floatPixelsArray[3*i] = (float) ((byteData[3 * i]) & 0xff * 256 + byteData[3 * i + 1] & 0xff);
+                floatPixelsArray[3*i+1] = (float) ((byteData[3 * i + 2]) & 0xff * 256 + byteData[3 * i + 3] & 0xff);
+                floatPixelsArray[3*i+2] = (float) ((byteData[3 * i + 4]) & 0xff * 256 + byteData[3 * i + 5] & 0xff);
+            }
+        }
+        return floatPixelsArray;
+    }
+
     private ArrayList<RgbConvertable> normalize(List<RgbConvertable> rawData) {
         ArrayList<RgbConvertable> result = new ArrayList<>(rawData.size());
         for (RgbConvertable pixel: rawData) {
@@ -67,7 +87,7 @@ public class P6DataReader implements PixelDataReader {
     }
 
     private float normalizeChannel(float value) {
-        return (float) (value * 255.0 / header.getMaxValue());
+        return (float) (value / header.getMaxValue());
     }
 
     @Override

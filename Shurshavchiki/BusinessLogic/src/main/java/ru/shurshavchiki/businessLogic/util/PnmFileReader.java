@@ -11,21 +11,23 @@ import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class PnmFileReader {
     @Getter
     private Header header;
     private String name;
     private File file;
-    private List<List<RgbConvertable>> pixels;
+    //private List<List<RgbConvertable>> pixels;
 
     public PnmFileReader(java.io.File file) throws IOException {
         this.file = file;
         header = readHeader(file);
         name = file.getName();
+    }
+
+    public Displayable getDisplayablePnmFile() throws IOException {
+        List<List<RgbConvertable>> pixels;
         PixelDataReader dataReader;
         switch (header.getMagicNumber()) {
             case "P5" -> dataReader = new P5DataReader(header, file);
@@ -33,23 +35,35 @@ public class PnmFileReader {
             default -> throw OpenFileException.unsupportedFileVersion(header.getMagicNumber());
         }
         pixels = new ArrayList<>();
-        for (int i = 0; i < header.getHeight(); i++){
+        for (int i = 0; i < header.getHeight(); i++) {
             pixels.add(new ArrayList<>());
         }
         ArrayList<RgbConvertable> pixelData = dataReader.nextPixel();
-        for (int y = 0; y < header.getHeight(); y++){
-            for (int x = 0; x < header.getWidth(); x++){
+        for (int y = 0; y < header.getHeight(); y++) {
+            for (int x = 0; x < header.getWidth(); x++) {
                 pixels.get(y).add(x, pixelData.get(y * header.getWidth() + x));
             }
         }
-    }
-
-    public Displayable getFile(){
         return new PnmFile(header, pixels);
     }
 
-    public ImageDataHolder getImageDataHolder(java.io.File file) {
-        throw new UnsupportedOperationException("Sasha, do it already!");
+    public ImageDataHolder getImageDataHolder() throws IOException {
+        PixelDataReader dataReader;
+        switch (header.getMagicNumber()) {
+            case "P5" -> dataReader = new P5DataReader(header, file);
+            case "P6" -> dataReader = new P6DataReader(header, file);
+            default -> throw OpenFileException.unsupportedFileVersion(header.getMagicNumber());
+        }
+        ArrayList<RgbConvertable> pixelList = dataReader.nextPixel();
+        float[] pixels = new float[header.getHeight() * header.getHeight() * 3];
+        for (int i = 0; i < header.getHeight() * header.getHeight(); i++){
+            pixels[3*i] = pixelList.get(i).FloatRed();
+            pixels[3*i + 1] = pixelList.get(i).FloatGreen();
+            pixels[3*i + 2] = pixelList.get(i).FloatBlue();
+        }
+        //System.out.println(Arrays.toString(pixels));
+        ImageDataHolder imageDataHolder = new ImageDataHolder(header, pixels);
+        return imageDataHolder;
     }
 
     private Header readHeader(java.io.File pnmFile) throws IOException {
@@ -57,9 +71,6 @@ public class PnmFileReader {
         Scanner scan = new Scanner(fileInputStream);
         String magicNumber;
         int picWidth, picHeight, maxValue;
-        if (!scan.hasNext()) {
-            throw OpenFileException.fileIsCorrupted(pnmFile.getName());
-        }
         magicNumber = validateMagicNumber(scan.nextLine());
         picWidth = scan.nextInt();
         picHeight = scan.nextInt();

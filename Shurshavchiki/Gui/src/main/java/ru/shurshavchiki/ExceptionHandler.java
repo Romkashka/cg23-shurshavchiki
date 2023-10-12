@@ -6,13 +6,14 @@ import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class ExceptionHandler {
 
     public void handleException(Throwable exp) {
         if (exp instanceof NullPointerException) {
             JOptionPane.showMessageDialog(null,
-                    "File Missing", "Error 404",
+                    "File Missing" + Arrays.toString(exp.getStackTrace()), "Error 404",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp instanceof WriteFileException) {
             javax.swing.JOptionPane.showMessageDialog(null,
