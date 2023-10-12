@@ -15,7 +15,7 @@ public class RgbConverter implements ColorSpaceConverter {
     @Override
     public List<RgbConvertable> toRgb(float[] rawData) {
         System.out.println("Before toRgb");
-        System.out.println(Arrays.toString(rawData));
+//        System.out.println(Arrays.toString(rawData));
         if (rawData.length % RAW_DATA_LENGTH_IN_BYTES != 0) {
             throw ColorSpaceException.invalidDataLength();
         }
@@ -26,7 +26,7 @@ public class RgbConverter implements ColorSpaceConverter {
         }
 
         System.out.println("After toRgb");
-        System.out.println(Arrays.toString(result.toArray()));
+//        System.out.println(Arrays.toString(result.toArray()));
         return result;
     }
 

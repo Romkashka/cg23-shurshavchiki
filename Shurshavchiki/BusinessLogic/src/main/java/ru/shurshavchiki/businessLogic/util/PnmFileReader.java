@@ -54,15 +54,14 @@ public class PnmFileReader {
             case "P6" -> dataReader = new P6DataReader(header, file);
             default -> throw OpenFileException.unsupportedFileVersion(header.getMagicNumber());
         }
-        ArrayList<RgbConvertable> pixelList = dataReader.nextPixel();
-        float[] pixels = new float[header.getHeight() * header.getWidth() * 3];
-        for (int i = 0; i < header.getHeight() * header.getWidth(); i++){
-            pixels[3*i] = pixelList.get(i).FloatRed();
-            pixels[3*i + 1] = pixelList.get(i).FloatGreen();
-            pixels[3*i + 2] = pixelList.get(i).FloatBlue();
-        }
-        ImageDataHolder imageDataHolder = new ImageDataHolder(header, pixels);
-        return imageDataHolder;
+//        ArrayList<RgbConvertable> pixelList = dataReader.nextPixel();
+//        float[] pixels = new float[header.getHeight() * header.getWidth() * 3];
+//        for (int i = 0; i < header.getHeight() * header.getWidth(); i++){
+//            pixels[3*i] = pixelList.get(i).FloatRed();
+//            pixels[3*i + 1] = pixelList.get(i).FloatGreen();
+//            pixels[3*i + 2] = pixelList.get(i).FloatBlue();
+//        }
+        return new ImageDataHolder(header, dataReader.getFloatPixels());
     }
 
     private Header readHeader(java.io.File pnmFile) throws IOException {
