@@ -24,7 +24,6 @@ import ru.shurshavchiki.businessLogic.util.UserProjectDataHolder;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -63,10 +62,6 @@ public class FileService {
         new PnmFileWriter().save(displayable, file);
     }
 
-    public void saveFromRawData(File file, Header header, byte[] data) throws IOException {
-        new PnmFileWriter().saveFromRawData(file, header, data);
-    }
-
     public List<String> getColorSpacesNames() {
         return colorSpaceRegistry.getFactories().stream().map(ColorSpaceFactory::getColorSpaceName).toList();
     }
@@ -77,10 +72,12 @@ public class FileService {
                 splitToRows(header, convertToPixels(convertToRawData(source.getAllPixels()))));
     }
 
-    public void chooseChannel(String channelName) {
-        Channel channel = getChannelFromName(channelName);
+    public void chooseChannel(List<String> channelNames) {
         ChannelChooserBuilder builder = colorSpaceFactory.getChannelChooserBuilder();
-        builder.withChannel(channel);
+        for (String name: channelNames) {
+            Channel channel = getChannelFromName(name);
+            builder.withChannel(channel);
+        }
         channelChooser = builder.build();
         dataHolder.setChannelChooser(channelChooser);
     }
@@ -113,7 +110,6 @@ public class FileService {
     }
 
     private List<RgbConvertable> convertToPixels(float[] rawData) {
-        //System.out.println("Raw Data size" + rawData.length);
         return getColorSpaceConverter().toRgb(channelChooser.fillAllChannels(rawData));
     }
 

@@ -80,6 +80,7 @@ public class PnmFileReader {
     }
 
     private String validateMagicNumber(String magicNumber) {
+        System.out.println(magicNumber);
         if (!magicNumber.equals("P5") && !magicNumber.equals("P6")) {
             throw OpenFileException.fileCantBeRead();
         }

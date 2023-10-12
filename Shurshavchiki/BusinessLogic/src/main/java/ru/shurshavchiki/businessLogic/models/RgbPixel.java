@@ -4,17 +4,17 @@ public record RgbPixel(float RedComponent, float GreenComponent, float BlueCompo
 
     @Override
     public int Red() {
-        return (int) RedComponent;
+        return (int) (RedComponent * 255F);
     }
 
     @Override
     public int Green() {
-        return (int) GreenComponent;
+        return (int) (GreenComponent * 255F);
     }
 
     @Override
     public int Blue() {
-        return (int) BlueComponent;
+        return (int) (BlueComponent * 255F);
     }
 
     @Override
