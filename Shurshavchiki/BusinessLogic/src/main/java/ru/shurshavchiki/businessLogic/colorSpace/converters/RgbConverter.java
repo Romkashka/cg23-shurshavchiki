@@ -14,8 +14,6 @@ public class RgbConverter implements ColorSpaceConverter {
 
     @Override
     public List<RgbConvertable> toRgb(float[] rawData) {
-        System.out.println("Before toRgb");
-//        System.out.println(Arrays.toString(rawData));
         if (rawData.length % RAW_DATA_LENGTH_IN_BYTES != 0) {
             throw ColorSpaceException.invalidDataLength();
         }
@@ -25,14 +23,12 @@ public class RgbConverter implements ColorSpaceConverter {
             result.add(new RgbPixel(rawData[i], rawData[i+1], rawData[i+2]));
         }
 
-        System.out.println("After toRgb");
-//        System.out.println(Arrays.toString(result.toArray()));
         return result;
     }
 
     @Override
     public float[] toRawData(List<RgbConvertable> pixels) {
-        float[] result = new float[pixels.size()];
+        float[] result = new float[pixels.size() * 3];
 
         int currenIndex = 0;
         for (RgbConvertable pixel : pixels) {

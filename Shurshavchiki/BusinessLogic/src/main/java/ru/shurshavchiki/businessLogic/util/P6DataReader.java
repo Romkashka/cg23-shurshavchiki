@@ -1,7 +1,6 @@
 package ru.shurshavchiki.businessLogic.util;
 
 import ru.shurshavchiki.businessLogic.models.Header;
-import ru.shurshavchiki.businessLogic.models.MonochromePixel;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 import ru.shurshavchiki.businessLogic.models.RgbPixel;
 

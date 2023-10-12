@@ -79,12 +79,14 @@ public class FileService {
             builder.withChannel(channel);
         }
         channelChooser = builder.build();
+        System.out.println(channelChooser.getConstants());
         dataHolder.setChannelChooser(channelChooser);
     }
 
     public void chooseColorSpace(String colorSpaceName) {
         this.colorSpaceFactory = colorSpaceRegistry.getFactoryByName(colorSpaceName);
         dataHolder.setColorSpaceConverter(getColorSpaceConverter());
+        System.out.println("Color space name: " + colorSpaceFactory.getColorSpaceName());
     }
 
     public void assignGamma(float gamma) {
@@ -173,10 +175,7 @@ public class FileService {
                     func.apply(rgbPixel.FloatGreen()),
                     func.apply(rgbPixel.FloatBlue()));
         }
-        else if (pixel instanceof MonochromePixel monochromePixel) {
-            return new MonochromePixel(func.apply(monochromePixel.FloatRed()));
-        }
 
-        throw new UnsupportedOperationException("Only RgbPixel and MonochromePixel are supported(((");
+        throw new UnsupportedOperationException("Only RgbPixel are supported(((");
     }
 }

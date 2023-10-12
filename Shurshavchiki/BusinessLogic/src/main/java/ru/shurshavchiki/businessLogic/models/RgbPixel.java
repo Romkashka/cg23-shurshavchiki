@@ -1,34 +1,49 @@
 package ru.shurshavchiki.businessLogic.models;
 
-public record RgbPixel(float RedComponent, float GreenComponent, float BlueComponent) implements RgbConvertable {
+public class RgbPixel implements RgbConvertable {
+    float redComponent;
+    float greenComponent;
+    float blueComponent;
+
+    public RgbPixel(float redComponent, float greenComponent, float blueComponent) {
+        this.redComponent = redComponent;
+        this.greenComponent = greenComponent;
+        this.blueComponent = blueComponent;
+    }
+
+    public RgbPixel(float grayComponent) {
+        redComponent = grayComponent;
+        greenComponent = grayComponent;
+        blueComponent = grayComponent;
+    }
 
     @Override
     public int Red() {
-        return (int) (RedComponent * 255F);
+        return (int) (redComponent * 255F);
     }
 
     @Override
     public int Green() {
-        return (int) (GreenComponent * 255F);
+        return (int) (greenComponent * 255F);
     }
 
     @Override
     public int Blue() {
-        return (int) (BlueComponent * 255F);
+        return (int) (blueComponent * 255F);
     }
 
     @Override
     public float FloatRed() {
-        return RedComponent;
+        return redComponent;
     }
 
     @Override
     public float FloatGreen() {
-        return GreenComponent;
+        return greenComponent;
     }
 
     @Override
     public float FloatBlue() {
-        return BlueComponent;
+        return blueComponent;
     }
 }
