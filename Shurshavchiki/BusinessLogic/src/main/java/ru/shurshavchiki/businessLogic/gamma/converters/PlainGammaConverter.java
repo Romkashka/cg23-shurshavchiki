@@ -11,11 +11,11 @@ public class PlainGammaConverter implements GammaConverter {
     private float gamma;
     @Override
     public float useGamma(float value) {
-        return (float) pow(value, 1 / gamma);
+        return (float) pow(value, gamma);
     }
 
     @Override
     public float correctGamma(float value) {
-        return (float) pow(value, gamma);
+        return (float) pow(value, 1 / gamma);
     }
 }

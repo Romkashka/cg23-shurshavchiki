@@ -49,7 +49,7 @@ public class PnmFileReader {
     }
 
     public ImageDataHolder getImageDataHolder(java.io.File file) {
-        throw new UnsupportedOperationException("Саша, сделай уже это");
+        throw new UnsupportedOperationException("Sasha, do it already!");
     }
 
     private Header readHeader(java.io.File pnmFile) throws IOException {
@@ -57,6 +57,9 @@ public class PnmFileReader {
         Scanner scan = new Scanner(fileInputStream);
         String magicNumber;
         int picWidth, picHeight, maxValue;
+        if (!scan.hasNext()) {
+            throw OpenFileException.fileIsCorrupted(pnmFile.getName());
+        }
         magicNumber = validateMagicNumber(scan.nextLine());
         picWidth = scan.nextInt();
         picHeight = scan.nextInt();

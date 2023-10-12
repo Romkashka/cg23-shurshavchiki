@@ -15,17 +15,17 @@ import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.gamma.util.GammaConvertersRegistry;
 import ru.shurshavchiki.businessLogic.gamma.util.PlainGammaConvertersRegistry;
-import ru.shurshavchiki.businessLogic.models.Header;
-import ru.shurshavchiki.businessLogic.models.ImageDataHolder;
-import ru.shurshavchiki.businessLogic.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.models.*;
 import ru.shurshavchiki.businessLogic.util.PnmFileReader;
 import ru.shurshavchiki.businessLogic.util.PnmFileWriter;
+import ru.shurshavchiki.businessLogic.util.ProjectDataHolderImpl;
+import ru.shurshavchiki.businessLogic.util.UserProjectDataHolder;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class FileService {
     @Getter
@@ -38,18 +38,25 @@ public class FileService {
     @Getter
     private GammaConverter gammaConverter;
 
+    @Getter
+    private UserProjectDataHolder dataHolder;
+
     public FileService() {
         colorSpaceRegistry = new ColorSpaceRegistry();
         gammaConvertersRegistry = new PlainGammaConvertersRegistry();
+        this.dataHolder = new ProjectDataHolderImpl();
     }
 
     public Displayable readFile(File file) throws IOException {
         checkFileIsReadable(file);
+        ImageDataHolder imageDataHolder = new PnmFileReader(file).getImageDataHolder(file);
 
-        ImageDataHolder dataHolder = new PnmFileReader(file).getImageDataHolder(file);
+        Displayable pnmFile = new PnmFile(imageDataHolder.getHeader(),
+                splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getData())));
+        dataHolder.setFile(file);
+        dataHolder.setDisplayable(pnmFile);
 
-        return new PnmFile(dataHolder.getHeader(),
-                splitToRows(dataHolder.getHeader(), convertToPixels(dataHolder.getData())));
+        return pnmFile;
     }
 
     public void saveFile(Displayable displayable, File file) throws IOException {
@@ -64,15 +71,6 @@ public class FileService {
         return colorSpaceRegistry.getFactories().stream().map(ColorSpaceFactory::getColorSpaceName).toList();
     }
 
-    public Channel getChannelFromName(String channelName) {
-        for (Channel channel: Channel.values()) {
-            if (channel.name().equals(channelName))
-                return channel;
-        }
-
-        throw ChannelException.noSuchChannel(channelName);
-    }
-
     public Displayable getPreview(Displayable source) {
         Header header = source.getHeader();
         return new PnmFile(header,
@@ -84,19 +82,26 @@ public class FileService {
         ChannelChooserBuilder builder = colorSpaceFactory.getChannelChooserBuilder();
         builder.withChannel(channel);
         channelChooser = builder.build();
+        dataHolder.setChannelChooser(channelChooser);
     }
 
     public void chooseColorSpace(String colorSpaceName) {
         this.colorSpaceFactory = colorSpaceRegistry.getFactoryByName(colorSpaceName);
+        dataHolder.setColorSpaceConverter(getColorSpaceConverter());
     }
 
     public void assignGamma(float gamma) {
         GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
-
+        applyToEachPixel(newGammaConverter::useGamma);
+        applyToEachPixel(dataHolder.getGammaConverter()::correctGamma);
+        dataHolder.setGammaConverter(newGammaConverter);
     }
 
     public void convertGamma(float gamma) {
-        
+        GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
+        applyToEachPixel(dataHolder.getGammaConverter()::useGamma);
+        applyToEachPixel(newGammaConverter::correctGamma);
+        dataHolder.setGammaConverter(newGammaConverter);
     }
 
     public ColorSpaceConverter getColorSpaceConverter() {
@@ -140,6 +145,15 @@ public class FileService {
         return result;
     }
 
+    private Channel getChannelFromName(String channelName) {
+        for (Channel channel: Channel.values()) {
+            if (channel.name().equals(channelName))
+                return channel;
+        }
+
+        throw ChannelException.noSuchChannel(channelName);
+    }
+
     private void checkFileIsReadable(File file) {
         if (!file.isFile()) {
             throw OpenFileException.notAFile(file.getName());
@@ -148,5 +162,24 @@ public class FileService {
         if (!file.canRead()) {
             throw OpenFileException.fileCantBeRead();
         }
+    }
+
+    private void applyToEachPixel(Function<Float, Float> func) {
+        for (List<RgbConvertable> row: dataHolder.getDisplayable().getAllPixels()) {
+            row.replaceAll(pixel -> applyToPixel(pixel, func));
+        }
+    }
+
+    private RgbConvertable applyToPixel(RgbConvertable pixel, Function<Float, Float> func) {
+        if (pixel instanceof RgbPixel rgbPixel) {
+            return new RgbPixel(func.apply(rgbPixel.FloatRed()),
+                    func.apply(rgbPixel.FloatGreen()),
+                    func.apply(rgbPixel.FloatBlue()));
+        }
+        else if (pixel instanceof MonochromePixel monochromePixel) {
+            return new MonochromePixel(func.apply(monochromePixel.FloatRed()));
+        }
+
+        throw new UnsupportedOperationException("Only RgbPixel and MonochromePixel are supported(((");
     }
 }
