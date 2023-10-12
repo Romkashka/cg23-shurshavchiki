@@ -1,6 +1,5 @@
 package ru.shurshavchiki;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -50,6 +49,7 @@ public class PanelMediator {
 	public void openNewImage(File file) throws IOException {
 		drawingPanel.loadImage(fileService.readFile(file));
 		setGammaDefault();
+		settingPanel.enableGammaButtons();
 	}
 
 	public void saveImage(File file) throws IOException {
@@ -69,9 +69,13 @@ public class PanelMediator {
 					"close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 			if (answer == JOptionPane.YES_OPTION){
 				drawingPanel.closeImage();
+				setGammaDefault();
+				settingPanel.disableGammaButtons();
 			}
 		}else {
 			drawingPanel.closeImage();
+			setGammaDefault();
+			settingPanel.disableGammaButtons();
 		}
 	}
 

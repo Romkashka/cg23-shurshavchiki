@@ -18,7 +18,7 @@ public class ChannelChooserBuilder {
         this.colorSpace = colorSpace;
         this.constants = constants;
         channelMask = new ArrayList<>(List.of(1, 1, 1));
-        System.out.println(channelMask.size());
+//        System.out.println(channelMask.size());
     }
 
     public ChannelChooserBuilder withChannel(Channel channel) {
