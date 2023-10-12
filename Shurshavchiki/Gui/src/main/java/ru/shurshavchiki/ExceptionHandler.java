@@ -44,8 +44,9 @@ public class ExceptionHandler {
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp != null) {
             javax.swing.JOptionPane.showMessageDialog(null,
-                    exp.getClass(), "Unexpected exception",
+                    exp.getClass() + "\nMessage: " + exp.getMessage(), "Unexpected exception",
                     JOptionPane.ERROR_MESSAGE);
+            exp.printStackTrace();
         }
     }
 }
