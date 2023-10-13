@@ -22,23 +22,27 @@ public class YCbCr601ColorSpaceFactory implements ColorSpaceFactory {
 
     @Override
     public ChannelChooserBuilder getChannelChooserBuilder() {
-        return new ChannelChooserBuilder(getColorSpace(), List.of(0.0F, 128.0F, 128.0F));
+        return new ChannelChooserBuilder(getColorSpace(), List.of(0.5F, 0.5F, 0.5F));
     }
 
     @Override
     public ColorSpaceConverter getColorSpaceConverter() {
         return new PredicateBasedConverter(
                 input -> {
-                    float Y =  0.299F * input[0] + 0.587F * input[1] + 0.114F * input[2];
-                    float Cb = (input[2] - Y) / 1.772F + 127.5F;
-                    float Cr = (input[0] - Y) / 1.402F + 127.5F;
-                    return new Float[]{Y, Cb, Cr};
+                    float R = Math.max((input[0] + 1.402F * (input[2] - 0.5f)) * 1000f, 0f);
+                    float G = Math.max((input[0] - 0.299F * 1.402F / 0.587F * (input[2] - 0.5f) - 0.114F * 1.772F / 0.587F * (input[1] - 0.5f)) * 1000f, 0f);
+                    float B = Math.max((input[0] + 1.772F * (input[1] - 0.5f)) * 1000f, 0f);
+
+                    R = Math.min(R, 1000f);
+                    G = Math.min(G, 1000f);
+                    B = Math.min(B, 1000f);
+                    return new Float[]{R / 1000f, G / 1000f, B / 1000f};
                 },
                 input -> {
-                    float R = input[0] + 1.402F * (input[2] - 127.5F);
-                    float G = input[0] - 0.299F * 1.402F / 0.587F * (input[2] - 127.5F) - 0.114F * 1.772F / 0.587F * (input[1] - 127.5F);
-                    float B = input[0] + 1.772F * (input[1] - 127.5F);
-                    return new Float[]{R, G, B};
+                    float Y =  0.299F * input[0] + 0.587F * input[1] + 0.114F * input[2];
+                    float Cb = (input[2] - Y) / 1.772F + 0.5f;
+                    float Cr = (input[0] - Y) / 1.402F + 0.5f;
+                    return new Float[]{Y, Cb, Cr};
                 }
         );
     }

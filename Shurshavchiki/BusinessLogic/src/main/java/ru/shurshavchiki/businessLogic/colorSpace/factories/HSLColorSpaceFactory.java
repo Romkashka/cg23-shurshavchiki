@@ -24,42 +24,64 @@ public class HSLColorSpaceFactory implements ColorSpaceFactory {
 
     @Override
     public ChannelChooserBuilder getChannelChooserBuilder() {
-        return new ChannelChooserBuilder(getColorSpace(), List.of(0F, 255F, 127.5F));
+        return new ChannelChooserBuilder(getColorSpace(), List.of(0F, 1F, 0.5F));
     }
 
     @Override
     public ColorSpaceConverter getColorSpaceConverter() {
         return new PredicateBasedConverter(
                 input -> {
-                    float Cmax = Collections.max(Arrays.asList(input));
-                    float Cmin = Collections.min(Arrays.asList(input));
-                    float H;
-                    if (Cmax == input[0] && input[1] >= input[2]) {
-                        H = (input[1] - input[2]) / (Cmax - Cmin) * 255 / 6;
-                    } else if (Cmax == input[0]) {
-                        H = (input[1] - input[2]) / (Cmax - Cmin) * 255 / 6 + 256F;
-                    } else if (Cmax == input[1]) {
-                        H = (input[2] - input[0]) / (Cmax - Cmin) * 255 / 6 + 85.3F;
-                    } else {
-                        H = (input[0] - input[1]) / (Cmax - Cmin) * 255 / 6 + 170.67F;
+                    float C = (1f - Math.abs(2f * input[2] - 1f)) * input[1];
+                    float X = C * (1f - Math.abs(input[0] * 6f % 2f - 1f));
+                    float m = input[2] - C / 2f;
+                    Float[] tmp;
+                    if (input[0] < 0.166667f) {
+                        tmp = new Float[]{C, X, 0f};
                     }
-                    float L = (Cmin + Cmax) / 2;
-                    float S = (Cmax - Cmin) / (255 - Math.abs(255 - Cmax - Cmin)) * 255F;
-                    return new Float[]{H, S, L};
+                    else if (input[0] < 0.333334f) {
+                        tmp = new Float[]{X, C, 0f};
+                    }
+                    else if (input[0] < 0.5f) {
+                        tmp = new Float[]{0f, C, X};
+                    }
+                    else if (input[0] < 0.666667f) {
+                        tmp = new Float[]{0f, X, C};
+                    }
+                    else if (input[0] < 0.833334f) {
+                        tmp = new Float[]{X, 0f, C};
+                    }
+                    else {
+                        tmp = new Float[]{C, 0f, X};
+                    }
+
+                    return new Float[]{tmp[0] + m, tmp[1] + m, tmp[2] + m};
                 },
                 input -> {
-                    float H = input[0] / 255 * 360;
-                    float C = (1F - Math.abs(2 * input[2] / 255F - 1F)) * input[1] / 255F;
-                    float X = C * (1 - Math.abs(H / 60 % 2 -1));
-                    float m = input[2] / 255F - C / 2;
-                    float[] tmp;
-                    if (H < 60F) tmp = new float[]{C, X, 0F};
-                    else if (H < 120F) tmp = new float[]{X, C, 0F};
-                    else if (H < 180F) tmp = new float[]{0F, C, X};
-                    else if (H < 240F) tmp = new float[]{0F, X, C};
-                    else if (H < 300F) tmp = new float[]{X, 0F, C};
-                    else tmp = new float[]{C, 0F, X};
-                    return new Float[]{(tmp[0] + m) * 255F, (tmp[1] + m) * 255, (tmp[2] + m) * 255};
+                    float Cmax = Collections.max(Arrays.asList(input));
+                    float Cmin = Collections.min(Arrays.asList(input));
+                    float delta = Cmax - Cmin;
+                    float H;
+                    if (delta == 0) {
+                        H = 0F;
+                    }
+                    else if (Cmax == input[0]) {
+                        H = ((6f + (input[1] - input[2]) / delta) % 6f) / 6f;
+                    }
+                    else if (Cmax == input[1]) {
+                        H = ((input[2] - input[0]) / delta + 2f) / 6f;
+                    }
+                    else {
+                        H = ((input[0] - input[1]) / delta + 4f) / 6f;
+                    }
+                    float L = (Cmax + Cmin) / 2f;
+                    float S;
+                    if (delta < 0.000001f ) {
+                        S = 0f;
+                    }
+                    else {
+                        S = delta / (1f - Math.abs(2 * L - 1f));
+                    }
+                    return new Float[]{H, S, L};
                 }
         );
     }

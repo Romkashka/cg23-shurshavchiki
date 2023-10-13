@@ -59,7 +59,8 @@ public class FileService {
     }
 
     public void saveFile(Displayable displayable, File file) throws IOException {
-        new PnmFileWriter().save(displayable, file);
+//        new PnmFileWriter().save(displayable, file);
+        new PnmFileWriter().saveFromRawData(file, displayable.getHeader(), getByteData(convertToRawData(displayable.getAllPixels())));
     }
 
     public List<String> getColorSpacesNames() {
@@ -87,6 +88,7 @@ public class FileService {
         this.colorSpaceFactory = colorSpaceRegistry.getFactoryByName(colorSpaceName);
         dataHolder.setColorSpaceConverter(getColorSpaceConverter());
         System.out.println("Color space name: " + colorSpaceFactory.getColorSpaceName());
+        chooseChannel(colorSpaceFactory.getColorSpace().Channels().stream().map(Enum::name).toList());
     }
 
     public void assignGamma(float gamma) {
@@ -177,5 +179,15 @@ public class FileService {
         }
 
         throw new UnsupportedOperationException("Only RgbPixel are supported(((");
+    }
+
+    private byte[] getByteData(float[] input) {
+        byte[] result = new byte[input.length];
+
+        for (int i = 0; i < input.length; i++) {
+            result[i] = (byte) (input[i] * 255f);
+        }
+
+        return result;
     }
 }
