@@ -71,6 +71,7 @@ public class PanelMediator {
 				drawingPanel.closeImage();
 				setGammaDefault();
 				settingPanel.disableGammaButtons();
+				somethingChanged = false;
 			}
 		}else {
 			drawingPanel.closeImage();
@@ -103,7 +104,7 @@ public class PanelMediator {
 
     public void createPreview(){
 		if (drawingPanel.getDisplayable() != null)
-			drawingPanel.loadImage(fileService.getPreview(drawingPanel.getDisplayable()));
+			drawingPanel.loadImage(fileService.getDataHolder().getShownDisplayable());
     }
 
 	public void createGammaPreview(){
@@ -137,6 +138,7 @@ public class PanelMediator {
 
 	private void setGammaDefault(){
 		settingPanel.setFileGamma(0F);
+		settingPanel.setDisplayGamma(0F);
 	}
 
 	public static PanelMediator getInstance() {

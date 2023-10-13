@@ -43,6 +43,7 @@ public class SettingPanel extends JPanel{
 	@Setter
 	private float fileGamma = 0;
 
+	@Setter
 	private float displayGamma = 0;
 
 	private final Color selected = new Color(179, 255, 179);

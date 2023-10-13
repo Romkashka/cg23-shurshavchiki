@@ -43,6 +43,10 @@ public class ExceptionHandler {
             javax.swing.JOptionPane.showMessageDialog(null,
                     exp.getMessage(), "Unsupported view type",
                     JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof NumberFormatException) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Unsupported number format",
+                    JOptionPane.ERROR_MESSAGE);
         } else if (exp != null) {
             javax.swing.JOptionPane.showMessageDialog(null,
                     exp.getClass() + "\nMessage: " + exp.getMessage(), "Unexpected exception",
