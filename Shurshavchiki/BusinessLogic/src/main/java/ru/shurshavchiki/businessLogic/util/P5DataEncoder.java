@@ -1,11 +1,12 @@
 package ru.shurshavchiki.businessLogic.util;
 
-import ru.shurshavchiki.businessLogic.entities.PnmDisplayable;
+import ru.shurshavchiki.businessLogic.entities.Displayable;
+import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
 public class P5DataEncoder extends AbstractDataEncoder implements PnmImageDataEncoder {
-    public P5DataEncoder(PnmDisplayable pnmFile) {
-        super(pnmFile);
+    public P5DataEncoder(Displayable displayable) {
+        super(displayable, 1);
     }
 
     @Override

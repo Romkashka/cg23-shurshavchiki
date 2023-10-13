@@ -7,5 +7,6 @@ import java.util.ArrayList;
 
 public interface PixelDataReader {
     ArrayList<RgbConvertable> nextPixel() throws IOException;
+    float[] getFloatPixels() throws IOException;
     boolean hasNext();
 }

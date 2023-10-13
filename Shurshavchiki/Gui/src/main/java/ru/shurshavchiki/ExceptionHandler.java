@@ -6,13 +6,14 @@ import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class ExceptionHandler {
 
     public void handleException(Throwable exp) {
         if (exp instanceof NullPointerException) {
             JOptionPane.showMessageDialog(null,
-                    "File Missing", "Error 404",
+                    "File or input missing" + Arrays.toString(exp.getStackTrace()), "Error 404",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp instanceof WriteFileException) {
             javax.swing.JOptionPane.showMessageDialog(null,
@@ -30,10 +31,27 @@ public class ExceptionHandler {
             javax.swing.JOptionPane.showMessageDialog(null,
                     exp.getMessage(), "Out of RAM",
                     JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof IllegalAccessException) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Illegal access",
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof ClassNotFoundException) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Class not found",
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof UnsupportedLookAndFeelException) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Unsupported view type",
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof NumberFormatException) {
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Unsupported number format",
+                    JOptionPane.ERROR_MESSAGE);
         } else if (exp != null) {
             javax.swing.JOptionPane.showMessageDialog(null,
-                    exp.getClass(), "Unexpected exception",
+                    exp.getClass() + "\nMessage: " + exp.getMessage(), "Unexpected exception",
                     JOptionPane.ERROR_MESSAGE);
+            exp.printStackTrace();
         }
     }
 }

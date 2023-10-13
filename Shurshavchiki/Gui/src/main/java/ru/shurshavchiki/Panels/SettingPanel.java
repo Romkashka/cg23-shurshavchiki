@@ -1,31 +1,61 @@
 package ru.shurshavchiki.Panels;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.shurshavchiki.ExceptionHandler;
+import ru.shurshavchiki.Frames.GammaInputFrame;
+import ru.shurshavchiki.Listeners.ColorChannelListener;
+import ru.shurshavchiki.Listeners.ColorSpaceListener;
+import ru.shurshavchiki.Listeners.FileButtonListener;
 import ru.shurshavchiki.PanelMediator;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class SettingPanel extends JPanel{
 
+	@Getter
 	private JMenuBar menuBar = new JMenuBar();
+
+	@Getter
+	@Setter
 	private File selectedFile = null;
 
-	public SettingPanel(){
-		JMenu fileMenu = new JMenu("File");
-		JMenu editMenu = new JMenu("Edit");
+	private JMenu menuColorSpace;
 
+	private JMenu menuColorChannels;
+
+	@Getter
+	private String chosenColorSpace;
+
+	@Getter
+	private List<String> chosenChannels;
+
+	private AbstractAction gammaConvertButton;
+
+	private AbstractAction gammaAssignButton;
+
+	@Setter
+	private float fileGamma = 0;
+
+	@Setter
+	private float displayGamma = 0;
+
+	private final Color selected = new Color(179, 255, 179);
+
+	public SettingPanel(){
+		configureMenuFile();
+		configureMenuEdit();
+	}
+
+	private void configureMenuFile(){
+		JMenu fileMenu = new JMenu("File");
 		JMenuItem newMenuItem = new JMenuItem("New");
-		newMenuItem.setMnemonic(KeyEvent.VK_N);
 		newMenuItem.setActionCommand("New");
 
 		JMenuItem openMenuItem = new JMenuItem("Open");
@@ -43,80 +73,151 @@ public class SettingPanel extends JPanel{
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.setActionCommand("Exit");
 
-		newMenuItem.addActionListener(new ButtonListener());
-		openMenuItem.addActionListener(new ButtonListener());
-		saveMenuItem.addActionListener(new ButtonListener());
-		saveAsMenuItem.addActionListener(new ButtonListener());
-		closeMenuItem.addActionListener(new ButtonListener());
-		exitMenuItem.addActionListener(new ButtonListener());
+		newMenuItem.addActionListener(new FileButtonListener());
+		openMenuItem.addActionListener(new FileButtonListener());
+		saveMenuItem.addActionListener(new FileButtonListener());
+		saveAsMenuItem.addActionListener(new FileButtonListener());
+		closeMenuItem.addActionListener(new FileButtonListener());
+		exitMenuItem.addActionListener(new FileButtonListener());
 
 		fileMenu.add(newMenuItem);
 		fileMenu.add(openMenuItem);
+		fileMenu.addSeparator();
 		fileMenu.add(saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(closeMenuItem);
+		fileMenu.addSeparator();
 		fileMenu.add(exitMenuItem);
 
 		menuBar.add(fileMenu);
+	}
+
+	public void configureMenuEdit(){
+		JMenu editMenu = new JMenu("Edit");
+		createColorSpace(editMenu);
+		createColorChannels(editMenu);
+		editMenu.addSeparator();
+		createGammaConvert(editMenu);
+		createGammaAssign(editMenu);
+
+		disableGammaButtons();
 		menuBar.add(editMenu);
 	}
 
-	public File getSelectedFile() {
-		return this.selectedFile;
-	}
+	private void createColorSpace(JMenu editMenu){
+		List<String> list = PanelMediator.getInstance().getListColorSpaces();
+		menuColorSpace = new JMenu("Color Space");
 
-	public JMenuBar getMenuBar() {
-		return this.menuBar;
-	}
-
-	private class ButtonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			if (event.getActionCommand().equals("Open")) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("C:/Users/1/Desktop"));
-				int result = fileChooser.showOpenDialog(SettingPanel.this);
-
-				if (result == JFileChooser.APPROVE_OPTION) {
-					selectedFile = fileChooser.getSelectedFile();
-					try {
-						PanelMediator.getInstance().openNewImage(selectedFile);
-					} catch (Exception e) {
-						new ExceptionHandler().handleException(e);
-					}
-				}
-			}
-
-			if(event.getActionCommand().equals("Save")) {
-				try {
-					PanelMediator.getInstance().saveImage(selectedFile);
-				} catch (Exception e) {
-					new ExceptionHandler().handleException(e);
-				}
-			}
-
-			if(event.getActionCommand().equals("SaveAs")) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				int result = fileChooser.showSaveDialog(SettingPanel.this);
-
-				if (result == JFileChooser.APPROVE_OPTION) {
-					selectedFile = fileChooser.getSelectedFile();
-					try {
-						PanelMediator.getInstance().saveAsImage(selectedFile);
-					} catch (Exception e) {
-						new ExceptionHandler().handleException(e);
-					}
-				}
-			}
-
-			if(event.getActionCommand().equals("Close")) {
-				PanelMediator.getInstance().closeImage();
-			}
-
-			if(event.getActionCommand().equals("Exit")) {
-				PanelMediator.getInstance().exit();
-			}
+		for (var o : list){
+			menuColorSpace.add(new ColorSpaceListener(o, o, this));
 		}
+
+		chosenColorSpace = list.get(0);
+		PanelMediator.getInstance().getFileService().chooseColorSpace(chosenColorSpace);
+		menuColorSpace.getItem(0).setBackground(selected);
+		editMenu.add(menuColorSpace);
+	}
+
+	private void createColorChannels(JMenu editMenu){
+        List<String> list = new ArrayList<>
+				(PanelMediator.getInstance().getListColorChannels(chosenColorSpace));
+		menuColorChannels = new JMenu("Color Channels");
+
+		for (var o : list){
+			menuColorChannels.add(new ColorChannelListener(o, o, this, selected));
+		}
+
+		chosenChannels = list;
+		PanelMediator.getInstance().getFileService().chooseChannel(chosenChannels);
+		editMenu.add(menuColorChannels);
+	}
+
+	public void changeChosenColorSpace(ColorSpaceListener colorSpaceListener){
+		for (var menuItem = 0; menuItem < menuColorSpace.getItemCount(); ++menuItem){
+			menuColorSpace.getItem(menuItem).setBackground(Color.white);
+		}
+		PanelMediator.getInstance().changeColorSpace(colorSpaceListener.getColorSpace());
+		chosenColorSpace = colorSpaceListener.getColorSpace();
+		colorSpaceListener.setBackground(selected);
+		changeChannelList();
+		PanelMediator.getInstance().createPreview();
+	}
+
+	private void changeChannelList(){
+        List<String> list = new ArrayList<>
+				(PanelMediator.getInstance().getListColorChannels(chosenColorSpace));
+		menuColorChannels.removeAll();
+
+		for (var o : list){
+			menuColorChannels.add(new ColorChannelListener(o, o, this, selected));
+		}
+
+		chosenChannels = list;
+	}
+
+	public void changeChosenChannels(ColorChannelListener colorChannelListener){
+		if (chosenChannels.contains(colorChannelListener.getColorChannel())){
+			chosenChannels.remove(colorChannelListener.getColorChannel());
+			colorChannelListener.setBackground(Color.white);
+		} else {
+			chosenChannels.add(colorChannelListener.getColorChannel());
+			colorChannelListener.setBackground(selected);
+		}
+		PanelMediator.getInstance().changeChannel(chosenChannels);
+
+		PanelMediator.getInstance().createPreview();
+	}
+
+	public void createGammaConvert(JMenu editMenu){
+		gammaConvertButton = new AbstractAction("Convert Gamma") {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+                GammaInputFrame gammaInputFrame = new GammaInputFrame("convert");
+
+			}
+		};
+
+		editMenu.add(gammaConvertButton);
+	}
+
+	public void createGammaAssign(JMenu editMenu){
+		gammaAssignButton = new AbstractAction("Assign Gamma") {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+                GammaInputFrame gammaInputFrame = new GammaInputFrame("assign");
+			}
+		};
+
+		editMenu.add(gammaAssignButton);
+	}
+
+    public void handleInputGammaAssign(String input){
+        try {
+            displayGamma = Float.parseFloat(input);
+            PanelMediator.getInstance().assignGamma(displayGamma);
+            PanelMediator.getInstance().createGammaPreview();
+        }catch (Exception exception){
+            new ExceptionHandler().handleException(exception);
+        }
+    }
+
+    public void handleInputGammaConvert(String input){
+        try {
+            fileGamma = Float.parseFloat(input);
+            PanelMediator.getInstance().convertGamma(fileGamma);
+            PanelMediator.getInstance().createGammaPreview();
+        }catch (Exception exception){
+            new ExceptionHandler().handleException(exception);
+        }
+    }
+
+	public void disableGammaButtons(){
+		gammaConvertButton.setEnabled(false);
+		gammaAssignButton.setEnabled(false);
+	}
+
+	public void enableGammaButtons(){
+		gammaConvertButton.setEnabled(true);
+		gammaAssignButton.setEnabled(true);
 	}
 }

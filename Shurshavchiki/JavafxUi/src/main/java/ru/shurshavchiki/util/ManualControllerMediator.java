@@ -1,6 +1,7 @@
 package ru.shurshavchiki.util;
 
 import ru.shurshavchiki.businessLogic.entities.Displayable;
+import ru.shurshavchiki.businessLogic.entities.FileWrapper;
 import ru.shurshavchiki.businessLogic.services.FileService;
 import ru.shurshavchiki.controllers.*;
 
@@ -51,12 +52,12 @@ public class ManualControllerMediator implements ControllerMediator {
 
     public void fileOpened(File file) throws IOException {
         lowerBarController.fileOpened(file.getName());
-        Displayable pnmDisplayable = fileService.readFile(file);
-        pictureSectionController.drawPicture(pnmDisplayable);
+        FileWrapper pnmDisplayable = fileService.readFile(file);
+        pictureSectionController.drawPicture(pnmDisplayable.getDisplayable());
     }
 
     public void safeFileAs(File file) throws IOException {
-        fileService.saveFile(pictureSectionController.getDisplayable(), file);
+        fileService.saveFile(new FileWrapper(pictureSectionController.getDisplayable(), new), file);
         lowerBarController.fileOpened(file.getName() + " - saved");
     }
 

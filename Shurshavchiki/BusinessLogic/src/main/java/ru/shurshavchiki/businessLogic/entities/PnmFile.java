@@ -6,34 +6,41 @@ import lombok.NonNull;
 import ru.shurshavchiki.businessLogic.models.Header;
 import ru.shurshavchiki.businessLogic.models.RgbConvertable;
 
-import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
-public class PnmFile implements PnmDisplayable {
+public class PnmFile implements Displayable {
     @Getter
-    private String version;
+    private Header header;
     @Getter
-    private String name;
-    @Getter
-    private final int height;
-    @Getter
-    private final int width;
-    @Getter
-    private final int maxval;
-    @Getter
-    private ArrayList<ArrayList<RgbConvertable>> pixels;
+    private List<List<RgbConvertable>> pixels;
 
-    public PnmFile(String name, Header header, ArrayList<ArrayList<RgbConvertable>> pixels) {
-        version = header.getMagicNumber();
-        this.name = name;
-        height = header.getHeight();
-        width = header.getWidth();
-        maxval = header.getMaxValue();
+    public PnmFile(Header header, List<List<RgbConvertable>> pixels) {
+        this.header = header;
         this.pixels = pixels;
+    }
+
+    @Override
+    public String getVersion() {
+        return header.getMagicNumber();
+    }
+
+    @Override
+    public int getHeight() {
+        return header.getHeight();
+    }
+
+    @Override
+    public int getWidth() {
+        return header.getWidth();
     }
 
     @Override
     public @NonNull RgbConvertable getPixel(int x, int y) {
         return pixels.get(y).get(x);
+    }
+
+    @Override
+    public List<List<RgbConvertable>> getAllPixels() {
+        return pixels;
     }
 }

@@ -1,5 +1,6 @@
 package ru.shurshavchiki.Panels;
 
+import lombok.Getter;
 import ru.shurshavchiki.PanelMediator;
 import ru.shurshavchiki.businessLogic.entities.Displayable;
 
@@ -12,6 +13,7 @@ import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class DrawingPanel extends JPanel {
 	private BufferedImage image = null;
+	@Getter
 	private Displayable displayable = null;
 
 	public DrawingPanel(){
@@ -47,8 +49,10 @@ public class DrawingPanel extends JPanel {
 		this.displayable = displayable;
 	}
 
-	public Displayable getDisplayable() {
-		return this.displayable;
+	public void closeImage(){
+		displayable = null;
+		image = null;
+		this.paint(getGraphics());
 	}
 
 	@Override
