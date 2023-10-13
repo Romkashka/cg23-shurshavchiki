@@ -33,6 +33,9 @@ public class ProjectDataHolderImpl implements UserProjectDataHolder {
     private Displayable startingDisplayable;
 
     @Getter @Setter
+    private Displayable displayableWithFilters;
+
+    @Getter @Setter
     private ColorSpaceConverter startingColorSpaceConverter;
 
     @Getter @Setter

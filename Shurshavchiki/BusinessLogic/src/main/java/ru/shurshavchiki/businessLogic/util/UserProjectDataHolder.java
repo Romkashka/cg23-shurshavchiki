@@ -15,6 +15,7 @@ public interface UserProjectDataHolder {
     ColorSpaceConverter getColorSpaceConverter();
     ChannelChooser getChannelChooser();
     Displayable getStartingDisplayable();
+    Displayable getDisplayableWithFilters();
     ColorSpaceConverter getStartingColorSpaceConverter();
     ChannelChooser getStartingChannelChooser();
 
@@ -25,6 +26,7 @@ public interface UserProjectDataHolder {
     void setColorSpaceConverter(ColorSpaceConverter colorSpaceConverter);
     void setChannelChooser(ChannelChooser channelChooser);
     void setStartingDisplayable(Displayable displayable);
+    void setDisplayableWithFilters(Displayable displayable);
     void setStartingColorSpaceConverter(ColorSpaceConverter converter);
     void setStartingChannelChooser(ChannelChooser channelChooser);
 }
