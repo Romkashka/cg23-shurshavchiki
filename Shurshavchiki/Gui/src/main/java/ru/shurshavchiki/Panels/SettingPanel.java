@@ -3,6 +3,7 @@ package ru.shurshavchiki.Panels;
 import lombok.Getter;
 import lombok.Setter;
 import ru.shurshavchiki.ExceptionHandler;
+import ru.shurshavchiki.Frames.GammaInputFrame;
 import ru.shurshavchiki.Listeners.ColorChannelListener;
 import ru.shurshavchiki.Listeners.ColorSpaceListener;
 import ru.shurshavchiki.Listeners.FileButtonListener;
@@ -10,10 +11,8 @@ import ru.shurshavchiki.PanelMediator;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.*;
@@ -36,6 +35,10 @@ public class SettingPanel extends JPanel{
 
 	@Getter
 	private List<String> chosenChannels;
+
+	private AbstractAction gammaConvertButton;
+
+	private AbstractAction gammaAssignButton;
 
 	@Setter
 	private float fileGamma = 0;
@@ -95,6 +98,8 @@ public class SettingPanel extends JPanel{
 		editMenu.addSeparator();
 		createGammaConvert(editMenu);
 		createGammaAssign(editMenu);
+
+		disableGammaButtons();
 		menuBar.add(editMenu);
 	}
 
@@ -163,38 +168,55 @@ public class SettingPanel extends JPanel{
 	}
 
 	public void createGammaConvert(JMenu editMenu){
-		editMenu.add(new AbstractAction("Convert Gamma") {
+		gammaConvertButton = new AbstractAction("Convert Gamma") {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				String input = JOptionPane.showInputDialog("Enter gamma to convert");
-				try {
-					fileGamma = Float.parseFloat(input);
-					if (fileGamma != 0 && fileGamma < 1)
-						throw new NumberFormatException("Gamma can not equals " + fileGamma);
-					PanelMediator.getInstance().convertGamma(fileGamma);
-					PanelMediator.getInstance().createGammaPreview();
-				}catch (Exception exception){
-					new ExceptionHandler().handleException(exception);
-				}
+                GammaInputFrame gammaInputFrame = new GammaInputFrame("convert");
+
 			}
-		});
+		};
+
+		editMenu.add(gammaConvertButton);
 	}
 
 	public void createGammaAssign(JMenu editMenu){
-		editMenu.add(new AbstractAction("Assign Gamma") {
+		gammaAssignButton = new AbstractAction("Assign Gamma") {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				String input = JOptionPane.showInputDialog("Enter gamma to assign");
-				try {
-					displayGamma = Float.parseFloat(input);
-					if (displayGamma != 0 && displayGamma < 1)
-						throw new NumberFormatException("Gamma can not equals " + displayGamma);
-					PanelMediator.getInstance().assignGamma(displayGamma);
-					PanelMediator.getInstance().createGammaPreview();
-				}catch (Exception exception){
-					new ExceptionHandler().handleException(exception);
-				}
+                GammaInputFrame gammaInputFrame = new GammaInputFrame("assign");
 			}
-		});
+		};
+
+		editMenu.add(gammaAssignButton);
+	}
+
+    public void handleInputGammaAssign(String input){
+        try {
+            displayGamma = Float.parseFloat(input);
+            PanelMediator.getInstance().assignGamma(displayGamma);
+            PanelMediator.getInstance().createGammaPreview();
+        }catch (Exception exception){
+            new ExceptionHandler().handleException(exception);
+        }
+    }
+
+    public void handleInputGammaConvert(String input){
+        try {
+            fileGamma = Float.parseFloat(input);
+            PanelMediator.getInstance().convertGamma(fileGamma);
+            PanelMediator.getInstance().createGammaPreview();
+        }catch (Exception exception){
+            new ExceptionHandler().handleException(exception);
+        }
+    }
+
+	public void disableGammaButtons(){
+		gammaConvertButton.setEnabled(false);
+		gammaAssignButton.setEnabled(false);
+	}
+
+	public void enableGammaButtons(){
+		gammaConvertButton.setEnabled(true);
+		gammaAssignButton.setEnabled(true);
 	}
 }
