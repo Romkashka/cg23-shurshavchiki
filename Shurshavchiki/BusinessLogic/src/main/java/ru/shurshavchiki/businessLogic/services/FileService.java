@@ -42,6 +42,8 @@ public class FileService {
         colorSpaceRegistry = new ColorSpaceRegistry();
         gammaConvertersRegistry = new PlainGammaConvertersRegistry();
         this.dataHolder = new ProjectDataHolderImpl();
+        dataHolder.setInputGammaConverter(gammaConvertersRegistry.getGammaConverter(0));
+        dataHolder.setShownGammaConverter(gammaConvertersRegistry.getGammaConverter(0));
     }
 
     public Displayable readFile(File file) throws IOException {
@@ -100,19 +102,15 @@ public class FileService {
 
     public void assignGamma(float gamma) {
         GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
-        applyToEachPixel(newGammaConverter::useGamma);
-        applyToEachPixel(dataHolder.getGammaConverter()::correctGamma);
-        dataHolder.setGammaConverter(newGammaConverter);
-
+        dataHolder.setInputGammaConverter(newGammaConverter);
         render();
     }
 
     public void convertGamma(float gamma) {
         GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
-        applyToEachPixel(dataHolder.getGammaConverter()::useGamma);
-        applyToEachPixel(newGammaConverter::correctGamma);
-        dataHolder.setGammaConverter(newGammaConverter);
-
+        dataHolder.setShownGammaConverter(newGammaConverter);
+        dataHolder.setStartingDisplayable(dataHolder.getDisplayable());
+        dataHolder.setInputGammaConverter(newGammaConverter);
         render();
     }
 
@@ -127,6 +125,13 @@ public class FileService {
 
         Header header = dataHolder.getStartingDisplayable().getHeader();
         dataHolder.setDisplayable(new PnmFile(header, splitToRows(header, convertToPixels(convertToRawData(dataHolder.getStartingDisplayable().getAllPixels())))));
+
+        applyGamma();
+    }
+
+    private void applyGamma() {
+        applyToEachPixel(dataHolder.getInputGammaConverter()::useGamma);
+        applyToEachPixel(dataHolder.getShownGammaConverter()::correctGamma);
     }
 
     private float[] convertToRawData(List<List<RgbConvertable>> pixels) {
@@ -186,6 +191,7 @@ public class FileService {
     }
 
     private void applyToEachPixel(Function<Float, Float> func) {
+        System.out.println("Apply to each pixel: " + func.apply(0.1f) + " " + func.apply(0.5f) + " " + func.apply(0.9f));
         for (List<RgbConvertable> row: dataHolder.getDisplayable().getAllPixels()) {
             row.replaceAll(pixel -> applyToPixel(pixel, func));
         }

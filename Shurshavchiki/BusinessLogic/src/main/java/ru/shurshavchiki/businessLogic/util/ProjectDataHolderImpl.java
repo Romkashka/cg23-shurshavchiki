@@ -18,7 +18,10 @@ public class ProjectDataHolderImpl implements UserProjectDataHolder {
     private Displayable displayable;
 
     @Getter @Setter
-    private GammaConverter gammaConverter;
+    private GammaConverter inputGammaConverter;
+
+    @Getter @Setter
+    private GammaConverter shownGammaConverter;
 
     @Getter @Setter
     private ColorSpaceConverter colorSpaceConverter;
