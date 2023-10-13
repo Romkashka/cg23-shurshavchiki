@@ -36,10 +36,7 @@ public class FileService {
     @Getter
     private ChannelChooser channelChooser;
     @Getter
-    private GammaConverter gammaConverter;
-
-    @Getter
-    private UserProjectDataHolder dataHolder;
+    private final UserProjectDataHolder dataHolder;
 
     public FileService() {
         colorSpaceRegistry = new ColorSpaceRegistry();
@@ -53,14 +50,22 @@ public class FileService {
         Displayable pnmFile = new PnmFile(imageDataHolder.getHeader(),
                 splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getData())));
         dataHolder.setFile(file);
-        dataHolder.setDisplayable(pnmFile);
+        dataHolder.setStartingDisplayable(pnmFile);
+        dataHolder.setStartingChannelChooser(dataHolder.getChannelChooser());
+        dataHolder.setStartingColorSpaceConverter(dataHolder.getStartingColorSpaceConverter());
 
-        return pnmFile;
+        render();
+        return dataHolder.getDisplayable();
     }
 
     public void saveFile(Displayable displayable, File file) throws IOException {
-//        new PnmFileWriter().save(displayable, file);
         new PnmFileWriter().saveFromRawData(file, displayable.getHeader(), getByteData(convertToRawData(displayable.getAllPixels())));
+    }
+
+    public void restore() {
+        dataHolder.setDisplayable(dataHolder.getStartingDisplayable());
+        dataHolder.setChannelChooser(dataHolder.getStartingChannelChooser());
+        dataHolder.setColorSpaceConverter(dataHolder.getStartingColorSpaceConverter());
     }
 
     public List<String> getColorSpacesNames() {
@@ -68,9 +73,7 @@ public class FileService {
     }
 
     public Displayable getPreview(Displayable source) {
-        Header header = source.getHeader();
-        return new PnmFile(header,
-                splitToRows(header, convertToPixels(convertToRawData(source.getAllPixels()))));
+        return dataHolder.getDisplayable();
     }
 
     public void chooseChannel(List<String> channelNames) {
@@ -82,6 +85,8 @@ public class FileService {
         channelChooser = builder.build();
         System.out.println(channelChooser.getConstants());
         dataHolder.setChannelChooser(channelChooser);
+
+        render();
     }
 
     public void chooseColorSpace(String colorSpaceName) {
@@ -89,6 +94,8 @@ public class FileService {
         dataHolder.setColorSpaceConverter(getColorSpaceConverter());
         System.out.println("Color space name: " + colorSpaceFactory.getColorSpaceName());
         chooseChannel(colorSpaceFactory.getColorSpace().Channels().stream().map(Enum::name).toList());
+
+        render();
     }
 
     public void assignGamma(float gamma) {
@@ -96,6 +103,8 @@ public class FileService {
         applyToEachPixel(newGammaConverter::useGamma);
         applyToEachPixel(dataHolder.getGammaConverter()::correctGamma);
         dataHolder.setGammaConverter(newGammaConverter);
+
+        render();
     }
 
     public void convertGamma(float gamma) {
@@ -103,18 +112,29 @@ public class FileService {
         applyToEachPixel(dataHolder.getGammaConverter()::useGamma);
         applyToEachPixel(newGammaConverter::correctGamma);
         dataHolder.setGammaConverter(newGammaConverter);
+
+        render();
     }
 
     public ColorSpaceConverter getColorSpaceConverter() {
         return colorSpaceFactory.getColorSpaceConverter();
     }
 
+    private void render() {
+        if (dataHolder.getStartingDisplayable() == null) {
+            return;
+        }
+
+        Header header = dataHolder.getStartingDisplayable().getHeader();
+        dataHolder.setDisplayable(new PnmFile(header, splitToRows(header, convertToPixels(convertToRawData(dataHolder.getStartingDisplayable().getAllPixels())))));
+    }
+
     private float[] convertToRawData(List<List<RgbConvertable>> pixels) {
-        return channelChooser.apply(getColorSpaceConverter().toRawData(concatenateRows(pixels)));
+        return channelChooser.apply(dataHolder.getColorSpaceConverter().toRawData(concatenateRows(pixels)));
     }
 
     private List<RgbConvertable> convertToPixels(float[] rawData) {
-        return getColorSpaceConverter().toRgb(channelChooser.fillAllChannels(rawData));
+        return getColorSpaceConverter().toRgb(dataHolder.getChannelChooser().fillAllChannels(rawData));
     }
 
     private List<List<RgbConvertable>> splitToRows(Header header, List<RgbConvertable> pixels) {
