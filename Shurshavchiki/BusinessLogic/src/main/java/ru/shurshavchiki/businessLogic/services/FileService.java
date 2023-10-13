@@ -63,7 +63,7 @@ public class FileService {
     }
 
     public void saveFile(Displayable displayable, File file) throws IOException {
-        new PnmFileWriter().saveFromRawData(file, dataHolder.getShownDisplayable().getHeader(), getByteData(convertToRawData(dataHolder.getDisplayableWithFilters().getAllPixels())));
+        new PnmFileWriter().saveFromRawData(file, dataHolder.getDisplayableWithFilters().getHeader(), getByteData(convertToRawData(dataHolder.getDisplayableWithFilters().getAllPixels())));
     }
 
     public void restore() {
@@ -104,21 +104,19 @@ public class FileService {
 
     public void assignGamma(float gamma) {
         GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
-        dataHolder.setInputGammaConverter(newGammaConverter);
-        render();
+        dataHolder.setShownGammaConverter(newGammaConverter);
+        applyGamma();
     }
 
     public void convertGamma(float gamma) {
         GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
-        dataHolder.setShownGammaConverter(newGammaConverter);
+        GammaConverter previousGammaConverter = dataHolder.getInputGammaConverter();
         dataHolder.setInputGammaConverter(newGammaConverter);
-        render();
-        dataHolder.setStartingDisplayable(dataHolder.getShownDisplayable());
+        applyNewGamma(previousGammaConverter);
     }
 
     public ColorSpaceConverter getColorSpaceConverter() {
         return colorSpaceFactory.getColorSpaceConverter();
-    }
 
     private void render() {
         if (dataHolder.getStartingDisplayable() == null) {
@@ -128,13 +126,19 @@ public class FileService {
         Header header = dataHolder.getStartingDisplayable().getHeader();
         dataHolder.setDisplayableWithFilters(new PnmFile(header, splitToRows(header, convertToPixels(convertToRawData(dataHolder.getStartingDisplayable().getAllPixels())))));
 
-        applyGamma();
+        applyNewGamma(dataHolder.getInputGammaConverter());
     }
 
     private void applyGamma() {
         dataHolder.setShownDisplayable(dataHolder.getDisplayableWithFilters());
-        applyToEachPixel(dataHolder.getInputGammaConverter()::useGamma, dataHolder.getShownDisplayable());
-        applyToEachPixel(dataHolder.getShownGammaConverter()::correctGamma, dataHolder.getShownDisplayable());
+        applyToEachPixel(dataHolder.getInputGammaConverter()::correctGamma, dataHolder.getShownDisplayable());
+        applyToEachPixel(dataHolder.getShownGammaConverter()::useGamma, dataHolder.getShownDisplayable());
+    }
+
+    private void applyNewGamma(GammaConverter previousGammaConverter) {
+        applyToEachPixel(previousGammaConverter::correctGamma, dataHolder.getDisplayableWithFilters());
+        applyToEachPixel(dataHolder.getInputGammaConverter()::useGamma, dataHolder.getDisplayableWithFilters());
+        applyGamma();
     }
 
     private float[] convertToRawData(List<List<RgbConvertable>> pixels) {
