@@ -7,7 +7,6 @@ import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
 import ru.shurshavchiki.businessLogic.entities.Displayable;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 
-import javax.swing.*;
 import java.io.File;
 
 public class ProjectDataHolderImpl implements UserProjectDataHolder {
@@ -15,7 +14,7 @@ public class ProjectDataHolderImpl implements UserProjectDataHolder {
     private File file;
 
     @Getter @Setter
-    private Displayable displayable;
+    private Displayable shownDisplayable;
 
     @Getter @Setter
     private GammaConverter inputGammaConverter;

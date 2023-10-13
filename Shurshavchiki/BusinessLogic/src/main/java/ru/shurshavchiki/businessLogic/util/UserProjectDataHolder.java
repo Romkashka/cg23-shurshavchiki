@@ -9,7 +9,7 @@ import java.io.File;
 
 public interface UserProjectDataHolder {
     File getFile();
-    Displayable getDisplayable();
+    Displayable getShownDisplayable();
     GammaConverter getInputGammaConverter();
     GammaConverter getShownGammaConverter();
     ColorSpaceConverter getColorSpaceConverter();
@@ -20,7 +20,7 @@ public interface UserProjectDataHolder {
     ChannelChooser getStartingChannelChooser();
 
     void setFile(File file);
-    void setDisplayable(Displayable displayable);
+    void setShownDisplayable(Displayable displayable);
     void setInputGammaConverter(GammaConverter gammaConverter);
     void setShownGammaConverter(GammaConverter gammaConverter);
     void setColorSpaceConverter(ColorSpaceConverter colorSpaceConverter);

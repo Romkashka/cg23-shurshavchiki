@@ -108,7 +108,7 @@ public class PanelMediator {
 
 	public void createGammaPreview(){
 		if (drawingPanel.getDisplayable() != null)
-			drawingPanel.loadImage(fileService.getDataHolder().getDisplayable());
+			drawingPanel.loadImage(fileService.getDataHolder().getShownDisplayable());
 	}
 
 	public void validateScrollPane(){
