@@ -18,4 +18,9 @@ public class PlainGammaConverter implements GammaConverter {
     public float correctGamma(float value) {
         return (float) pow(value, 1 / gamma);
     }
+
+    @Override
+    public String getName() {
+        return "Plain gamma " + gamma;
+    }
 }

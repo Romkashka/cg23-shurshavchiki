@@ -20,4 +20,9 @@ public class StandardRGBConverter implements GammaConverter {
 
         return (float) (1.055 * pow(value, 1/2.4) - 0.055);
     }
+
+    @Override
+    public String getName() {
+        return "sRGB gamma";
+    }
 }
