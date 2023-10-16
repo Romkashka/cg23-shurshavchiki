@@ -9,6 +9,7 @@ import java.util.List;
 
 public class SimpleChannelChooser implements ChannelChooser {
     private final int MASK_LENGTH = 3;
+    @Getter
     private List<Integer> channelMask;
     @Getter
     private final List<Float> constants;
@@ -18,6 +19,7 @@ public class SimpleChannelChooser implements ChannelChooser {
         this.constants = constants;
         System.out.println("Constants: " + Arrays.toString(constants.toArray()));
         setChannelMask(channelMask);
+        System.out.println("chosenChannelsAmount: " + chosenChannelsAmount);
     }
 
     public void setChannelMask(List<Integer> channelMask) {

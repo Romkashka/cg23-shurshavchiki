@@ -63,7 +63,12 @@ public class FileService {
     }
 
     public void saveFile(Displayable displayable, File file) throws IOException {
-        new PnmFileWriter().saveFromRawData(file, dataHolder.getDisplayableWithFilters().getHeader(), getByteData(convertToRawData(dataHolder.getDisplayableWithFilters().getAllPixels())));
+        Header header = getHeaderForSave();
+        System.out.println(header);
+        System.out.println("Total pixels: " + header.getWidth() * header.getHeight());
+        new PnmFileWriter().saveFromRawData(file,
+                getHeaderForSave(),
+                getByteData(convertToRawData(getDisplayableToSave().getAllPixels())));
     }
 
     public void restore() {
@@ -104,13 +109,16 @@ public class FileService {
 
     public void assignGamma(float gamma) {
         GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
-        dataHolder.setShownGammaConverter(newGammaConverter);
+        dataHolder.setInputGammaConverter(newGammaConverter);
         render();
     }
 
     public void convertGamma(float gamma) {
-        dataHolder.setInputGammaConverter(gammaConvertersRegistry.getGammaConverter(gamma));
-        changeConvertGamma();
+        GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
+        dataHolder.setShownGammaConverter(newGammaConverter);
+        dataHolder.setInputGammaConverter(newGammaConverter);
+        render();
+        dataHolder.setStartingDisplayable(dataHolder.getShownDisplayable());
     }
 
     public ColorSpaceConverter getColorSpaceConverter() {
@@ -125,27 +133,13 @@ public class FileService {
         Header header = dataHolder.getStartingDisplayable().getHeader();
         dataHolder.setDisplayableWithFilters(new PnmFile(header, splitToRows(header, convertToPixels(convertToRawData(dataHolder.getStartingDisplayable().getAllPixels())))));
 
-        changeConvertGamma();
+        applyGamma();
     }
 
-    private Displayable takeLinear(){
-        Header header = dataHolder.getStartingDisplayable().getHeader();
-        Displayable linearDisplayable = new PnmFile(header, splitToRows(header, convertToPixels(convertToRawData(dataHolder.getStartingDisplayable().getAllPixels()))));
-        var gammaConverter = gammaConvertersRegistry.getGammaConverter(0);
-        applyToEachPixel(gammaConverter::correctGamma, linearDisplayable);
-        return linearDisplayable;
-    }
-
-    private void applyAssignGamma(){
-        dataHolder.setShownDisplayable(takeLinear());
-        applyToEachPixel(dataHolder.getShownGammaConverter()::useGamma, dataHolder.getShownDisplayable());
-        System.out.println(dataHolder.getInputGammaConverter().getName() + dataHolder.getShownGammaConverter().getName());
-    }
-
-    private void changeConvertGamma(){
-        dataHolder.setDisplayableWithFilters(takeLinear());
-        applyToEachPixel(dataHolder.getInputGammaConverter()::useGamma, dataHolder.getDisplayableWithFilters());
-        applyAssignGamma();
+    private void applyGamma() {
+        dataHolder.setShownDisplayable(dataHolder.getDisplayableWithFilters());
+        applyToEachPixel(dataHolder.getInputGammaConverter()::useGamma, dataHolder.getShownDisplayable());
+        applyToEachPixel(dataHolder.getShownGammaConverter()::correctGamma, dataHolder.getShownDisplayable());
     }
 
     private float[] convertToRawData(List<List<RgbConvertable>> pixels) {
@@ -221,11 +215,51 @@ public class FileService {
         throw new UnsupportedOperationException("Only RgbPixel are supported(((");
     }
 
+    private Header getHeaderForSave() {
+        return new Header(
+                dataHolder.getChannelChooser().getMagicNumber(),
+                getDisplayableToSave().getWidth(),
+                getDisplayableToSave().getHeight(),
+                255
+        );
+    }
+
+    private Displayable getDisplayableToSave() {
+        return dataHolder.getDisplayableWithFilters();
+    }
+
     private byte[] getByteData(float[] input) {
+        if (dataHolder.getChannelChooser().getMagicNumber().equals("P6")) {
+            return getFullByteData(input);
+        }
+
+        return getShrankByteData(input);
+    }
+
+    private byte[] getFullByteData(float[] input) {
         byte[] result = new byte[input.length];
 
         for (int i = 0; i < input.length; i++) {
             result[i] = (byte) (input[i] * 255f);
+        }
+
+        return result;
+    }
+
+    private byte[] getShrankByteData(float[] input) {
+        byte[] result = new byte[input.length / 3];
+
+        System.out.println("input size: " + input.length);
+        System.out.println("result size: " + result.length);
+
+        List<Integer> mask = dataHolder.getChannelChooser().getChannelMask();
+        int valueSubIndex = mask.indexOf(1);
+
+        System.out.println(valueSubIndex);
+
+        for (int i = 0; i < result.length; i++) {
+            byte data = (byte) (input[i * 3 + valueSubIndex] * 255f);
+            result[i] = data;
         }
 
         return result;

@@ -16,10 +16,10 @@ public class ProjectDataHolderImpl implements UserProjectDataHolder {
     @Getter @Setter
     private Displayable shownDisplayable;
 
-    @Getter @Setter
+    @Getter
     private GammaConverter inputGammaConverter;
 
-    @Getter @Setter
+    @Getter
     private GammaConverter shownGammaConverter;
 
     @Getter @Setter
@@ -39,4 +39,16 @@ public class ProjectDataHolderImpl implements UserProjectDataHolder {
 
     @Getter @Setter
     private ChannelChooser startingChannelChooser;
+
+    @Override
+    public void setInputGammaConverter(GammaConverter inputGammaConverter) {
+        this.inputGammaConverter = inputGammaConverter;
+        System.out.println("New input gamma converter: " + inputGammaConverter.getName());
+    }
+
+    @Override
+    public void setShownGammaConverter(GammaConverter shownGammaConverter) {
+        this.shownGammaConverter = shownGammaConverter;
+        System.out.println("New shown gamma converter: " + shownGammaConverter.getName());
+    }
 }

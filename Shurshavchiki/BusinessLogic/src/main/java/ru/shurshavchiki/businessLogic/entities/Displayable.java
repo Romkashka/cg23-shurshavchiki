@@ -14,4 +14,6 @@ public interface Displayable {
 
     @NonNull RgbConvertable getPixel(int x, int y);
     List<List<RgbConvertable>> getAllPixels();
+
+    Displayable clone();
 }
