@@ -53,5 +53,7 @@ public class ExceptionHandler {
                     JOptionPane.ERROR_MESSAGE);
             exp.printStackTrace();
         }
+
+        exp.printStackTrace();
     }
 }

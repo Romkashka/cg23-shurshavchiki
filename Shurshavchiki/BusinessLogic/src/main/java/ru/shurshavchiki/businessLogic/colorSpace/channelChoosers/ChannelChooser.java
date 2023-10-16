@@ -8,4 +8,5 @@ public interface ChannelChooser {
     float[] fillAllChannels(float[] rawData);
 
     List<Float> getConstants();
+    List<Integer> getChannelMask();
 }

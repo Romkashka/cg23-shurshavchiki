@@ -21,4 +21,21 @@ public class Header {
         this.height = height;
         this.maxValue = maxValue;
     }
+
+    public Header(Header other) {
+        this.magicNumber = other.magicNumber;
+        this.width = other.width;
+        this.height = other.height;
+        this.maxValue = other.maxValue;
+    }
+
+    @Override
+    public String toString() {
+        return "Header{" +
+                "magicNumber='" + magicNumber + '\'' +
+                ", width=" + width +
+                ", height=" + height +
+                ", maxValue=" + maxValue +
+                '}';
+    }
 }
