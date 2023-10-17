@@ -50,6 +50,7 @@ public class PanelMediator {
 		drawingPanel.loadImage(fileService.readFile(file));
 		setGammaDefault();
 		settingPanel.enableGammaButtons();
+		settingPanel.setFileTitle(file.getAbsolutePath());
 	}
 
 	public void saveImage(File file) throws IOException {
@@ -72,11 +73,13 @@ public class PanelMediator {
 				setGammaDefault();
 				settingPanel.disableGammaButtons();
 				somethingChanged = false;
+				settingPanel.eraseFileTitle();
 			}
 		}else {
 			drawingPanel.closeImage();
 			setGammaDefault();
 			settingPanel.disableGammaButtons();
+			settingPanel.eraseFileTitle();
 		}
 	}
 

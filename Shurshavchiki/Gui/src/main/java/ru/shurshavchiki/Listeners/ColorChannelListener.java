@@ -1,6 +1,7 @@
 package ru.shurshavchiki.Listeners;
 
 import lombok.Getter;
+import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Panels.SettingPanel;
 
 import javax.swing.*;
@@ -22,7 +23,11 @@ public class ColorChannelListener extends JMenuItem{
 
         @Override
         public void actionPerformed(ActionEvent event) {
-            settingPanel.changeChosenChannels(colorChannelListener);
+            try {
+                settingPanel.changeChosenChannels(colorChannelListener);
+            }catch (Exception exception){
+                new ExceptionHandler().handleException(exception);
+            }
         }
     }
 

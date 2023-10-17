@@ -1,6 +1,7 @@
 package ru.shurshavchiki.Listeners;
 
 import lombok.Getter;
+import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Panels.SettingPanel;
 
 import javax.swing.*;
@@ -21,8 +22,12 @@ public class ColorSpaceListener extends JMenuItem {
         }
         @Override
         public void actionPerformed(ActionEvent event) {
-            if (!settingPanel.getChosenColorSpace().equals(colorSpaceListener.getColorSpace())){
-                settingPanel.changeChosenColorSpace(colorSpaceListener);
+            try {
+                if (!settingPanel.getChosenColorSpace().equals(colorSpaceListener.getColorSpace())){
+                    settingPanel.changeChosenColorSpace(colorSpaceListener);
+                }
+            }catch (Exception exception){
+                new ExceptionHandler().handleException(exception);
             }
         }
     }
