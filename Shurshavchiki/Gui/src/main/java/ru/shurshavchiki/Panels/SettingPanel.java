@@ -40,6 +40,8 @@ public class SettingPanel extends JPanel{
 
 	private AbstractAction gammaAssignButton;
 
+	private JTextPane fileTitle;
+
 	@Setter
 	private float fileGamma = 0;
 
@@ -51,6 +53,9 @@ public class SettingPanel extends JPanel{
 	public SettingPanel(){
 		configureMenuFile();
 		configureMenuEdit();
+		fileTitle = new JTextPane();
+		fileTitle.setEnabled(false);
+		menuBar.add(fileTitle);
 	}
 
 	private void configureMenuFile(){
@@ -172,7 +177,7 @@ public class SettingPanel extends JPanel{
 		gammaConvertButton = new AbstractAction("Convert Gamma") {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-                GammaInputFrame gammaInputFrame = new GammaInputFrame("convert");
+                GammaInputFrame gammaInputFrame = new GammaInputFrame("convert", fileGamma);
 
 			}
 		};
@@ -184,7 +189,7 @@ public class SettingPanel extends JPanel{
 		gammaAssignButton = new AbstractAction("Assign Gamma") {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-                GammaInputFrame gammaInputFrame = new GammaInputFrame("assign");
+                GammaInputFrame gammaInputFrame = new GammaInputFrame("assign", displayGamma);
 			}
 		};
 
@@ -192,23 +197,15 @@ public class SettingPanel extends JPanel{
 	}
 
     public void handleInputGammaAssign(String input){
-        try {
-            displayGamma = Float.parseFloat(input);
-            PanelMediator.getInstance().assignGamma(displayGamma);
-            PanelMediator.getInstance().createGammaPreview();
-        }catch (Exception exception){
-            new ExceptionHandler().handleException(exception);
-        }
+		displayGamma = Float.parseFloat(input);
+		PanelMediator.getInstance().assignGamma(displayGamma);
+		PanelMediator.getInstance().createGammaPreview();
     }
 
     public void handleInputGammaConvert(String input){
-        try {
-            fileGamma = Float.parseFloat(input);
-            PanelMediator.getInstance().convertGamma(fileGamma);
-            PanelMediator.getInstance().createGammaPreview();
-        }catch (Exception exception){
-            new ExceptionHandler().handleException(exception);
-        }
+		fileGamma = Float.parseFloat(input);
+		PanelMediator.getInstance().convertGamma(fileGamma);
+		PanelMediator.getInstance().createGammaPreview();
     }
 
 	public void disableGammaButtons(){
@@ -219,5 +216,14 @@ public class SettingPanel extends JPanel{
 	public void enableGammaButtons(){
 		gammaConvertButton.setEnabled(true);
 		gammaAssignButton.setEnabled(true);
+	}
+
+	public void setFileTitle(String title){
+		fileTitle.setText(title);
+		fileTitle.setVisible(true);
+	}
+
+	public void eraseFileTitle(){
+		fileTitle.setVisible(false);
 	}
 }

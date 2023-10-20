@@ -1,6 +1,7 @@
 package ru.shurshavchiki.Frames;
 
 import lombok.Getter;
+import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.GridBagHelper;
 import ru.shurshavchiki.PanelMediator;
 import ru.shurshavchiki.Panels.GammaInputPanel;
@@ -21,13 +22,19 @@ public class GammaInputFrame extends JFrame{
 
     private GammaInputPanel gammaInputPanel2;
 
-    public GammaInputFrame(String operation){
-        gammaInputPanel1 = new GammaInputPanel("sRGB", false, this);
-        gammaInputPanel2 = new GammaInputPanel("Plain", true, this);
+    public GammaInputFrame(String operation, float chosenGamma){
+        gammaInputPanel1 = new GammaInputPanel("sRGB", false, this, chosenGamma);
+        gammaInputPanel2 = new GammaInputPanel("Plain", true, this, chosenGamma);
         buttonGroup = new ButtonGroup();
         buttonGroup.add(gammaInputPanel1.getJRadioButton());
         buttonGroup.add(gammaInputPanel2.getJRadioButton());
-        buttonGroup.setSelected(gammaInputPanel1.getJRadioButton().getModel(), true);
+        if (chosenGamma == 0) {
+            buttonGroup.setSelected(gammaInputPanel1.getJRadioButton().getModel(), true);
+            buttonGroup.setSelected(gammaInputPanel2.getJRadioButton().getModel(), false);
+        }else{
+            buttonGroup.setSelected(gammaInputPanel1.getJRadioButton().getModel(), false);
+            buttonGroup.setSelected(gammaInputPanel2.getJRadioButton().getModel(), true);
+        }
 
         this.operation = operation;
         this.setTitle("Enter gamma to " + operation);
@@ -64,16 +71,20 @@ public class GammaInputFrame extends JFrame{
     }
 
     private void handleOk(){
-        if (buttonGroup.isSelected(gammaInputPanel2.getJRadioButton().getModel()))
-            gammaInputPanel2.handleEvent();
+        try {
+            if (buttonGroup.isSelected(gammaInputPanel2.getJRadioButton().getModel()))
+                gammaInputPanel2.handleEvent();
 
-        if (Objects.equals(operation, "assign"))
-            PanelMediator.getInstance().getSettingPanel().handleInputGammaAssign(input);
+            if (Objects.equals(operation, "assign"))
+                PanelMediator.getInstance().getSettingPanel().handleInputGammaAssign(input);
 
-        if (Objects.equals(operation, "convert"))
-            PanelMediator.getInstance().getSettingPanel().handleInputGammaConvert(input);
+            if (Objects.equals(operation, "convert"))
+                PanelMediator.getInstance().getSettingPanel().handleInputGammaConvert(input);
 
-        handleCancel();
+            handleCancel();
+        }catch (Exception exception){
+            new ExceptionHandler().handleException(exception);
+        }
     }
 
     public void setInput(String input){
