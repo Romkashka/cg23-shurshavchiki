@@ -1,11 +1,10 @@
-package ru.shurshavchiki.businessLogic.entities;
+package ru.shurshavchiki.businessLogic.domain.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
-import ru.shurshavchiki.businessLogic.models.Header;
-import ru.shurshavchiki.businessLogic.models.RgbConvertable;
-import ru.shurshavchiki.businessLogic.models.RgbPixel;
+import ru.shurshavchiki.businessLogic.domain.models.Header;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 
 import java.util.ArrayList;
 import java.util.List;

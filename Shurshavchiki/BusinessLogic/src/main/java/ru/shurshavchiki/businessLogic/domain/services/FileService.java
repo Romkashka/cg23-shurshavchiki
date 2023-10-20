@@ -1,4 +1,4 @@
-package ru.shurshavchiki.businessLogic.services;
+package ru.shurshavchiki.businessLogic.domain.services;
 
 import lombok.Getter;
 import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
@@ -7,19 +7,20 @@ import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
 import ru.shurshavchiki.businessLogic.colorSpace.factories.ColorSpaceFactory;
 import ru.shurshavchiki.businessLogic.colorSpace.models.Channel;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
-import ru.shurshavchiki.businessLogic.entities.Displayable;
-import ru.shurshavchiki.businessLogic.entities.PnmFile;
+import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
+import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
+import ru.shurshavchiki.businessLogic.domain.models.Header;
+import ru.shurshavchiki.businessLogic.domain.models.ImageDataHolder;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
 import ru.shurshavchiki.businessLogic.exceptions.ColorSpaceException;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.gamma.util.GammaConvertersRegistry;
 import ru.shurshavchiki.businessLogic.gamma.util.PlainGammaConvertersRegistry;
-import ru.shurshavchiki.businessLogic.models.*;
-import ru.shurshavchiki.businessLogic.util.PnmFileReader;
-import ru.shurshavchiki.businessLogic.util.PnmFileWriter;
-import ru.shurshavchiki.businessLogic.util.ProjectDataHolderImpl;
-import ru.shurshavchiki.businessLogic.util.UserProjectDataHolder;
+import ru.shurshavchiki.businessLogic.domain.io.PnmFileReader;
+import ru.shurshavchiki.businessLogic.domain.io.PnmFileWriter;
 
 import java.io.File;
 import java.io.IOException;

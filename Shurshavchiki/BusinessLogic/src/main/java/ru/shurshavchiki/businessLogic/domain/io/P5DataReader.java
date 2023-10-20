@@ -1,8 +1,8 @@
-package ru.shurshavchiki.businessLogic.util;
+package ru.shurshavchiki.businessLogic.domain.io;
 
-import ru.shurshavchiki.businessLogic.models.Header;
-import ru.shurshavchiki.businessLogic.models.RgbConvertable;
-import ru.shurshavchiki.businessLogic.models.RgbPixel;
+import ru.shurshavchiki.businessLogic.domain.models.Header;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 
 import java.io.*;
 import java.util.ArrayList;

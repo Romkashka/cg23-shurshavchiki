@@ -2,7 +2,7 @@ package ru.shurshavchiki.Panels;
 
 import lombok.Getter;
 import ru.shurshavchiki.PanelMediator;
-import ru.shurshavchiki.businessLogic.entities.Displayable;
+import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

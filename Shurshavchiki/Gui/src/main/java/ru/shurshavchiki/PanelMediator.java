@@ -12,7 +12,7 @@ import ru.shurshavchiki.Panels.InstrumentPanel;
 import ru.shurshavchiki.Panels.OneToolPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
-import ru.shurshavchiki.businessLogic.services.FileService;
+import ru.shurshavchiki.businessLogic.domain.services.FileService;
 
 import javax.swing.*;
 

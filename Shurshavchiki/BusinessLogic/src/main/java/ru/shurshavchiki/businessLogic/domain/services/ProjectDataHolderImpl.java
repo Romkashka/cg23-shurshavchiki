@@ -1,10 +1,10 @@
-package ru.shurshavchiki.businessLogic.util;
+package ru.shurshavchiki.businessLogic.domain.services;
 
 import lombok.Getter;
 import lombok.Setter;
 import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
 import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
-import ru.shurshavchiki.businessLogic.entities.Displayable;
+import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 
 import java.io.File;

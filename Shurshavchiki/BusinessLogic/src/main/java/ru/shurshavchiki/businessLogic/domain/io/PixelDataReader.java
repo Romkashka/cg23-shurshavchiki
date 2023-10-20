@@ -1,6 +1,6 @@
-package ru.shurshavchiki.businessLogic.util;
+package ru.shurshavchiki.businessLogic.domain.io;
 
-import ru.shurshavchiki.businessLogic.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 
 import java.io.IOException;
 import java.util.ArrayList;

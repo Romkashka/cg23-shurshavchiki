@@ -1,4 +1,4 @@
-package ru.shurshavchiki.businessLogic.models;
+package ru.shurshavchiki.businessLogic.domain.models;
 
 public interface RgbConvertable {
     int Red();

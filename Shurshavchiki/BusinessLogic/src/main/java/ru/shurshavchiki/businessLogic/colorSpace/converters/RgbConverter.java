@@ -1,8 +1,8 @@
 package ru.shurshavchiki.businessLogic.colorSpace.converters;
 
 import ru.shurshavchiki.businessLogic.exceptions.ColorSpaceException;
-import ru.shurshavchiki.businessLogic.models.RgbConvertable;
-import ru.shurshavchiki.businessLogic.models.RgbPixel;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 
 import java.util.ArrayList;
 import java.util.List;

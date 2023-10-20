@@ -1,8 +1,8 @@
-package ru.shurshavchiki.businessLogic.entities;
+package ru.shurshavchiki.businessLogic.domain.entities;
 
 import lombok.NonNull;
-import ru.shurshavchiki.businessLogic.models.Header;
-import ru.shurshavchiki.businessLogic.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.Header;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 
 import java.util.List;
 

@@ -1,12 +1,12 @@
-package ru.shurshavchiki.businessLogic.util;
+package ru.shurshavchiki.businessLogic.domain.io;
 
-import ru.shurshavchiki.businessLogic.entities.Displayable;
-import ru.shurshavchiki.businessLogic.entities.PnmFile;
+import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
+import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
 import lombok.Getter;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
-import ru.shurshavchiki.businessLogic.models.Header;
-import ru.shurshavchiki.businessLogic.models.ImageDataHolder;
-import ru.shurshavchiki.businessLogic.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.Header;
+import ru.shurshavchiki.businessLogic.domain.models.ImageDataHolder;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 
 import java.io.File;
 import java.io.FileInputStream;
