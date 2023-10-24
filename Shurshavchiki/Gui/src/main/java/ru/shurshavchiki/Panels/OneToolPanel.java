@@ -26,15 +26,18 @@ public class OneToolPanel extends JPanel {
 
 	JSpinner spinnerFirstAlpha;
 
-	JTextPane firstAlpha = new JTextPane();
+	JTextPane firstAlpha;
+
+	JSpinner spinnerMainSize;
+
+	JTextPane mainSize;
 
 	public OneToolPanel(){
-		title.setEditable(false);
-		title.setVisible(false);
-		title.setOpaque(false);
+		title = setJText();
 		title.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 24));
 
 		buttonMainColor = new JButton("Color");
+		buttonMainColor.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 18));
 		buttonMainColor.setPreferredSize(new Dimension(96, 48));
 		buttonMainColor.setContentAreaFilled(true);
 		buttonMainColor.setOpaque(false);
@@ -48,28 +51,33 @@ public class OneToolPanel extends JPanel {
 		mainColorPreview.setOpaque(true);
 		mainColorPreview.setVisible(false);
 
-		SpinnerModel modelFirst = new SpinnerNumberModel(100, 0, 100, 1);
-		firstAlpha.setEditable(false);
-		firstAlpha.setVisible(false);
-		firstAlpha.setOpaque(false);
-		firstAlpha.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 12));
-		spinnerFirstAlpha = new JSpinner(modelFirst);
-		spinnerFirstAlpha.setVisible(false);
-		spinnerFirstAlpha.setOpaque(false);
+		SpinnerModel modelMainColor = new SpinnerNumberModel(100, 0, 100, 1);
+		spinnerFirstAlpha = setJSpinner(modelMainColor);
+		firstAlpha = setJText();
+
+		SpinnerModel modelWight = new SpinnerNumberModel(16, 0.01, 120, 1);
+		spinnerMainSize = setJSpinner(modelWight);
+		mainSize = setJText();
 
 		this.setLayout(new GridBagLayout());
 		GridBagHelper gridSetter = new GridBagHelper();
 		gridSetter.nextCell().fillHorizontally();
 		this.add(title, gridSetter.get());
-		gridSetter.insertEmptyRow(this, 10);
-		gridSetter.nextRow().nextCell().alignLeft();
+		gridSetter.insertEmptyRow(this, 20);
+		gridSetter.nextRow().nextCell().alignCenter();
 		this.add(buttonMainColor, gridSetter.get());
 		gridSetter.nextCell();
 		this.add(mainColorPreview, gridSetter.get());
-		gridSetter.nextRow().nextCell().alignLeft();
+		gridSetter.insertEmptyRow(this, 10);
+		gridSetter.nextRow().nextCell().alignCenter();
 		this.add(firstAlpha, gridSetter.get());
-		gridSetter.nextCell();
+		gridSetter.nextCell().alignBottom();
 		this.add(spinnerFirstAlpha, gridSetter.get());
+		gridSetter.insertEmptyRow(this, 10);
+		gridSetter.nextRow().nextCell().alignCenter();
+		this.add(mainSize, gridSetter.get());
+		gridSetter.nextCell().alignBottom();
+		this.add(spinnerMainSize, gridSetter.get());
 		gridSetter.insertEmptyFiller(this);
 	}
 
@@ -83,12 +91,15 @@ public class OneToolPanel extends JPanel {
 	public void setupLine(){
 		clearAll();
 		title.setText("Line");
-		title.setVisible(true);
 		firstAlpha.setText("Alpha:");
+		mainSize.setText("Thickness:");
+		title.setVisible(true);
 		buttonMainColor.setVisible(true);
 		mainColorPreview.setVisible(true);
 		firstAlpha.setVisible(true);
 		spinnerFirstAlpha.setVisible(true);
+		mainSize.setVisible(true);
+		spinnerMainSize.setVisible(true);
 		chosen = "Line";
 	}
 
@@ -98,10 +109,29 @@ public class OneToolPanel extends JPanel {
 		mainColorPreview.setVisible(false);
 		firstAlpha.setVisible(false);
 		spinnerFirstAlpha.setVisible(false);
+		mainSize.setVisible(false);
+		spinnerMainSize.setVisible(false);
 	}
 
 	public void setMainColor(Color color){
 		mainColor = color;
 		mainColorPreview.setBackground(mainColor);
+	}
+
+	private JSpinner setJSpinner(SpinnerModel spinnerModel){
+		JSpinner spinner = new JSpinner(spinnerModel);
+		spinner.setPreferredSize(new Dimension(48, 28));
+		spinner.setVisible(false);
+		spinner.setOpaque(false);
+		return spinner;
+	}
+
+	private JTextPane setJText(){
+		JTextPane text = new JTextPane();
+		text.setEditable(false);
+		text.setVisible(false);
+		text.setOpaque(false);
+		text.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 18));
+		return text;
 	}
 }

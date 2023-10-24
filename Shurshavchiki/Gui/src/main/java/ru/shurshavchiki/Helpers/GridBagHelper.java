@@ -75,6 +75,11 @@ public class GridBagHelper {
         return this;
     }
 
+    public GridBagHelper alignBottom() {
+        constraints.anchor = GridBagConstraints.SOUTH;
+        return this;
+    }
+
     public GridBagHelper setWeights(float horizontal, float vertical) {
         constraints.weightx = horizontal;
         constraints.weighty = vertical;
