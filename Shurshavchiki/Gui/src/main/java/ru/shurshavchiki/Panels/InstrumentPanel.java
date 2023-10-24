@@ -32,7 +32,7 @@ public class InstrumentPanel extends JPanel {
 		}else{
 			buttonMouse = new JButton("Cursor");
 		}
-		buttonMouse.setPreferredSize(new Dimension(48, 48));
+		buttonMouse.setPreferredSize(new Dimension(64, 64));
 		buttonMouse.setContentAreaFilled(false);
 		buttonMouse.setBorderPainted(false);
 		buttonMouse.setOpaque(false);
@@ -44,7 +44,7 @@ public class InstrumentPanel extends JPanel {
 		}else{
 			buttonLine = new JButton("Line");
 		}
-		buttonLine.setPreferredSize(new Dimension(48, 48));
+		buttonLine.setPreferredSize(new Dimension(64, 64));
 		buttonLine.setContentAreaFilled(false);
 		buttonLine.setBorderPainted(false);
 		buttonLine.setOpaque(false);

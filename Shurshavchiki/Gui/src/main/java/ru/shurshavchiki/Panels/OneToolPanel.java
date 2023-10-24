@@ -1,7 +1,10 @@
 package ru.shurshavchiki.Panels;
 
 import lombok.Getter;
+import lombok.Setter;
+import ru.shurshavchiki.Frames.ColorChooserFrame;
 import ru.shurshavchiki.Helpers.GridBagHelper;
+import ru.shurshavchiki.Listeners.InstrumentChoseListener;
 import ru.shurshavchiki.PanelMediator;
 
 import javax.swing.*;
@@ -12,19 +15,18 @@ public class OneToolPanel extends JPanel {
 	@Getter
 	private String chosen;
 
-	JTextPane title = new JTextPane();
+	private JTextPane title = new JTextPane();
 
-	JSpinner spinnerFirstChannel;
+	private JButton buttonMainColor;
 
-	JTextPane firstChannel = new JTextPane();
+	private JLabel mainColorPreview = new JLabel();
 
-	JSpinner spinnerSecondChannel;
+	@Getter
+	private Color mainColor = new Color(0, 0, 0);
 
-	JTextPane secondChannel = new JTextPane();
+	JSpinner spinnerFirstAlpha;
 
-	JSpinner spinnerThirdChannel;
-
-	JTextPane thirdChannel = new JTextPane();
+	JTextPane firstAlpha = new JTextPane();
 
 	public OneToolPanel(){
 		title.setEditable(false);
@@ -32,50 +34,42 @@ public class OneToolPanel extends JPanel {
 		title.setOpaque(false);
 		title.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 24));
 
-		SpinnerModel modelFirst = new SpinnerNumberModel(0, 0, 255, 1);
-		firstChannel.setEditable(false);
-		firstChannel.setVisible(false);
-		firstChannel.setOpaque(false);
-		firstChannel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 12));
-		spinnerFirstChannel = new JSpinner(modelFirst);
-		spinnerFirstChannel.setVisible(false);
-		spinnerFirstChannel.setOpaque(false);
+		buttonMainColor = new JButton("Color");
+		buttonMainColor.setPreferredSize(new Dimension(96, 48));
+		buttonMainColor.setContentAreaFilled(true);
+		buttonMainColor.setOpaque(false);
+		buttonMainColor.setVisible(false);
+		buttonMainColor.setActionCommand("main color");
+		buttonMainColor.addActionListener(new InstrumentChoseListener(this));
 
-		SpinnerModel modelSecond = new SpinnerNumberModel(0, 0, 255, 1);
-		secondChannel.setEditable(false);
-		secondChannel.setVisible(false);
-		secondChannel.setOpaque(false);
-		secondChannel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 12));
-		spinnerSecondChannel = new JSpinner(modelSecond);
-		spinnerSecondChannel.setVisible(false);
-		spinnerSecondChannel.setOpaque(false);
+		mainColorPreview.setBackground(mainColor);
+		mainColorPreview.setPreferredSize(new Dimension(48, 48));
+		mainColorPreview.setText(" ");
+		mainColorPreview.setOpaque(true);
+		mainColorPreview.setVisible(false);
 
-		SpinnerModel modelThird = new SpinnerNumberModel(0, 0, 255, 1);
-		thirdChannel.setEditable(false);
-		thirdChannel.setVisible(false);
-		thirdChannel.setOpaque(false);
-		thirdChannel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 12));
-		spinnerThirdChannel = new JSpinner(modelThird);
-		spinnerThirdChannel.setVisible(false);
-		spinnerThirdChannel.setOpaque(false);
+		SpinnerModel modelFirst = new SpinnerNumberModel(100, 0, 100, 1);
+		firstAlpha.setEditable(false);
+		firstAlpha.setVisible(false);
+		firstAlpha.setOpaque(false);
+		firstAlpha.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 12));
+		spinnerFirstAlpha = new JSpinner(modelFirst);
+		spinnerFirstAlpha.setVisible(false);
+		spinnerFirstAlpha.setOpaque(false);
 
 		this.setLayout(new GridBagLayout());
 		GridBagHelper gridSetter = new GridBagHelper();
-		gridSetter.fillHorizontally();
+		gridSetter.nextCell().fillHorizontally();
 		this.add(title, gridSetter.get());
 		gridSetter.insertEmptyRow(this, 10);
-		gridSetter.nextRow().alignLeft().span();
-		this.add(firstChannel, gridSetter.get());
-		gridSetter.nextCell().alignRight().span();
-		this.add(spinnerFirstChannel, gridSetter.get());
-		gridSetter.nextRow().alignLeft().span();
-		this.add(secondChannel, gridSetter.get());
-		gridSetter.nextCell().alignRight().span();
-		this.add(spinnerSecondChannel, gridSetter.get());
-		gridSetter.nextRow().alignLeft().span();
-		this.add(thirdChannel, gridSetter.get());
-		gridSetter.nextCell().alignRight().span();
-		this.add(spinnerThirdChannel, gridSetter.get());
+		gridSetter.nextRow().nextCell().alignLeft();
+		this.add(buttonMainColor, gridSetter.get());
+		gridSetter.nextCell();
+		this.add(mainColorPreview, gridSetter.get());
+		gridSetter.nextRow().nextCell().alignLeft();
+		this.add(firstAlpha, gridSetter.get());
+		gridSetter.nextCell();
+		this.add(spinnerFirstAlpha, gridSetter.get());
 		gridSetter.insertEmptyFiller(this);
 	}
 
@@ -87,29 +81,27 @@ public class OneToolPanel extends JPanel {
 	}
 
 	public void setupLine(){
-		clearAll();;
+		clearAll();
 		title.setText("Line");
-		var channels = PanelMediator.getInstance().getListColorChannels(PanelMediator.getInstance().getSettingPanel().getChosenColorSpace());
-		firstChannel.setText(channels.get(0));
-		secondChannel.setText(channels.get(1));
-		thirdChannel.setText(channels.get(2));
 		title.setVisible(true);
-		firstChannel.setVisible(true);
-		secondChannel.setVisible(true);
-		thirdChannel.setVisible(true);
-		spinnerFirstChannel.setVisible(true);
-		spinnerSecondChannel.setVisible(true);
-		spinnerThirdChannel.setVisible(true);
+		firstAlpha.setText("Alpha:");
+		buttonMainColor.setVisible(true);
+		mainColorPreview.setVisible(true);
+		firstAlpha.setVisible(true);
+		spinnerFirstAlpha.setVisible(true);
 		chosen = "Line";
 	}
 
 	private void clearAll(){
 		title.setVisible(false);
-		firstChannel.setVisible(false);
-		secondChannel.setVisible(false);
-		thirdChannel.setVisible(false);
-		spinnerFirstChannel.setVisible(false);
-		spinnerSecondChannel.setVisible(false);
-		spinnerThirdChannel.setVisible(false);
+		buttonMainColor.setVisible(false);
+		mainColorPreview.setVisible(false);
+		firstAlpha.setVisible(false);
+		spinnerFirstAlpha.setVisible(false);
+	}
+
+	public void setMainColor(Color color){
+		mainColor = color;
+		mainColorPreview.setBackground(mainColor);
 	}
 }

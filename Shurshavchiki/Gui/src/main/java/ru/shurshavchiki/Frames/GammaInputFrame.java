@@ -61,7 +61,7 @@ public class GammaInputFrame extends JFrame{
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        this.input = "0";
+        this.input = String.valueOf(chosenGamma);
 
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }

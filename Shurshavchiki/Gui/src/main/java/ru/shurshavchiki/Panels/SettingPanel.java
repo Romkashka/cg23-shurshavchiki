@@ -158,9 +158,6 @@ public class SettingPanel extends JPanel{
 		}
 
 		chosenChannels = list;
-
-		if (PanelMediator.getInstance().getOneToolPanel().getChosen().equals("Line"))
-			PanelMediator.getInstance().getInstrumentPanel().getButtonLine().doClick();
 	}
 
 	public void changeChosenChannels(ColorChannelListener colorChannelListener){
