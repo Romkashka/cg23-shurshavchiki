@@ -14,6 +14,11 @@ public class MouseListener extends MouseAdapter {
     @Getter
     private Point startPoint;
 
+    public void clear(){
+        firstClick = true;
+        startPoint = null;
+    }
+
     @Override
     public void mouseClicked(MouseEvent event) {
         if (PanelMediator.getInstance().getOneToolPanel().getChosen().equals("Line")){
@@ -22,8 +27,7 @@ public class MouseListener extends MouseAdapter {
                 startPoint = point;
                 firstClick = false;
             } else {
-                PanelMediator.getInstance().getDrawingPanel().showLinePreview(startPoint, point);
-//                PanelMediator.getInstance().getDrawingPanel().completeLinePreview(startPoint, point);
+                PanelMediator.getInstance().getDrawingPanel().completeLinePreview(startPoint, point);
                 firstClick = true;
             }
         }

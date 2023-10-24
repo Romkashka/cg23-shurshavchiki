@@ -28,7 +28,7 @@ public class OneToolPanel extends JPanel {
 
 	@Getter
 	@Setter
-	private Float mainSize = 16f;
+	private Float mainSize = 4f;
 
 	JSpinner spinnerMainSize;
 
@@ -99,6 +99,7 @@ public class OneToolPanel extends JPanel {
 		mainColorPreview.setVisible(false);
 		mainSizeText.setVisible(false);
 		spinnerMainSize.setVisible(false);
+		PanelMediator.getInstance().getDrawingPanel().clearPreview();
 	}
 
 	public void setMainColor(Color color){

@@ -7,6 +7,8 @@ import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +17,19 @@ import javax.swing.*;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class DrawingPanel extends JPanel {
+
 	private BufferedImage image = null;
 
 	@Getter
 	private Displayable displayable = null;
 
+	private BufferedImage preview = null;
+
+	private MouseListener mouseListener = new MouseListener();
+
 	public DrawingPanel(){
-		this.addMouseListener(new MouseListener());
-		this.addMouseMotionListener(new MouseListener());
+		this.addMouseListener(mouseListener);
+		this.addMouseMotionListener(mouseListener);
 	}
 
 	public void loadImage(Displayable displayable) {
@@ -62,10 +69,23 @@ public class DrawingPanel extends JPanel {
 		PanelMediator.getInstance().validateScrollPane();
 	}
 
+	public void completeLinePreview(Point startPoint, Point endPoint){
+		preview = null;
+		paintComponent(this.getGraphics());
+	}
+
+	public static BufferedImage deepCopy(BufferedImage bi) {
+		ColorModel cm = bi.getColorModel();
+		boolean isAlphaPreMultiplied = cm.isAlphaPremultiplied();
+		WritableRaster raster = bi.copyData(bi.getRaster().createCompatibleWritableRaster());
+		return new BufferedImage(cm, raster, isAlphaPreMultiplied, null);
+	}
+
 	public void showLinePreview(Point startPoint, Point endPoint){
 		if (displayable != null){
+			preview = deepCopy(image);
 			int rgb = PanelMediator.getInstance().getOneToolPanel().getMainColor().getRGB();
-			float size = PanelMediator.getInstance().getOneToolPanel().getMainSize();
+			float size = PanelMediator.getInstance().getOneToolPanel().getMainSize();;
 			List<Point> points = new ArrayList<>();
 			points.add(startPoint);
 			points.add(endPoint);
@@ -88,14 +108,25 @@ public class DrawingPanel extends JPanel {
 			}
 
 			for (Point point : points){
-				image.setRGB(point.x, point.y, rgb);
+				preview.setRGB(point.x, point.y, rgb);
 			}
+			paintComponent(this.getGraphics());
 		}
+	}
+
+	public void clearPreview(){
+		preview = null;
+		mouseListener.clear();
+		if (displayable != null)
+			paintComponent(this.getGraphics());
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(image, 0, 0, null);
+		if (preview == null)
+			g2.drawImage(image, 0, 0, null);
+		else
+			g2.drawImage(preview, 0, 0, null);
 	}
 }
