@@ -36,7 +36,7 @@ public class OneToolPanel extends JPanel {
 		firstChannel.setEditable(false);
 		firstChannel.setVisible(false);
 		firstChannel.setOpaque(false);
-		firstChannel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 16));
+		firstChannel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 12));
 		spinnerFirstChannel = new JSpinner(modelFirst);
 		spinnerFirstChannel.setVisible(false);
 		spinnerFirstChannel.setOpaque(false);
@@ -45,7 +45,7 @@ public class OneToolPanel extends JPanel {
 		secondChannel.setEditable(false);
 		secondChannel.setVisible(false);
 		secondChannel.setOpaque(false);
-		secondChannel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 16));
+		secondChannel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 12));
 		spinnerSecondChannel = new JSpinner(modelSecond);
 		spinnerSecondChannel.setVisible(false);
 		spinnerSecondChannel.setOpaque(false);
@@ -54,7 +54,7 @@ public class OneToolPanel extends JPanel {
 		thirdChannel.setEditable(false);
 		thirdChannel.setVisible(false);
 		thirdChannel.setOpaque(false);
-		thirdChannel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 16));
+		thirdChannel.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 12));
 		spinnerThirdChannel = new JSpinner(modelThird);
 		spinnerThirdChannel.setVisible(false);
 		spinnerThirdChannel.setOpaque(false);
@@ -62,19 +62,20 @@ public class OneToolPanel extends JPanel {
 		this.setLayout(new GridBagLayout());
 		GridBagHelper gridSetter = new GridBagHelper();
 		gridSetter.fillHorizontally();
-		this.add(title);
+		this.add(title, gridSetter.get());
 		gridSetter.insertEmptyRow(this, 10);
-		gridSetter.nextRow().fillHorizontally();
-		this.add(firstChannel);
-		this.add(spinnerFirstChannel);
-		gridSetter.insertEmptyRow(this, 10);
-		gridSetter.nextRow().fillHorizontally();
-		this.add(secondChannel);
-		this.add(spinnerSecondChannel);
-		gridSetter.insertEmptyRow(this, 10);
-		gridSetter.nextRow().fillHorizontally();
-		this.add(thirdChannel);
-		this.add(spinnerThirdChannel);
+		gridSetter.nextRow().alignLeft().span();
+		this.add(firstChannel, gridSetter.get());
+		gridSetter.nextCell().alignRight().span();
+		this.add(spinnerFirstChannel, gridSetter.get());
+		gridSetter.nextRow().alignLeft().span();
+		this.add(secondChannel, gridSetter.get());
+		gridSetter.nextCell().alignRight().span();
+		this.add(spinnerSecondChannel, gridSetter.get());
+		gridSetter.nextRow().alignLeft().span();
+		this.add(thirdChannel, gridSetter.get());
+		gridSetter.nextCell().alignRight().span();
+		this.add(spinnerThirdChannel, gridSetter.get());
 		gridSetter.insertEmptyFiller(this);
 	}
 

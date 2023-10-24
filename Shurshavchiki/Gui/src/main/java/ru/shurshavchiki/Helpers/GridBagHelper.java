@@ -7,7 +7,9 @@ import java.awt.*;
 
 @NoArgsConstructor
 public class GridBagHelper {
-    private int gridx, gridy;
+    private int gridx = 0;
+
+    private int gridy = 0;
 
     private GridBagConstraints constraints = new GridBagConstraints();
 
@@ -63,14 +65,13 @@ public class GridBagHelper {
         return this;
     }
 
-    public GridBagHelper alignRight() {
-        constraints.anchor = GridBagConstraints.LINE_END;
+    public GridBagHelper alignCenter() {
+        constraints.anchor = GridBagConstraints.CENTER;
         return this;
     }
 
-    public GridBagHelper setInsets(int left, int top, int right, int bottom) {
-        Insets i = new Insets(top, left, bottom, right);
-        constraints.insets = i;
+    public GridBagHelper alignRight() {
+        constraints.anchor = GridBagConstraints.LINE_END;
         return this;
     }
 
