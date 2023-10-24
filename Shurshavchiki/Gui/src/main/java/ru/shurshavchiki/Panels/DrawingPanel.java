@@ -45,7 +45,7 @@ public class DrawingPanel extends JPanel {
 		return new Dimension(image.getWidth(), image.getHeight());
 	}
 
-	public void setDisplayable(Displayable displayable) {
+	private void setDisplayable(Displayable displayable) {
 		this.displayable = displayable;
 	}
 
@@ -53,12 +53,12 @@ public class DrawingPanel extends JPanel {
 		displayable = null;
 		image = null;
 		this.paint(getGraphics());
+		PanelMediator.getInstance().validateScrollPane();
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(image, 0, 0, null);
-		PanelMediator.getInstance().validateScrollPane();
 	}
 }

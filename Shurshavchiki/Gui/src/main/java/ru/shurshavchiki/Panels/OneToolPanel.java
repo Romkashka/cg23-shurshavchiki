@@ -24,10 +24,12 @@ public class OneToolPanel extends JPanel {
 	@Getter
 	private Color mainColor = new Color(0, 0, 0);
 
+	@Getter
 	JSpinner spinnerFirstAlpha;
 
 	JTextPane firstAlpha;
 
+	@Getter
 	JSpinner spinnerMainSize;
 
 	JTextPane mainSize;
