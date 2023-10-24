@@ -2,6 +2,7 @@ package ru.shurshavchiki.Frames;
 
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.PanelMediator;
+import ru.shurshavchiki.Panels.InstrumentPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
 
 import java.awt.*;
@@ -31,12 +32,14 @@ public class ImageFrame extends JFrame {
         }
 
         PanelMediator.getInstance().setSettingPanel(new SettingPanel());
+        PanelMediator.getInstance().setInstrumentPanel(new InstrumentPanel());
 
         this.setJMenuBar(PanelMediator.getInstance().getSettingPanel().getMenuBar());
-//    	this.getContentPane().add(PanelMediator.getInstance().getOneToolPanel(), BorderLayout.EAST);
-//        this.getContentPane().add(PanelMediator.getInstance().getInstrumentPanel(), BorderLayout.WEST);
+    	this.getContentPane().add(PanelMediator.getInstance().getOneToolPanel(), BorderLayout.EAST);
+        this.getContentPane().add(PanelMediator.getInstance().getInstrumentPanel(), BorderLayout.WEST);
         this.getContentPane().add(PanelMediator.getInstance().getScrollPane(), BorderLayout.CENTER);
-
+        PanelMediator.getInstance().getInstrumentPanel().setPreferredSize(new Dimension(64, 600));
+        PanelMediator.getInstance().getOneToolPanel().setPreferredSize(new Dimension(200, 600));
 
         ClassLoader classLoader = getClass().getClassLoader();
         URL resource = classLoader.getResource("icon.png");

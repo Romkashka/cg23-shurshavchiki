@@ -2,7 +2,7 @@ package ru.shurshavchiki.Frames;
 
 import lombok.Getter;
 import ru.shurshavchiki.ExceptionHandler;
-import ru.shurshavchiki.GridBagHelper;
+import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.PanelMediator;
 import ru.shurshavchiki.Panels.GammaInputPanel;
 

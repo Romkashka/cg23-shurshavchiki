@@ -1,42 +1,64 @@
 package ru.shurshavchiki.Panels;
 
+import lombok.Getter;
+import ru.shurshavchiki.ExceptionHandler;
+import ru.shurshavchiki.Listeners.InstrumentChoseListener;
+import ru.shurshavchiki.PanelMediator;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class InstrumentPanel extends JPanel {
 
-	// private JRadioButton radioBattonPen, radioButtonEraser;
-	// private JButton clearButton;
-	
+	@Getter
+	private JButton buttonMouse;
+
+	@Getter
+	private JButton buttonLine;
+
 	public InstrumentPanel(){
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
-		/*radioBattonPen = new JRadioButton("Pen", true);
-		this.add(radioBattonPen, true);
-		radioBattonPen.addActionListener(new ButtonListener());
-		
-		radioButtonEraser = new JRadioButton("Eraser");
-		this.add(radioButtonEraser);
-		radioButtonEraser.addActionListener(new ButtonListener());
+		ClassLoader classLoader = getClass().getClassLoader();
+
+		URL cursorResource = classLoader.getResource("cursor.png");
+		if (cursorResource != null) {
+			Icon cursorIcon = new ImageIcon(cursorResource.getPath());
+			buttonMouse = new JButton(cursorIcon);
+		}else{
+			buttonMouse = new JButton("Cursor");
+		}
+		buttonMouse.setPreferredSize(new Dimension(48, 48));
+		buttonMouse.setContentAreaFilled(false);
+		buttonMouse.setBorderPainted(false);
+		buttonMouse.setOpaque(false);
+
+		URL lineResource = classLoader.getResource("line.png");
+		if (lineResource != null) {
+			Icon lineIcon = new ImageIcon(lineResource.getPath());
+			buttonLine = new JButton(lineIcon);
+		}else{
+			buttonLine = new JButton("Line");
+		}
+		buttonLine.setPreferredSize(new Dimension(48, 48));
+		buttonLine.setContentAreaFilled(false);
+		buttonLine.setBorderPainted(false);
+		buttonLine.setOpaque(false);
+
+		this.add(buttonMouse);
+		this.add(buttonLine);
+		buttonMouse.addActionListener(new InstrumentChoseListener(PanelMediator.getInstance().getOneToolPanel()));
+		buttonLine.addActionListener(new InstrumentChoseListener(PanelMediator.getInstance().getOneToolPanel()));
+		buttonMouse.setActionCommand("cursor");
+		buttonLine.setActionCommand("line");
 		
 		ButtonGroup group = new ButtonGroup();
-		group.add(radioBattonPen);
-		group.add(radioButtonEraser);
-		
-		clearButton = new JButton("Clear");
-		this.add(clearButton);
-		clearButton.addActionListener(new ButtonListener());*/
-	}
-	
-	private class ButtonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			// if (clearButton.getModel().isArmed()) {
-			// }
-		}
+		group.add(buttonMouse);
+		group.add(buttonLine);
+		buttonMouse.doClick();
 	}
 }

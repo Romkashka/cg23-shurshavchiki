@@ -1,4 +1,4 @@
-package ru.shurshavchiki;
+package ru.shurshavchiki.Helpers;
 
 import lombok.NoArgsConstructor;
 

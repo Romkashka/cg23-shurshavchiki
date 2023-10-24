@@ -27,7 +27,8 @@ public class PanelMediator {
 	private DrawingPanel drawingPanel = new DrawingPanel();
 
 	@Getter
-	private InstrumentPanel instrumentPanel = new InstrumentPanel();
+	@Setter
+	private InstrumentPanel instrumentPanel;
 
 	@Getter
 	private OneToolPanel oneToolPanel = new OneToolPanel();
