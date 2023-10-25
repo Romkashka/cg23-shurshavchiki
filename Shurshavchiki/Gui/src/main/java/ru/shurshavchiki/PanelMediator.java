@@ -12,6 +12,8 @@ import ru.shurshavchiki.Panels.InstrumentPanel;
 import ru.shurshavchiki.Panels.OneToolPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
+import ru.shurshavchiki.businessLogic.domain.services.DispatcherService;
+import ru.shurshavchiki.businessLogic.domain.services.DispatcherServiceImpl;
 import ru.shurshavchiki.businessLogic.domain.services.FileServiceImpl;
 
 import javax.swing.*;
@@ -21,7 +23,7 @@ public class PanelMediator {
 	private Boolean somethingChanged = false;
 
 	@Getter
-	private FileServiceImpl fileService = new FileServiceImpl();
+	DispatcherService service = DispatcherServiceImpl.getInstance();
 
 	@Getter
 	private DrawingPanel drawingPanel = new DrawingPanel();
@@ -49,19 +51,20 @@ public class PanelMediator {
 	}
 
 	public void openNewImage(File file) throws IOException {
-		drawingPanel.loadImage(fileService.readFile(file));
+		service.readFile(file);
+		drawingPanel.loadImage(service.getUserProjectDataHolder().getShownDisplayable());
 		setGammaDefault();
 		settingPanel.enableGammaButtons();
 		settingPanel.setFileTitle(file.getAbsolutePath());
 	}
 
 	public void saveImage(File file) throws IOException {
-		fileService.saveFile(drawingPanel.getDisplayable(), file);
+		service.saveCurrentFile(file);
     	somethingChanged = false;
 	}
 
 	public void saveAsImage(File file) throws IOException {
-		fileService.saveFile(drawingPanel.getDisplayable(), file);
+		service.saveCurrentFile(file);
     	somethingChanged = false;
 	}
 
@@ -99,7 +102,7 @@ public class PanelMediator {
 	}
 
     public List<String>getListColorSpaces(){
-        return fileService.getColorSpacesNames();
+        return service.getColorSpacesNames();
     }
 
     public List<String> getListColorChannels(String space){
@@ -109,12 +112,12 @@ public class PanelMediator {
 
     public void createPreview(){
 		if (drawingPanel.getDisplayable() != null)
-			drawingPanel.loadImage(fileService.getDataHolder().getShownDisplayable());
+			drawingPanel.loadImage(service.getUserProjectDataHolder().getShownDisplayable());
     }
 
 	public void createGammaPreview(){
 		if (drawingPanel.getDisplayable() != null)
-			drawingPanel.loadImage(fileService.getDataHolder().getShownDisplayable());
+			drawingPanel.loadImage(service.getUserProjectDataHolder().getShownDisplayable());
 	}
 
 	public void validateScrollPane(){
@@ -122,23 +125,23 @@ public class PanelMediator {
 	}
 
 	public void changeChannel(List<String> channel) {
-		fileService.chooseChannel(channel);
+		service.chooseChannel(channel);
 		if (drawingPanel.getDisplayable() != null)
 			somethingChanged = true;
 	}
 
 	public void changeColorSpace(String newSpace){
-		fileService.chooseColorSpace(newSpace);
+		service.chooseColorSpace(newSpace);
 		if (drawingPanel.getDisplayable() != null)
 			somethingChanged = true;
 	}
 
 	public void assignGamma(float displayGamma) {
-		fileService.assignGamma(displayGamma);
+		service.assignGamma(displayGamma);
 	}
 
 	public void convertGamma(float fileGamma) {
-		fileService.convertGamma(fileGamma);
+		service.convertGamma(fileGamma);
 	}
 
 	private void setGammaDefault(){
