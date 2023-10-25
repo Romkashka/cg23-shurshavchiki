@@ -53,7 +53,7 @@ public class OneToolPanel extends JPanel {
 		mainColorPreview.setEditable(false);
 		mainColorPreview.setVisible(false);
 
-		SpinnerModel modelWight = new SpinnerNumberModel(16f, 0.01f, 120f, 1f);
+		SpinnerModel modelWight = new SpinnerNumberModel(4f, 0.01f, 120f, 1f);
 		spinnerMainSize = setJSpinner(modelWight, "main size");
 		mainSizeText = setJText();
 
