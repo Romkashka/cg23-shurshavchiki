@@ -4,16 +4,16 @@ import lombok.Getter;
 
 public class Header {
     @Getter
-    private String magicNumber;
+    private final String magicNumber;
 
     @Getter
-    private int width;
+    private final int width;
 
     @Getter
-    private int height;
+    private final int height;
 
     @Getter
-    private int maxValue;
+    private final int maxValue;
 
     public Header(String magicNumber, int width, int height, int maxValue) {
         this.magicNumber = magicNumber;

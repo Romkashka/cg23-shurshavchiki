@@ -12,7 +12,7 @@ import ru.shurshavchiki.Panels.InstrumentPanel;
 import ru.shurshavchiki.Panels.OneToolPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
-import ru.shurshavchiki.businessLogic.domain.services.FileService;
+import ru.shurshavchiki.businessLogic.domain.services.FileServiceImpl;
 
 import javax.swing.*;
 
@@ -21,7 +21,7 @@ public class PanelMediator {
 	private Boolean somethingChanged = false;
 
 	@Getter
-	private FileService fileService = new FileService();
+	private FileServiceImpl fileService = new FileServiceImpl();
 
 	@Getter
 	private DrawingPanel drawingPanel = new DrawingPanel();
