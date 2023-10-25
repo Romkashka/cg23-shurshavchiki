@@ -37,7 +37,6 @@ public class MouseListener extends MouseAdapter {
     public void mouseMoved(MouseEvent event){
         Point point = event.getPoint();
         if(!firstClick){
-            System.out.println(point.x);
             PanelMediator.getInstance().getDrawingPanel().showLinePreview(startPoint, point);
         }
     }
