@@ -19,9 +19,9 @@ public class DispatcherServiceImpl implements DispatcherService {
 
     private DispatcherServiceImpl() {
         userProjectDataHolder = new ProjectDataHolderImpl();
-        fileService = new FileServiceImpl();
+        fileService = new FileServiceImpl(this.userProjectDataHolder);
         imageProcessingService = new ImageProcessingServiceImpl(this.userProjectDataHolder);
-        drawingService = new DrawingServiceImpl();
+        drawingService = new DrawingServiceImpl(this.userProjectDataHolder);
     }
 
     @Override

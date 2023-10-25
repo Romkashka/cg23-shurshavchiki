@@ -39,10 +39,10 @@ public class FileServiceImpl implements FileService {
     @Getter
     private final UserProjectDataHolder dataHolder;
 
-    public FileServiceImpl() {
+    public FileServiceImpl(UserProjectDataHolder dataHolder) {
         colorSpaceRegistry = new ColorSpaceRegistry();
         gammaConvertersRegistry = new PlainGammaConvertersRegistry();
-        this.dataHolder = new ProjectDataHolderImpl();
+        this.dataHolder = dataHolder;
         dataHolder.setInputGammaConverter(gammaConvertersRegistry.getGammaConverter(0));
         dataHolder.setShownGammaConverter(gammaConvertersRegistry.getGammaConverter(0));
     }
