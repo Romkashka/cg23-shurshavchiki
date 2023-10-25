@@ -8,6 +8,7 @@ import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.gamma.util.GammaConvertersRegistry;
+import ru.shurshavchiki.businessLogic.gamma.util.PlainGammaConvertersRegistry;
 
 import java.io.File;
 
@@ -41,6 +42,11 @@ public class ProjectDataHolderImpl implements UserProjectDataHolder {
 
     @Getter @Setter
     private ChannelChooser startingChannelChooser;
+
+    public ProjectDataHolderImpl() {
+        this.gammaConvertersRegistry = new PlainGammaConvertersRegistry();
+        this.colorSpaceRegistry = new ColorSpaceRegistry();
+    }
 
     @Override
     public void setInputGammaConverter(GammaConverter inputGammaConverter) {
