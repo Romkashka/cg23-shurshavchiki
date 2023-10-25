@@ -118,7 +118,7 @@ public class SettingPanel extends JPanel{
 		}
 
 		chosenColorSpace = list.get(0);
-		PanelMediator.getInstance().getFileService().chooseColorSpace(chosenColorSpace);
+		PanelMediator.getInstance().changeColorSpace(chosenColorSpace);
 		menuColorSpace.getItem(0).setBackground(selected);
 		editMenu.add(menuColorSpace);
 	}
@@ -133,7 +133,7 @@ public class SettingPanel extends JPanel{
 		}
 
 		chosenChannels = list;
-		PanelMediator.getInstance().getFileService().chooseChannel(chosenChannels);
+		PanelMediator.getInstance().changeChannel(chosenChannels);
 		editMenu.add(menuColorChannels);
 	}
 
