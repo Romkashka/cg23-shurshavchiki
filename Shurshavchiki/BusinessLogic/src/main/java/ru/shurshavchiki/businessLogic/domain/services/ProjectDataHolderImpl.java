@@ -6,11 +6,19 @@ import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
 import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
+import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
+import ru.shurshavchiki.businessLogic.drawing.lineDrawers.LineDrawer;
+import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
+import ru.shurshavchiki.businessLogic.drawing.models.Drawing;
+import ru.shurshavchiki.businessLogic.drawing.util.LineBaseRepository;
+import ru.shurshavchiki.businessLogic.drawing.util.LineTipRepository;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.gamma.util.GammaConvertersRegistry;
 import ru.shurshavchiki.businessLogic.gamma.util.PlainGammaConvertersRegistry;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectDataHolderImpl implements UserProjectDataHolder {
     @Getter @Setter
@@ -43,20 +51,69 @@ public class ProjectDataHolderImpl implements UserProjectDataHolder {
     @Getter @Setter
     private ChannelChooser startingChannelChooser;
 
+    private LineDrawer lineDrawer;
+    @Getter
+    private LineBaseRepository lineBaseRepository;
+    @Getter
+    private LineTipRepository lineTipRepository;
+
+    private final List<Drawing> drawings;
+
     public ProjectDataHolderImpl() {
         this.gammaConvertersRegistry = new PlainGammaConvertersRegistry();
         this.colorSpaceRegistry = new ColorSpaceRegistry();
+
+        drawings = new ArrayList<>();
+    }
+
+    @Override
+    public LineBaseDrawer getLineBaseDrawer() {
+        return lineDrawer.getLineBaseDrawer();
+    }
+
+    @Override
+    public LineTipDrawer getStartLineTipDrawer() {
+        return lineDrawer.getStartLineTipDrawer();
+    }
+
+    @Override
+    public LineTipDrawer getEndLineTipDrawer() {
+        return lineDrawer.getEndLineTipDrawer();
     }
 
     @Override
     public void setInputGammaConverter(GammaConverter inputGammaConverter) {
         this.inputGammaConverter = inputGammaConverter;
-        System.out.println("New input gamma converter: " + inputGammaConverter.getName());
     }
 
     @Override
     public void setShownGammaConverter(GammaConverter shownGammaConverter) {
         this.shownGammaConverter = shownGammaConverter;
-        System.out.println("New shown gamma converter: " + shownGammaConverter.getName());
+    }
+
+    @Override
+    public void setLineBaseDrawer(LineBaseDrawer lineBaseDrawer) {
+        lineDrawer.setLineBaseDrawer(lineBaseDrawer);
+    }
+
+    @Override
+    public void setStartLineTipDrawer(LineTipDrawer lineTipDrawer) {
+        lineDrawer.setStartLineTipDrawer(lineTipDrawer);
+    }
+
+    @Override
+    public void setEndLineTipDrawer(LineTipDrawer lineTipDrawer) {
+        lineDrawer.setEndLineTipDrawer(lineTipDrawer);
+    }
+
+    @Override
+    public int addDrawing(Drawing drawing) {
+        drawings.add(drawing);
+        return drawings.size()-1;
+    }
+
+    @Override
+    public void deleteDrawing(int index) {
+        drawings.remove(index);
     }
 }

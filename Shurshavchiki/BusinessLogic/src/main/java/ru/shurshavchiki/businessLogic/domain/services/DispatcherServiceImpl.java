@@ -1,7 +1,9 @@
 package ru.shurshavchiki.businessLogic.domain.services;
 
 import lombok.Getter;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -60,6 +62,36 @@ public class DispatcherServiceImpl implements DispatcherService {
     @Override
     public void convertGamma(float gamma) {
         fileService.convertGamma(gamma);
+    }
+
+    @Override
+    public void drawLine(RgbConvertable color, float width, Point2D start, Point2D end) {
+        drawingService.drawLine(start, end,color,width);
+    }
+
+    @Override
+    public List<String> getAllLineBases() {
+        return userProjectDataHolder.getLineBaseRepository().getAllBases();
+    }
+
+    @Override
+    public List<String> getAllLineTips() {
+        return userProjectDataHolder.getLineTipRepository().getAllTips();
+    }
+
+    @Override
+    public void setLineBase(String name) {
+        drawingService.setLineBaseDrawer(name);
+    }
+
+    @Override
+    public void setStartLineTip(String name) {
+        drawingService.setStartLineTipDrawer(name);
+    }
+
+    @Override
+    public void setEndLineTip(String name) {
+        drawingService.setEndLineTipDrawer(name);
     }
 
     private void resetToDefaultSettings() {
