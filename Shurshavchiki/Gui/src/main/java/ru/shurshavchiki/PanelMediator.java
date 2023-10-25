@@ -41,10 +41,11 @@ public class PanelMediator {
 	private ImageFrame imageFrame = new ImageFrame();
 
 	@Getter
-	private JScrollPane scrollPane = new JScrollPane(drawingPanel);
+	private JScrollPane scrollPane = new JScrollPane();
 
 	public void run(){
 		imageFrame.create();
+		scrollPane.getViewport().add(drawingPanel);
 	}
 
 	public void openNewImage(File file) throws IOException {
@@ -117,7 +118,7 @@ public class PanelMediator {
 	}
 
 	public void validateScrollPane(){
-		scrollPane.setViewportView(drawingPanel);
+		scrollPane.getViewport().setView(drawingPanel);
 	}
 
 	public void changeChannel(List<String> channel) {

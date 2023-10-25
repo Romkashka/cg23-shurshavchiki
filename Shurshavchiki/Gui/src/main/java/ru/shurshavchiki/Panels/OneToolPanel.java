@@ -5,9 +5,11 @@ import lombok.Setter;
 import ru.shurshavchiki.Frames.ColorChooserFrame;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Listeners.InstrumentChoseListener;
+import ru.shurshavchiki.Listeners.SpinnerChangeListener;
 import ru.shurshavchiki.PanelMediator;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class OneToolPanel extends JPanel {
@@ -19,18 +21,18 @@ public class OneToolPanel extends JPanel {
 
 	private JButton buttonMainColor;
 
-	private JLabel mainColorPreview = new JLabel();
+	private JTextArea mainColorPreview = new JTextArea();
 
 	@Getter
 	private Color mainColor = new Color(0, 0, 0);
 
-	JSpinner spinnerFirstAlpha;
-
-	JTextPane firstAlpha;
+	@Getter
+	@Setter
+	private Float mainSize = 4f;
 
 	JSpinner spinnerMainSize;
 
-	JTextPane mainSize;
+	JTextPane mainSizeText;
 
 	public OneToolPanel(){
 		title = setJText();
@@ -47,17 +49,13 @@ public class OneToolPanel extends JPanel {
 
 		mainColorPreview.setBackground(mainColor);
 		mainColorPreview.setPreferredSize(new Dimension(48, 48));
-		mainColorPreview.setText(" ");
 		mainColorPreview.setOpaque(true);
+		mainColorPreview.setEditable(false);
 		mainColorPreview.setVisible(false);
 
-		SpinnerModel modelMainColor = new SpinnerNumberModel(100, 0, 100, 1);
-		spinnerFirstAlpha = setJSpinner(modelMainColor);
-		firstAlpha = setJText();
-
-		SpinnerModel modelWight = new SpinnerNumberModel(16, 0.01, 120, 1);
-		spinnerMainSize = setJSpinner(modelWight);
-		mainSize = setJText();
+		SpinnerModel modelWight = new SpinnerNumberModel(16f, 0.01f, 120f, 1f);
+		spinnerMainSize = setJSpinner(modelWight, "main size");
+		mainSizeText = setJText();
 
 		this.setLayout(new GridBagLayout());
 		GridBagHelper gridSetter = new GridBagHelper();
@@ -66,17 +64,12 @@ public class OneToolPanel extends JPanel {
 		gridSetter.insertEmptyRow(this, 20);
 		gridSetter.nextRow().nextCell().alignCenter();
 		this.add(buttonMainColor, gridSetter.get());
-		gridSetter.nextCell();
+		gridSetter.nextCell().span();
 		this.add(mainColorPreview, gridSetter.get());
 		gridSetter.insertEmptyRow(this, 10);
 		gridSetter.nextRow().nextCell().alignCenter();
-		this.add(firstAlpha, gridSetter.get());
-		gridSetter.nextCell().alignBottom();
-		this.add(spinnerFirstAlpha, gridSetter.get());
-		gridSetter.insertEmptyRow(this, 10);
-		gridSetter.nextRow().nextCell().alignCenter();
-		this.add(mainSize, gridSetter.get());
-		gridSetter.nextCell().alignBottom();
+		this.add(mainSizeText, gridSetter.get());
+		gridSetter.nextCell();
 		this.add(spinnerMainSize, gridSetter.get());
 		gridSetter.insertEmptyFiller(this);
 	}
@@ -91,14 +84,11 @@ public class OneToolPanel extends JPanel {
 	public void setupLine(){
 		clearAll();
 		title.setText("Line");
-		firstAlpha.setText("Alpha:");
-		mainSize.setText("Thickness:");
+		mainSizeText.setText("Thickness:");
 		title.setVisible(true);
 		buttonMainColor.setVisible(true);
 		mainColorPreview.setVisible(true);
-		firstAlpha.setVisible(true);
-		spinnerFirstAlpha.setVisible(true);
-		mainSize.setVisible(true);
+		mainSizeText.setVisible(true);
 		spinnerMainSize.setVisible(true);
 		chosen = "Line";
 	}
@@ -107,22 +97,23 @@ public class OneToolPanel extends JPanel {
 		title.setVisible(false);
 		buttonMainColor.setVisible(false);
 		mainColorPreview.setVisible(false);
-		firstAlpha.setVisible(false);
-		spinnerFirstAlpha.setVisible(false);
-		mainSize.setVisible(false);
+		mainSizeText.setVisible(false);
 		spinnerMainSize.setVisible(false);
+		PanelMediator.getInstance().getDrawingPanel().clearPreview();
 	}
 
 	public void setMainColor(Color color){
 		mainColor = color;
+		mainColorPreview.removeAll();
 		mainColorPreview.setBackground(mainColor);
 	}
 
-	private JSpinner setJSpinner(SpinnerModel spinnerModel){
+	private JSpinner setJSpinner(SpinnerModel spinnerModel, String type){
 		JSpinner spinner = new JSpinner(spinnerModel);
 		spinner.setPreferredSize(new Dimension(48, 28));
 		spinner.setVisible(false);
 		spinner.setOpaque(false);
+		spinner.addChangeListener(new SpinnerChangeListener(this, type));
 		return spinner;
 	}
 

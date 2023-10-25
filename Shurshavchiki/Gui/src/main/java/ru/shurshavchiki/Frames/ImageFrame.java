@@ -59,7 +59,7 @@ public class ImageFrame extends JFrame {
 
 
         this.setSize(Math.min(kit.getScreenSize().getSize().width, 800), Math.min(kit.getScreenSize().getSize().height, 600));
-        
+
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         this.setLocationRelativeTo(null);
