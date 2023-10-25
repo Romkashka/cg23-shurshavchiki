@@ -1,6 +1,7 @@
 package ru.shurshavchiki.Listeners;
 
 import ru.shurshavchiki.ExceptionHandler;
+import ru.shurshavchiki.Frames.ImageCreateFrame;
 import ru.shurshavchiki.PanelMediator;
 
 import javax.swing.*;
@@ -14,6 +15,9 @@ public class FileButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         try {
             switch (event.getActionCommand()){
+                case "New":
+                    newFile();
+                    break;
                 case "Open":
                     openFile();
                     break;
@@ -32,6 +36,13 @@ public class FileButtonListener implements ActionListener {
             }
         }catch (Exception exception){
             new ExceptionHandler().handleException(exception);
+        }
+    }
+
+    private void newFile(){
+        PanelMediator.getInstance().closeImage();
+        if (!PanelMediator.getInstance().getSomethingChanged()){
+            ImageCreateFrame imageCreateFrame = new ImageCreateFrame();
         }
     }
 

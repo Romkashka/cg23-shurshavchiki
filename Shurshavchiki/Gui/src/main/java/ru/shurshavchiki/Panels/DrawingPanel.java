@@ -85,7 +85,7 @@ public class DrawingPanel extends JPanel {
 		if (displayable != null){
 			preview = deepCopy(image);
 			int rgb = PanelMediator.getInstance().getOneToolPanel().getMainColor().getRGB();
-			float size = PanelMediator.getInstance().getOneToolPanel().getMainSize();;
+			float size = PanelMediator.getInstance().getOneToolPanel().getMainSize()/2;
 			List<Point> points = new ArrayList<>();
 			points.add(startPoint);
 			points.add(endPoint);

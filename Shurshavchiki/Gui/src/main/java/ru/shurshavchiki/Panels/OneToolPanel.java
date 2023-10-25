@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.shurshavchiki.Frames.ColorChooserFrame;
 import ru.shurshavchiki.Helpers.GridBagHelper;
+import ru.shurshavchiki.Helpers.InputSetHelper;
 import ru.shurshavchiki.Listeners.InstrumentChoseListener;
 import ru.shurshavchiki.Listeners.SpinnerChangeListener;
 import ru.shurshavchiki.PanelMediator;
@@ -35,7 +36,7 @@ public class OneToolPanel extends JPanel {
 	JTextPane mainSizeText;
 
 	public OneToolPanel(){
-		title = setJText();
+		title = InputSetHelper.setJText();
 		title.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 24));
 
 		buttonMainColor = new JButton("Color");
@@ -53,9 +54,9 @@ public class OneToolPanel extends JPanel {
 		mainColorPreview.setEditable(false);
 		mainColorPreview.setVisible(false);
 
-		SpinnerModel modelWight = new SpinnerNumberModel(4f, 0.01f, 120f, 1f);
-		spinnerMainSize = setJSpinner(modelWight, "main size");
-		mainSizeText = setJText();
+		SpinnerModel modelMainSize = new SpinnerNumberModel(4f, 0.01f, 120f, 1f);
+		spinnerMainSize = InputSetHelper.setJSpinner(modelMainSize, "main size");
+		mainSizeText = InputSetHelper.setJText();
 
 		this.setLayout(new GridBagLayout());
 		GridBagHelper gridSetter = new GridBagHelper();
@@ -106,23 +107,5 @@ public class OneToolPanel extends JPanel {
 		mainColor = color;
 		mainColorPreview.removeAll();
 		mainColorPreview.setBackground(mainColor);
-	}
-
-	private JSpinner setJSpinner(SpinnerModel spinnerModel, String type){
-		JSpinner spinner = new JSpinner(spinnerModel);
-		spinner.setPreferredSize(new Dimension(48, 28));
-		spinner.setVisible(false);
-		spinner.setOpaque(false);
-		spinner.addChangeListener(new SpinnerChangeListener(this, type));
-		return spinner;
-	}
-
-	private JTextPane setJText(){
-		JTextPane text = new JTextPane();
-		text.setEditable(false);
-		text.setVisible(false);
-		text.setOpaque(false);
-		text.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 18));
-		return text;
 	}
 }
