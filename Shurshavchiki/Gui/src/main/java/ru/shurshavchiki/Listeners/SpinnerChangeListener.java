@@ -1,20 +1,16 @@
 package ru.shurshavchiki.Listeners;
 
-import ru.shurshavchiki.Panels.OneToolPanel;
+import ru.shurshavchiki.PanelMediator;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
 
 public class SpinnerChangeListener implements ChangeListener {
 
-    private OneToolPanel panel;
-
     private String type;
 
-    public SpinnerChangeListener(OneToolPanel panel, String type){
-        this.panel = panel;
+    public SpinnerChangeListener(String type){
         this.type = type;
     }
 
@@ -23,9 +19,9 @@ public class SpinnerChangeListener implements ChangeListener {
         JSpinner spinner = (JSpinner) e.getSource();
         switch (type){
             case "main size":
-                panel.setMainSize(((Double)spinner.getValue()).floatValue());
+                PanelMediator.getInstance().getOneToolPanel().setMainSize(((Double)spinner.getValue()).floatValue());
                 break;
-            case "":
+            default:
                 break;
         }
     }

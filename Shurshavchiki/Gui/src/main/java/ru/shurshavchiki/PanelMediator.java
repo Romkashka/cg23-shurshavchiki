@@ -49,7 +49,13 @@ public class PanelMediator {
 		scrollPane.getViewport().add(drawingPanel);
 	}
 
+	public void createImage(int width, int height, String type){
+//		service.GENERATE_MEGA_DISPLAYBLE
+		somethingChanged = true;
+	}
+
 	public void openNewImage(File file) throws IOException {
+		closeImage();
 		service.readFile(file);
 		drawingPanel.loadImage(service.getUserProjectDataHolder().getShownDisplayable());
 		setGammaDefault();
