@@ -1,7 +1,7 @@
 package ru.shurshavchiki.businessLogic.drawing.lineTipDrawers;
 
-import ru.shurshavchiki.businessLogic.drawing.models.Vector;
 import ru.shurshavchiki.businessLogic.drawing.models.FigureOverlap;
+import ru.shurshavchiki.businessLogic.drawing.models.Vector;
 
 import java.awt.geom.Point2D;
 

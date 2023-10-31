@@ -1,26 +1,19 @@
 package ru.shurshavchiki.businessLogic.domain.services;
 
-import lombok.Getter;
 import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
-import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooserBuilder;
 import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
-import ru.shurshavchiki.businessLogic.colorSpace.factories.ColorSpaceFactory;
-import ru.shurshavchiki.businessLogic.colorSpace.models.Channel;
-import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
+import ru.shurshavchiki.businessLogic.domain.io.PnmFileReader;
+import ru.shurshavchiki.businessLogic.domain.io.PnmFileWriter;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
 import ru.shurshavchiki.businessLogic.domain.models.ImageDataHolder;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
-import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
 import ru.shurshavchiki.businessLogic.exceptions.ColorSpaceException;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
+import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
-import ru.shurshavchiki.businessLogic.gamma.util.GammaConvertersRegistry;
-import ru.shurshavchiki.businessLogic.gamma.util.PlainGammaConvertersRegistry;
-import ru.shurshavchiki.businessLogic.domain.io.PnmFileReader;
-import ru.shurshavchiki.businessLogic.domain.io.PnmFileWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,108 +22,77 @@ import java.util.List;
 import java.util.function.Function;
 
 public class FileServiceImpl implements FileService {
-    @Getter
-    private final ColorSpaceRegistry colorSpaceRegistry;
-    @Getter
-    private final GammaConvertersRegistry gammaConvertersRegistry;
-    private ColorSpaceFactory colorSpaceFactory;
-    @Getter
-    private ChannelChooser channelChooser;
-    @Getter
-    private final UserProjectDataHolder dataHolder;
 
-    public FileServiceImpl(UserProjectDataHolder dataHolder) {
-        colorSpaceRegistry = new ColorSpaceRegistry();
-        gammaConvertersRegistry = new PlainGammaConvertersRegistry();
-        this.dataHolder = dataHolder;
-        dataHolder.setInputGammaConverter(gammaConvertersRegistry.getGammaConverter(0));
-        dataHolder.setShownGammaConverter(gammaConvertersRegistry.getGammaConverter(0));
+    public FileServiceImpl() {
     }
 
-    public Displayable readFile(File file) throws IOException {
+    @Override
+    public Displayable readFile(File file, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) throws IOException {
         checkFileIsReadable(file);
         ImageDataHolder imageDataHolder = new PnmFileReader(file).getImageDataHolder();
-        Displayable pnmFile = new PnmFile(imageDataHolder.getHeader(),
-                splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getData())));
-        dataHolder.setStartingDisplayable(pnmFile);
+        Displayable image = new PnmFile(imageDataHolder.getHeader(),
+                splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getData(), colorSpaceConverter, channelChooser)));
 
-        render();
-        return dataHolder.getShownDisplayable();
+        return image;
     }
 
-    public void saveFile(Displayable displayable, File file) throws IOException {
+    @Override
+    public void saveFile(Displayable displayable, File file, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) throws IOException {
+        if (file == null) {
+            throw WriteFileException.noFile();
+        }
+
         new PnmFileWriter().saveFromRawData(file,
-                getHeaderForSave(),
-                getByteData(convertToRawData(displayable.getAllPixels())));
+                getHeaderForSave(displayable, channelChooser),
+                getByteData(convertToRawData(displayable.getAllPixels(), colorSpaceConverter, channelChooser), channelChooser));
     }
 
-    public List<String> getColorSpacesNames() {
-        return colorSpaceRegistry.getFactories().stream().map(ColorSpaceFactory::getColorSpaceName).toList();
+    @Override
+    public Displayable applyColorFilters(Displayable source, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) {
+        return null;
     }
 
-    public void chooseChannel(List<String> channelNames) {
-        ChannelChooserBuilder builder = colorSpaceFactory.getChannelChooserBuilder();
-        for (String name: channelNames) {
-            Channel channel = getChannelFromName(name);
-            builder.withChannel(channel);
+    @Override
+    public Displayable assignGamma(Displayable source, GammaConverter gammaConverter) {
+        throw new UnsupportedOperationException("I will implement it eventually...");
+    }
+
+    @Override
+    public Displayable convertGamma(Displayable source, GammaConverter gammaConverter) {
+        throw new UnsupportedOperationException("I will implement it eventually...");
+    }
+
+    private Displayable applyGamma(Displayable displayable, GammaConverter inputGammaConverter, GammaConverter ShownGammaConverter) {
+        Displayable result = displayable.clone();
+        applyToEachPixel(inputGammaConverter::useGamma, result);
+        applyToEachPixel(ShownGammaConverter::correctGamma, result);
+        return result;
+    }
+
+    private void applyToEachPixel(Function<Float, Float> func, Displayable displayable) {
+        for (List<RgbConvertable> row: displayable.getAllPixels()) {
+            row.replaceAll(pixel -> applyToPixel(pixel, func));
         }
-        channelChooser = builder.build();
-        System.out.println(channelChooser.getConstants());
-        dataHolder.setChannelChooser(channelChooser);
-
-        render();
     }
 
-    public void chooseColorSpace(String colorSpaceName) {
-        this.colorSpaceFactory = colorSpaceRegistry.getFactoryByName(colorSpaceName);
-        dataHolder.setColorSpaceConverter(getColorSpaceConverter());
-        System.out.println("Color space name: " + colorSpaceFactory.getColorSpaceName());
-        chooseChannel(colorSpaceFactory.getColorSpace().Channels().stream().map(Enum::name).toList());
-
-        render();
-    }
-
-    public void assignGamma(float gamma) {
-        GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
-        dataHolder.setInputGammaConverter(newGammaConverter);
-        render();
-    }
-
-    public void convertGamma(float gamma) {
-        GammaConverter newGammaConverter = gammaConvertersRegistry.getGammaConverter(gamma);
-        dataHolder.setShownGammaConverter(newGammaConverter);
-        dataHolder.setInputGammaConverter(newGammaConverter);
-        render();
-        dataHolder.setStartingDisplayable(dataHolder.getShownDisplayable());
-    }
-
-    public ColorSpaceConverter getColorSpaceConverter() {
-        return colorSpaceFactory.getColorSpaceConverter();
-    }
-
-    public void render() {
-        if (dataHolder.getStartingDisplayable() == null) {
-            return;
+    private RgbConvertable applyToPixel(RgbConvertable pixel, Function<Float, Float> func) {
+        if (pixel instanceof RgbPixel rgbPixel) {
+            return new RgbPixel(func.apply(rgbPixel.FloatRed()),
+                    func.apply(rgbPixel.FloatGreen()),
+                    func.apply(rgbPixel.FloatBlue()));
         }
 
-        Header header = dataHolder.getStartingDisplayable().getHeader();
-        dataHolder.setDisplayableWithFilters(new PnmFile(header, splitToRows(header, convertToPixels(convertToRawData(dataHolder.getStartingDisplayable().getAllPixels())))));
-
-        applyGamma();
+        throw new UnsupportedOperationException("Only RgbPixel are supported(((");
     }
 
-    private void applyGamma() {
-        dataHolder.setShownDisplayable(dataHolder.getDisplayableWithFilters());
-        applyToEachPixel(dataHolder.getInputGammaConverter()::useGamma, dataHolder.getShownDisplayable());
-        applyToEachPixel(dataHolder.getShownGammaConverter()::correctGamma, dataHolder.getShownDisplayable());
-    }
+    private void checkFileIsReadable(File file) {
+        if (!file.isFile()) {
+            throw OpenFileException.notAFile(file.getName());
+        }
 
-    private float[] convertToRawData(List<List<RgbConvertable>> pixels) {
-        return channelChooser.apply(dataHolder.getColorSpaceConverter().toRawData(concatenateRows(pixels)));
-    }
-
-    private List<RgbConvertable> convertToPixels(float[] rawData) {
-        return getColorSpaceConverter().toRgb(dataHolder.getChannelChooser().fillAllChannels(rawData));
+        if (!file.canRead()) {
+            throw OpenFileException.fileCantBeRead();
+        }
     }
 
     private List<List<RgbConvertable>> splitToRows(Header header, List<RgbConvertable> pixels) {
@@ -152,6 +114,14 @@ public class FileServiceImpl implements FileService {
         return result;
     }
 
+    private List<RgbConvertable> convertToPixels(float[] rawData, ColorSpaceConverter converter, ChannelChooser channelChooser) {
+        return converter.toRgb(channelChooser.fillAllChannels(rawData));
+    }
+
+    private float[] convertToRawData(List<List<RgbConvertable>> pixels, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) {
+        return channelChooser.apply(colorSpaceConverter.toRawData(concatenateRows(pixels)));
+    }
+
     private List<RgbConvertable> concatenateRows(List<List<RgbConvertable>> pixels) {
         List<RgbConvertable> result = new ArrayList<>();
 
@@ -162,61 +132,21 @@ public class FileServiceImpl implements FileService {
         return result;
     }
 
-    private Channel getChannelFromName(String channelName) {
-        for (Channel channel: Channel.values()) {
-            if (channel.name().equals(channelName))
-                return channel;
-        }
-
-        throw ChannelException.noSuchChannel(channelName);
-    }
-
-    private void checkFileIsReadable(File file) {
-        if (!file.isFile()) {
-            throw OpenFileException.notAFile(file.getName());
-        }
-
-        if (!file.canRead()) {
-            throw OpenFileException.fileCantBeRead();
-        }
-    }
-
-    private void applyToEachPixel(Function<Float, Float> func, Displayable displayable) {
-        System.out.println("Apply to each pixel: " + func.apply(0.1f) + " " + func.apply(0.5f) + " " + func.apply(0.9f));
-        for (List<RgbConvertable> row: displayable.getAllPixels()) {
-            row.replaceAll(pixel -> applyToPixel(pixel, func));
-        }
-    }
-
-    private RgbConvertable applyToPixel(RgbConvertable pixel, Function<Float, Float> func) {
-        if (pixel instanceof RgbPixel rgbPixel) {
-            return new RgbPixel(func.apply(rgbPixel.FloatRed()),
-                    func.apply(rgbPixel.FloatGreen()),
-                    func.apply(rgbPixel.FloatBlue()));
-        }
-
-        throw new UnsupportedOperationException("Only RgbPixel are supported(((");
-    }
-
-    private Header getHeaderForSave() {
+    private Header getHeaderForSave(Displayable displayable, ChannelChooser channelChooser) {
         return new Header(
-                dataHolder.getChannelChooser().getMagicNumber(),
-                getDisplayableToSave().getWidth(),
-                getDisplayableToSave().getHeight(),
+                channelChooser.getMagicNumber(),
+                displayable.getWidth(),
+                displayable.getHeight(),
                 255
         );
     }
 
-    private Displayable getDisplayableToSave() {
-        return dataHolder.getDisplayableWithFilters();
-    }
-
-    private byte[] getByteData(float[] input) {
-        if (dataHolder.getChannelChooser().getMagicNumber().equals("P6")) {
+    private byte[] getByteData(float[] input, ChannelChooser channelChooser) {
+        if (channelChooser.getMagicNumber().equals("P6")) {
             return getFullByteData(input);
         }
 
-        return getShrankByteData(input);
+        return getShrankByteData(input, channelChooser);
     }
 
     private byte[] getFullByteData(float[] input) {
@@ -229,16 +159,11 @@ public class FileServiceImpl implements FileService {
         return result;
     }
 
-    private byte[] getShrankByteData(float[] input) {
+    private byte[] getShrankByteData(float[] input, ChannelChooser channelChooser) {
         byte[] result = new byte[input.length / 3];
 
-        System.out.println("input size: " + input.length);
-        System.out.println("result size: " + result.length);
-
-        List<Integer> mask = dataHolder.getChannelChooser().getChannelMask();
+        List<Integer> mask = channelChooser.getChannelMask();
         int valueSubIndex = mask.indexOf(1);
-
-        System.out.println(valueSubIndex);
 
         for (int i = 0; i < result.length; i++) {
             byte data = (byte) (input[i * 3 + valueSubIndex] * 255f);

@@ -4,7 +4,6 @@ import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
 import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
 import ru.shurshavchiki.businessLogic.drawing.models.FigureOverlap;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 
 public interface LineDrawer {

@@ -13,7 +13,11 @@ public class WriteFileException extends GeneralPhotoshopException {
         return new WriteFileException("Unsupported file format");
     }
 
+    public static WriteFileException noDisplayable() {
+        return new WriteFileException("No image to save");
+    }
+
     public static WriteFileException noFile() {
-        return new WriteFileException("File isn't opened");
+        return new WriteFileException("Destination isn't chosen");
     }
 }

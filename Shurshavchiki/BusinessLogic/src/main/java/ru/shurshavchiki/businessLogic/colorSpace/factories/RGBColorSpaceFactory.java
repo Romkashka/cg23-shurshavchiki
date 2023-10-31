@@ -1,8 +1,6 @@
 package ru.shurshavchiki.businessLogic.colorSpace.factories;
 
-import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
 import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooserBuilder;
-import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.SimpleChannelChooser;
 import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
 import ru.shurshavchiki.businessLogic.colorSpace.converters.RgbConverter;
 import ru.shurshavchiki.businessLogic.colorSpace.models.Channel;
@@ -13,7 +11,7 @@ import java.util.List;
 public class RGBColorSpaceFactory implements ColorSpaceFactory {
     private static final String COLOR_SPACE_NAME = "RGB";
     @Override
-    public String getColorSpaceName() {
+    public String getName() {
         return COLOR_SPACE_NAME;
     }
 

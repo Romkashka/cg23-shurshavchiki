@@ -1,12 +1,9 @@
 package ru.shurshavchiki.businessLogic.domain.services;
 
-import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
-import java.awt.geom.Point2D;
+import ru.shurshavchiki.businessLogic.drawing.lineDrawers.LineDrawer;
+import ru.shurshavchiki.businessLogic.drawing.models.Drawing;
+import ru.shurshavchiki.businessLogic.drawing.models.Line;
 
 public interface DrawingService {
-    void setLineBaseDrawer(String name);
-    void setStartLineTipDrawer(String name);
-    void setEndLineTipDrawer(String name);
-
-    void drawLine(Point2D start, Point2D end, RgbConvertable color, float width);
+    Drawing drawLine(Line line, LineDrawer lineDrawer);
 }

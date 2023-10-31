@@ -14,7 +14,7 @@ public class HSVColorSpaceFactory implements ColorSpaceFactory {
     private static final String COLOR_SPACE_NAME = "HSV";
 
     @Override
-    public String getColorSpaceName() {
+    public String getName() {
         return COLOR_SPACE_NAME;
     }
 

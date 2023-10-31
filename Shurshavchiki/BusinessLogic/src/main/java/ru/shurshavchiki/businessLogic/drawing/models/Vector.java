@@ -1,6 +1,5 @@
 package ru.shurshavchiki.businessLogic.drawing.models;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 

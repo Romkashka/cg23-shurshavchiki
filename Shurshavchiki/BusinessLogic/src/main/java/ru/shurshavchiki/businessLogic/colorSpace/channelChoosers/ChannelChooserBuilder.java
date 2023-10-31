@@ -5,9 +5,7 @@ import ru.shurshavchiki.businessLogic.colorSpace.models.Channel;
 import ru.shurshavchiki.businessLogic.colorSpace.models.ColorSpace;
 import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ChannelChooserBuilder {

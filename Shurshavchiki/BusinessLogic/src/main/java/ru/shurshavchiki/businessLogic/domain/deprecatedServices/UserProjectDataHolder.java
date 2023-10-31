@@ -1,19 +1,22 @@
-package ru.shurshavchiki.businessLogic.domain.services;
+package ru.shurshavchiki.businessLogic.domain.deprecatedServices;
 
 import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
 import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
+import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseRepository;
 import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
+import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipRepository;
 import ru.shurshavchiki.businessLogic.drawing.models.Drawing;
-import ru.shurshavchiki.businessLogic.drawing.util.LineBaseRepository;
-import ru.shurshavchiki.businessLogic.drawing.util.LineTipRepository;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.gamma.util.GammaConvertersRegistry;
+import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmRepository;
+import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithmRepository;
 
 import java.io.File;
-import java.util.List;
 
 public interface UserProjectDataHolder {
     File getFile();
@@ -32,8 +35,15 @@ public interface UserProjectDataHolder {
     LineBaseDrawer getLineBaseDrawer();
     LineTipDrawer getStartLineTipDrawer();
     LineTipDrawer getEndLineTipDrawer();
+
+    DitheringAlgorithm getDitheringAlgorithm();
+    ImageCreationAlgorithm getImageCreationAlgorithm();
+
     LineBaseRepository getLineBaseRepository();
     LineTipRepository getLineTipRepository();
+    DitheringAlgorithmRepository getDitheringAlgorithmRepository();
+    ImageCreationAlgorithmRepository getImageCreationAlgorithmRepository();
+
 
     void setFile(File file);
     void setShownDisplayable(Displayable displayable);
@@ -49,6 +59,9 @@ public interface UserProjectDataHolder {
     void setLineBaseDrawer(LineBaseDrawer lineBaseDrawer);
     void setStartLineTipDrawer(LineTipDrawer lineTipDrawer);
     void setEndLineTipDrawer(LineTipDrawer lineTipDrawer);
+
+    void setDitheringAlgorithm(DitheringAlgorithm ditheringAlgorithm);
+    void setImageCreationAlgorithm(ImageCreationAlgorithm imageCreationAlgorithm);
 
     int addDrawing(Drawing drawing);
     void deleteDrawing(int index);

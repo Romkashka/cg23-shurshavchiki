@@ -1,8 +1,6 @@
 package ru.shurshavchiki.businessLogic.colorSpace.channelChoosers;
 
 import lombok.Getter;
-import lombok.Setter;
-import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
 
 import java.util.Arrays;
 import java.util.List;

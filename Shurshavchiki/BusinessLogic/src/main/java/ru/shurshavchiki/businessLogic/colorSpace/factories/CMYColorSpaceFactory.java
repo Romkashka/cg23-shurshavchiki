@@ -11,7 +11,7 @@ import java.util.List;
 public class CMYColorSpaceFactory implements ColorSpaceFactory {
     private static final String COLOR_SPACE_NAME = "CMY";
     @Override
-    public String getColorSpaceName() {
+    public String getName() {
         return COLOR_SPACE_NAME;
     }
 

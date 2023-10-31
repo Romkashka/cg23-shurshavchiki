@@ -1,8 +1,8 @@
 package ru.shurshavchiki.businessLogic.domain.io;
 
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
-import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
+import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,7 +12,7 @@ public class PnmFileWriter {
 
     public void save(Displayable displayableFile, File file) throws IOException {
         if (displayableFile == null) {
-            throw WriteFileException.noFile();
+            throw WriteFileException.noDisplayable();
         }
 
         PnmImageDataEncoder dataEncoder = chooseDataEncoder(displayableFile);

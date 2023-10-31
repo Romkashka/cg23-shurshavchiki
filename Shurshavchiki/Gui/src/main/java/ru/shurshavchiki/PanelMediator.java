@@ -12,9 +12,8 @@ import ru.shurshavchiki.Panels.InstrumentPanel;
 import ru.shurshavchiki.Panels.OneToolPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
-import ru.shurshavchiki.businessLogic.domain.services.DispatcherService;
-import ru.shurshavchiki.businessLogic.domain.services.DispatcherServiceImpl;
-import ru.shurshavchiki.businessLogic.domain.services.FileServiceImpl;
+import ru.shurshavchiki.businessLogic.domain.deprecatedServices.DispatcherService;
+import ru.shurshavchiki.businessLogic.domain.deprecatedServices.DispatcherServiceImpl;
 
 import javax.swing.*;
 

@@ -1,7 +1,9 @@
-package ru.shurshavchiki.businessLogic.domain.services;
+package ru.shurshavchiki.businessLogic.domain.deprecatedServices;
 
 import lombok.Getter;
+import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmWithBitRate;
 
 import java.awt.geom.Point2D;
 import java.io.File;
@@ -22,8 +24,17 @@ public class DispatcherServiceImpl implements DispatcherService {
     private DispatcherServiceImpl() {
         userProjectDataHolder = new ProjectDataHolderImpl();
         fileService = new FileServiceImpl(this.userProjectDataHolder);
-        imageProcessingService = new ImageProcessingServiceImpl(this.userProjectDataHolder);
+        imageProcessingService = new ImageProcessingServiceImpl();
         drawingService = new DrawingServiceImpl(this.userProjectDataHolder);
+    }
+
+    @Override
+    public void createNewImage(int height, int width) {
+        resetToDefaultSettings();
+//        userProjectDataHolder.setStartingDisplayable(imageProcessingService.createNewImage(height, width));
+        userProjectDataHolder.setDisplayableWithFilters(userProjectDataHolder.getStartingDisplayable());
+        userProjectDataHolder.setShownDisplayable(userProjectDataHolder.getDisplayableWithFilters());
+        userProjectDataHolder.setFile(null);
     }
 
     @Override
@@ -46,22 +57,22 @@ public class DispatcherServiceImpl implements DispatcherService {
 
     @Override
     public void chooseChannel(List<String> channelNames) {
-        fileService.chooseChannel(channelNames);
+//        fileService.chooseChannel(channelNames);
     }
 
     @Override
     public void chooseColorSpace(String colorSpaceName) {
-        fileService.chooseColorSpace(colorSpaceName);
+//        fileService.chooseColorSpace(colorSpaceName);
     }
 
     @Override
     public void assignGamma(float gamma) {
-        fileService.assignGamma(gamma);
+//        fileService.assignGamma(gamma);
     }
 
     @Override
     public void convertGamma(float gamma) {
-        fileService.convertGamma(gamma);
+//        fileService.convertGamma(gamma);
     }
 
     @Override
@@ -70,13 +81,44 @@ public class DispatcherServiceImpl implements DispatcherService {
     }
 
     @Override
+    public void ditherImage(File destination) throws IOException {
+//        Displayable result = imageProcessingService.ditherImage();
+//        fileService.saveFile(result, destination);
+    }
+
+    @Override
     public List<String> getAllLineBases() {
-        return userProjectDataHolder.getLineBaseRepository().getAllBases();
+        return userProjectDataHolder.getLineBaseRepository().getAllImplementations();
     }
 
     @Override
     public List<String> getAllLineTips() {
-        return userProjectDataHolder.getLineTipRepository().getAllTips();
+        return userProjectDataHolder.getLineTipRepository().getAllImplementations();
+    }
+
+    @Override
+    public List<String> getAllImageCreationAlgorithms() {
+        return userProjectDataHolder.getImageCreationAlgorithmRepository().getAllImplementations();
+    }
+
+    @Override
+    public List<String> getAllDitheringAlgorithms() {
+        return userProjectDataHolder.getDitheringAlgorithmRepository().getAllImplementations();
+    }
+
+    @Override
+    public boolean isDitheringAlgorithmWithBitRate(String name) {
+        return userProjectDataHolder.getDitheringAlgorithmRepository().getImplementationByName(name) instanceof DitheringAlgorithmWithBitRate;
+    }
+
+    @Override
+    public void setDitheringAlgorithmBitRate(int bitRate) {
+        if (userProjectDataHolder.getDitheringAlgorithm() instanceof DitheringAlgorithmWithBitRate algorithm) {
+            algorithm.setBitRate(bitRate);
+            return;
+        }
+
+        throw new UnsupportedOperationException("Bit rate can't be set for this dithering algorithm");
     }
 
     @Override
@@ -92,6 +134,16 @@ public class DispatcherServiceImpl implements DispatcherService {
     @Override
     public void setEndLineTip(String name) {
         drawingService.setEndLineTipDrawer(name);
+    }
+
+    @Override
+    public void setImageCreationAlgorithm(String name) {
+        userProjectDataHolder.setImageCreationAlgorithm(userProjectDataHolder.getImageCreationAlgorithmRepository().getImplementationByName(name));
+    }
+
+    @Override
+    public void setDitheringAlgorithm(String name) {
+        userProjectDataHolder.setDitheringAlgorithm(userProjectDataHolder.getDitheringAlgorithmRepository().getImplementationByName(name));
     }
 
     private void resetToDefaultSettings() {

@@ -11,7 +11,7 @@ import java.util.List;
 public class YCbCr709ColorSpaceFactory implements ColorSpaceFactory {
     private static final String COLOR_SPACE_NAME = "YCbCr.709";
     @Override
-    public String getColorSpaceName() {
+    public String getName() {
         return COLOR_SPACE_NAME;
     }
 

@@ -1,7 +1,6 @@
 package ru.shurshavchiki.businessLogic.drawing.models;
 
 import lombok.Getter;
-import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 
 import java.util.ArrayList;
 import java.util.Collections;

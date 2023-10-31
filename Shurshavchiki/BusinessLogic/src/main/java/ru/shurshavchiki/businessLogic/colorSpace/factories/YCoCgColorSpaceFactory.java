@@ -12,7 +12,7 @@ public class YCoCgColorSpaceFactory implements ColorSpaceFactory {
     private static final String COLOR_SPACE_NAME = "YCoCg";
 
     @Override
-    public String getColorSpaceName() {
+    public String getName() {
         return COLOR_SPACE_NAME;
     }
 
