@@ -199,13 +199,13 @@ public class SettingPanel extends JPanel{
     public void handleInputGammaAssign(String input){
 		displayGamma = Float.parseFloat(input);
 		PanelMediator.getInstance().assignGamma(displayGamma);
-		PanelMediator.getInstance().createGammaPreview();
+		PanelMediator.getInstance().createPreview();
     }
 
     public void handleInputGammaConvert(String input){
 		fileGamma = Float.parseFloat(input);
 		PanelMediator.getInstance().convertGamma(fileGamma);
-		PanelMediator.getInstance().createGammaPreview();
+		PanelMediator.getInstance().createPreview();
     }
 
 	public void disableGammaButtons(){

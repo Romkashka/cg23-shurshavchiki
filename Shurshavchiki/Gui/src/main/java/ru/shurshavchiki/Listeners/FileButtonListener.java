@@ -47,6 +47,7 @@ public class FileButtonListener implements ActionListener {
     }
 
     private void openFile() throws IOException {
+        PanelMediator.getInstance().closeImage();
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File("C:/Users/1/Desktop"));
         int result = fileChooser.showOpenDialog(PanelMediator.getInstance().getSettingPanel());
@@ -58,7 +59,7 @@ public class FileButtonListener implements ActionListener {
     }
 
     private void saveFile() throws IOException {
-        PanelMediator.getInstance().saveImage(PanelMediator.getInstance().getSettingPanel().getSelectedFile());
+        PanelMediator.getInstance().saveImage();
     }
 
     private void saveAsFile() throws IOException {
