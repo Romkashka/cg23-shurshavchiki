@@ -68,7 +68,7 @@ public class PanelMediator {
 	}
 
 	public void openNewImage(File file) throws IOException {
-//		mainContext.setFile(file);
+		mainContext.setFile(file);
 		fileProcessingService.openImage(mainContext);
 		drawingPanel.loadImage(mainContext.getShownDisplayable());
 		setGammaDefault();
