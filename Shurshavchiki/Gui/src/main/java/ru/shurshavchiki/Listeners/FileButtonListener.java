@@ -1,6 +1,7 @@
 package ru.shurshavchiki.Listeners;
 
 import ru.shurshavchiki.ExceptionHandler;
+import ru.shurshavchiki.Frames.ExportFileFrame;
 import ru.shurshavchiki.Frames.ImageCreateFrame;
 import ru.shurshavchiki.PanelMediator;
 
@@ -22,10 +23,13 @@ public class FileButtonListener implements ActionListener {
                     openFile();
                     break;
                 case "Save":
-                    saveFile();
+                    PanelMediator.getInstance().saveImage();
                     break;
                 case "SaveAs":
                     saveAsFile();
+                    break;
+                case "Export":
+                    exportFile();
                     break;
                 case "Close":
                     PanelMediator.getInstance().closeImage();
@@ -42,7 +46,7 @@ public class FileButtonListener implements ActionListener {
     private void newFile(){
         PanelMediator.getInstance().closeImage();
         if (!PanelMediator.getInstance().getSomethingChanged()){
-            ImageCreateFrame imageCreateFrame = new ImageCreateFrame();
+            new ImageCreateFrame();
         }
     }
 
@@ -58,10 +62,6 @@ public class FileButtonListener implements ActionListener {
         }
     }
 
-    private void saveFile() throws IOException {
-        PanelMediator.getInstance().saveImage();
-    }
-
     private void saveAsFile() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -71,5 +71,9 @@ public class FileButtonListener implements ActionListener {
             PanelMediator.getInstance().getSettingPanel().setSelectedFile(fileChooser.getSelectedFile());
             PanelMediator.getInstance().saveAsImage(PanelMediator.getInstance().getSettingPanel().getSelectedFile());
         }
+    }
+
+    public void exportFile() throws IOException {
+        new ExportFileFrame();
     }
 }

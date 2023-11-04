@@ -72,6 +72,9 @@ public class SettingPanel extends JPanel{
 		JMenuItem saveAsMenuItem = new JMenuItem("Save As");
 		saveAsMenuItem.setActionCommand("SaveAs");
 
+		JMenuItem exportMenuItem = new JMenuItem("Export");
+		saveAsMenuItem.setActionCommand("Export");
+
 		JMenuItem closeMenuItem = new JMenuItem("Close");
 		closeMenuItem.setActionCommand("Close");
 
@@ -82,6 +85,7 @@ public class SettingPanel extends JPanel{
 		openMenuItem.addActionListener(new FileButtonListener());
 		saveMenuItem.addActionListener(new FileButtonListener());
 		saveAsMenuItem.addActionListener(new FileButtonListener());
+		exportMenuItem.addActionListener(new FileButtonListener());
 		closeMenuItem.addActionListener(new FileButtonListener());
 		exitMenuItem.addActionListener(new FileButtonListener());
 
@@ -90,6 +94,7 @@ public class SettingPanel extends JPanel{
 		fileMenu.addSeparator();
 		fileMenu.add(saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
+		fileMenu.add(exportMenuItem);
 		fileMenu.add(closeMenuItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitMenuItem);
@@ -177,8 +182,7 @@ public class SettingPanel extends JPanel{
 		gammaConvertButton = new AbstractAction("Convert Gamma") {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-                GammaInputFrame gammaInputFrame = new GammaInputFrame("convert", fileGamma);
-
+                new GammaInputFrame("convert", fileGamma);
 			}
 		};
 
@@ -189,7 +193,7 @@ public class SettingPanel extends JPanel{
 		gammaAssignButton = new AbstractAction("Assign Gamma") {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-                GammaInputFrame gammaInputFrame = new GammaInputFrame("assign", displayGamma);
+                new GammaInputFrame("assign", displayGamma);
 			}
 		};
 

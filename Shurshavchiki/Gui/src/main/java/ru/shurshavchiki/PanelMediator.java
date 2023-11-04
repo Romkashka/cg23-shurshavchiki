@@ -13,6 +13,7 @@ import ru.shurshavchiki.Panels.OneToolPanel;
 import ru.shurshavchiki.Panels.SettingPanel;
 import ru.shurshavchiki.businessLogic.api.*;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
+import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 
 import javax.swing.*;
 
@@ -25,13 +26,17 @@ public class PanelMediator {
 
 	private Context mainContext = new ServiceFactoryImpl().getBlankContext();
 
-	private FileProcessingService fileProcessingService = new ServiceFactoryImpl().getFileProcessingService();
+	private Context ditheredContext = new ServiceFactoryImpl().getBlankContext();
 
-	private ImageProcessingService imageProcessingService = new ServiceFactoryImpl().getImageProcessingService();
+	private Boolean wasDithered = false;
 
-	private ConversionService conversionService = new ServiceFactoryImpl().getConversionService();
+	private final FileProcessingService fileProcessingService = new ServiceFactoryImpl().getFileProcessingService();
 
-	private DrawingService drawingService = new ServiceFactoryImpl().getDrawingService();
+	private final ImageProcessingService imageProcessingService = new ServiceFactoryImpl().getImageProcessingService();
+
+	private final ConversionService conversionService = new ServiceFactoryImpl().getConversionService();
+
+	private final DrawingService drawingService = new ServiceFactoryImpl().getDrawingService();
 
 	@Getter
 	@Setter
@@ -63,7 +68,7 @@ public class PanelMediator {
 	}
 
 	public void openNewImage(File file) throws IOException {
-		mainContext.setFile(file);
+//		mainContext.setFile(file);
 		fileProcessingService.openImage(mainContext);
 		drawingPanel.loadImage(mainContext.getShownDisplayable());
 		setGammaDefault();
@@ -77,7 +82,12 @@ public class PanelMediator {
 	}
 
 	public void saveAsImage(File file) throws IOException {
-		fileProcessingService.saveImageAs(mainContext, file);
+		if (wasDithered){
+			fileProcessingService.saveImageAs(ditheredContext, file);
+			wasDithered = false;
+		}else{
+			fileProcessingService.saveImageAs(mainContext, file);
+		}
     	somethingChanged = false;
 	}
 
@@ -123,6 +133,27 @@ public class PanelMediator {
         return new ColorSpaceRegistry().getFactoryByName(space)
                 .getColorSpace().Channels().stream().map(Enum::name).toList();
     }
+
+	public String[] getGenerateTypes(){
+		return mainContext.getAllImageCreationAlgorithms().toArray(new String[0]);
+	}
+
+	public String[] getDitheringAlgorithms(){
+		return mainContext.getAllDitheringAlgorithms().toArray(new String[0]);
+	}
+
+	public void setDisplayableDithered(String selectedAlgorithm, int selectedBitRate){
+		mainContext.setDitheringAlgorithm(selectedAlgorithm);
+		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
+		ditheredContext = imageProcessingService.ditherImage(mainContext);
+		wasDithered = true;
+	}
+
+	public Displayable getDisplayablePreview(String selectedAlgorithm, int selectedBitRate){
+		mainContext.setDitheringAlgorithm(selectedAlgorithm);
+		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
+		return imageProcessingService.ditherImage(mainContext).getShownDisplayable();
+	}
 
     public void createPreview(){
 		if (drawingPanel.getDisplayable() != null)

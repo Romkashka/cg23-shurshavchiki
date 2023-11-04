@@ -1,6 +1,5 @@
 package ru.shurshavchiki.Frames;
 
-import lombok.Setter;
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
@@ -8,9 +7,7 @@ import ru.shurshavchiki.Listeners.CreateComboBoxListener;
 import ru.shurshavchiki.PanelMediator;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.awt.*;
-import java.util.Objects;
 
 public class ImageCreateFrame extends JFrame {
 
@@ -20,23 +17,22 @@ public class ImageCreateFrame extends JFrame {
 
     private String selectedType;
 
-    JSpinner spinnerHeight;
+    private JSpinner spinnerHeight;
 
-    JSpinner spinnerWidth;
+    private JSpinner spinnerWidth;
 
-    JTextPane mainHeightText;
+    private JTextPane mainHeightText;
 
-    JTextPane mainWidthText;
+    private JTextPane mainWidthText;
 
-    JTextPane generateType;
+    private JTextPane generateType;
 
-    JComboBox<String> generateTypesBox;
+    private JComboBox<String> generateTypesBox;
 
     public ImageCreateFrame(){
         this.setTitle("Create image");
 
-//        List<String> generateTypes = SeRvIcE.gEtTyPeSOLOLOLOLOLO;
-        String[] generateTypes = {"None", "Gradient"};
+        String[] generateTypes = PanelMediator.getInstance().getGenerateTypes();
 
         generateTypesBox = new JComboBox<>(generateTypes);
         generateTypesBox.setSelectedIndex(0);
