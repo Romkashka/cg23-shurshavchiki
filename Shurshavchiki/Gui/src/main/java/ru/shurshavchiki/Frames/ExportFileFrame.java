@@ -3,6 +3,7 @@ package ru.shurshavchiki.Frames;
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
+import ru.shurshavchiki.Listeners.BitRateListener;
 import ru.shurshavchiki.Listeners.CreateComboBoxListener;
 import ru.shurshavchiki.Listeners.DitheringComboBoxListener;
 import ru.shurshavchiki.PanelMediator;
@@ -37,7 +38,9 @@ public class ExportFileFrame extends JFrame {
         ditheringBox.setPreferredSize(new Dimension(80, 30));
 
         SpinnerModel modelBitRate = new SpinnerNumberModel(4, 1, 8, 1);
-        spinnerBitRate = InputSetHelper.setJSpinner(modelBitRate, "create width");
+        spinnerBitRate = InputSetHelper.setJSpinner(modelBitRate, "bit rate");
+        spinnerBitRate.addChangeListener(new BitRateListener(this, "bit rate"));
+        setBitRate((int)spinnerBitRate.getValue());
         bitRateText = InputSetHelper.setJText();
         bitRateText.setText("Bit rate:");
         spinnerBitRate.setVisible(true);

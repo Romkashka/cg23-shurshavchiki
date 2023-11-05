@@ -2,6 +2,7 @@ package ru.shurshavchiki;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -161,7 +162,7 @@ public class PanelMediator {
     }
 
 	public void validateScrollPane(){
-		scrollPane.getViewport().setView(drawingPanel);
+		scrollPane.validate();
 	}
 
 	public void changeChannel(List<String> channel) {
