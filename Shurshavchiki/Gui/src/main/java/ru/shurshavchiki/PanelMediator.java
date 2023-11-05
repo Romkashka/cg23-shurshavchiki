@@ -65,6 +65,7 @@ public class PanelMediator {
 		mainContext.setNewImageParameters(height, width);
 		mainContext.setImageCreationAlgorithm(type);
 		fileProcessingService.createNewImage(mainContext);
+		settingPanel.enableImageButtons();
 		somethingChanged = true;
 	}
 
@@ -73,7 +74,7 @@ public class PanelMediator {
 		fileProcessingService.openImage(mainContext);
 		drawingPanel.loadImage(mainContext.getShownDisplayable());
 		setGammaDefault();
-		settingPanel.enableGammaButtons();
+		settingPanel.enableImageButtons();
 		settingPanel.setFileTitle(file.getAbsolutePath());
 	}
 
@@ -100,7 +101,7 @@ public class PanelMediator {
 			if (answer == JOptionPane.YES_OPTION){
 				drawingPanel.closeImage();
 				setGammaDefault();
-				settingPanel.disableGammaButtons();
+				settingPanel.disableImageButtons();
 				somethingChanged = false;
 				settingPanel.eraseFileTitle();
 				mainContext = new ServiceFactoryImpl().getBlankContext();
@@ -108,7 +109,7 @@ public class PanelMediator {
 		}else {
 			drawingPanel.closeImage();
 			setGammaDefault();
-			settingPanel.disableGammaButtons();
+			settingPanel.disableImageButtons();
 			settingPanel.eraseFileTitle();
 		}
 	}
@@ -198,6 +199,10 @@ public class PanelMediator {
 	private void setGammaDefault(){
 		settingPanel.setFileGamma(0F);
 		settingPanel.setDisplayGamma(0F);
+	}
+
+	public void getHistogramInfo(){
+		return;
 	}
 
 	public static PanelMediator getInstance() {
