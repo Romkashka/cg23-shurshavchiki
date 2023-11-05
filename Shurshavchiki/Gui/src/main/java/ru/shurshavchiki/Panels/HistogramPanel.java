@@ -15,14 +15,13 @@ import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class HistogramPanel extends JPanel {
 
-	private BufferedImage image = null;
+	private Color color;
 
-	@Getter
-	private Displayable displayable = null;
-
-
-	public HistogramPanel(){
-		setPreferredSize(new Dimension(256*2, 200));
+	public HistogramPanel(Color color){
+		this.color = color;
+		setPreferredSize(new Dimension(256, 200));
+		setMinimumSize(new Dimension(256, 200));
+		setSize(new Dimension(256, 200));
 	}
 
 	@Override
@@ -34,8 +33,9 @@ public class HistogramPanel extends JPanel {
 			example.add((i*23)%200);
 		}
 
+		his.setColor(color);
 		for (int i = 0; i < 256; ++i){
-			his.fillRect(2*i, 200-example.get(i), 2, example.get(i));
+			his.fillRect(i, 200-example.get(i), 1, example.get(i));
 		}
 	}
 }

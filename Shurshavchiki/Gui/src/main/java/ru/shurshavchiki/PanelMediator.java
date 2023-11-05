@@ -105,12 +105,14 @@ public class PanelMediator {
 				somethingChanged = false;
 				settingPanel.eraseFileTitle();
 				mainContext = new ServiceFactoryImpl().getBlankContext();
+				validateScrollPane();
 			}
 		}else {
 			drawingPanel.closeImage();
 			setGammaDefault();
 			settingPanel.disableImageButtons();
 			settingPanel.eraseFileTitle();
+			validateScrollPane();
 		}
 	}
 
