@@ -35,6 +35,8 @@ public class FileProcessingServiceImpl implements FileProcessingService {
         userProjectDataHolder.setStartingDisplayable(fileService.readFile(userProjectDataHolder.getFile(),
                 userProjectDataHolder.getColorSpaceFactory().getColorSpaceConverter(),
                 userProjectDataHolder.getChannelChooser()));
+        userProjectDataHolder.setDisplayableWithFilters(userProjectDataHolder.getStartingDisplayable());
+        userProjectDataHolder.setShownDisplayable(userProjectDataHolder.getStartingDisplayable());
     }
 
     @Override

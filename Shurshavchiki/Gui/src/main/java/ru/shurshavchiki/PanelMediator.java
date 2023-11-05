@@ -78,7 +78,7 @@ public class PanelMediator {
 
 	public void saveImage() throws IOException {
 		fileProcessingService.saveImage(mainContext);
-    	somethingChanged = false;
+		somethingChanged = false;
 	}
 
 	public void saveAsImage(File file) throws IOException {
@@ -88,7 +88,7 @@ public class PanelMediator {
 		}else{
 			fileProcessingService.saveImageAs(mainContext, file);
 		}
-    	somethingChanged = false;
+		somethingChanged = false;
 	}
 
 	public void closeImage() {
@@ -166,6 +166,9 @@ public class PanelMediator {
 
 	public void changeChannel(List<String> channel) {
 		mainContext.chooseChannel(channel);
+		if (mainContext.isEmpty()) {
+			return;
+		}
 		conversionService.applyColorFilters(mainContext);
 		if (drawingPanel.getDisplayable() != null)
 			somethingChanged = true;
@@ -173,6 +176,9 @@ public class PanelMediator {
 
 	public void changeColorSpace(String newSpace){
 		mainContext.chooseColorSpace(newSpace);
+		if (mainContext.isEmpty()) {
+			return;
+		}
 		conversionService.applyColorFilters(mainContext);
 		if (drawingPanel.getDisplayable() != null)
 			somethingChanged = true;

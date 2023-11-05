@@ -14,4 +14,6 @@ public interface FileService {
     Displayable applyColorFilters(Displayable source, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser);
     Displayable assignGamma(Displayable source, GammaConverter gammaConverter);
     Displayable convertGamma(Displayable source, GammaConverter gammaConverter);
+    Displayable useGamma(Displayable source, GammaConverter gammaConverter);
+    Displayable correctGamma(Displayable source, GammaConverter gammaConverter);
 }

@@ -49,7 +49,11 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public Displayable applyColorFilters(Displayable source, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) {
-        return null;
+
+        return new PnmFile(source.getHeader(), splitToRows(source.getHeader(),
+                        convertToPixels(convertToRawData(source.getAllPixels(), colorSpaceConverter, channelChooser),
+                                colorSpaceConverter,
+                                channelChooser)));
     }
 
     @Override
@@ -60,6 +64,20 @@ public class FileServiceImpl implements FileService {
     @Override
     public Displayable convertGamma(Displayable source, GammaConverter gammaConverter) {
         throw new UnsupportedOperationException("I will implement it eventually...");
+    }
+
+    @Override
+    public Displayable useGamma(Displayable source, GammaConverter gammaConverter) {
+        Displayable result = source.clone();
+        applyToEachPixel(gammaConverter::useGamma, result);
+        return result;
+    }
+
+    @Override
+    public Displayable correctGamma(Displayable source, GammaConverter gammaConverter) {
+        Displayable result = source.clone();
+        applyToEachPixel(gammaConverter::correctGamma, result);
+        return result;
     }
 
     private Displayable applyGamma(Displayable displayable, GammaConverter inputGammaConverter, GammaConverter ShownGammaConverter) {

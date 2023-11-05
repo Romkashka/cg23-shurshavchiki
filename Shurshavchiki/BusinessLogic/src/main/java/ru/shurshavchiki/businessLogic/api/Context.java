@@ -1,5 +1,12 @@
 package ru.shurshavchiki.businessLogic.api;
 
+import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
+import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
+import ru.shurshavchiki.businessLogic.drawing.lineDrawers.LineDrawer;
+import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
+import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
+
+import java.io.File;
 import java.util.List;
 
 public interface Context {
@@ -24,4 +31,13 @@ public interface Context {
     void chooseGamma(float gamma);
     void chooseChannel(List<String> channelNames);
     void chooseColorSpace(String colorSpaceName);
+    void setFile(File file);
+
+    boolean isEmpty();
+
+    Displayable getShownDisplayable();
+    LineBaseDrawer getLineBaseDrawer();
+    LineTipDrawer getStartLineTipDrawer();
+    LineTipDrawer getEndLineTipDrawer();
+    GammaConverter getInputGammaConverter();
 }

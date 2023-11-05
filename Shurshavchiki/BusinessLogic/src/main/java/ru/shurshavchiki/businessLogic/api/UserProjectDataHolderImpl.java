@@ -37,6 +37,8 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     @Getter @Setter
     private Displayable displayableWithFilters;
     @Getter @Setter
+    private Displayable displayableWithLinearGamma;
+    @Getter @Setter
     private Displayable shownDisplayable;
 
     @Getter

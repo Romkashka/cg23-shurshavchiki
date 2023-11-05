@@ -2,12 +2,18 @@ package ru.shurshavchiki.businessLogic.api;
 
 import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooserBuilder;
 import ru.shurshavchiki.businessLogic.colorSpace.models.Channel;
+import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
+import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
+import ru.shurshavchiki.businessLogic.drawing.lineDrawers.LineDrawer;
+import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
 import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
 import ru.shurshavchiki.businessLogic.exceptions.DitheringException;
+import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmWithBitRate;
 
+import java.io.File;
 import java.util.List;
 
 public class DataHolderAdapter implements Context {
@@ -118,6 +124,41 @@ public class DataHolderAdapter implements Context {
     @Override
     public void chooseColorSpace(String colorSpaceName) {
         dataHolder.setColorSpaceFactory(dataHolder.getColorSpaceRepository().getImplementationByName(colorSpaceName));
+    }
+
+    @Override
+    public void setFile(File file) {
+        dataHolder.setFile(file);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return getShownDisplayable() == null;
+    }
+
+    @Override
+    public Displayable getShownDisplayable() {
+        return dataHolder.getShownDisplayable();
+    }
+
+    @Override
+    public LineBaseDrawer getLineBaseDrawer() {
+        return dataHolder.getLineBaseDrawer();
+    }
+
+    @Override
+    public LineTipDrawer getStartLineTipDrawer() {
+        return dataHolder.getStartLineTipDrawer();
+    }
+
+    @Override
+    public LineTipDrawer getEndLineTipDrawer() {
+        return dataHolder.getEndLineTipDrawer();
+    }
+
+    @Override
+    public GammaConverter getInputGammaConverter() {
+        return dataHolder.getInputGammaConverter();
     }
 
     private Channel getChannelFromName(String channelName) {

@@ -33,6 +33,7 @@ public interface UserProjectDataHolder {
     ChannelChooser getChannelChooser();
     Displayable getStartingDisplayable();
     Displayable getDisplayableWithFilters();
+    Displayable getDisplayableWithLinearGamma();
     ColorSpaceConverter getStartingColorSpaceConverter();
     ChannelChooser getStartingChannelChooser();
     ColorSpaceRepository getColorSpaceRepository();
@@ -65,6 +66,7 @@ public interface UserProjectDataHolder {
     void setChannelChooser(ChannelChooser channelChooser);
     void setStartingDisplayable(Displayable displayable);
     void setDisplayableWithFilters(Displayable displayable);
+    void setDisplayableWithLinearGamma(Displayable displayable);
     void setStartingColorSpaceConverter(ColorSpaceConverter converter);
     void setStartingChannelChooser(ChannelChooser channelChooser);
 

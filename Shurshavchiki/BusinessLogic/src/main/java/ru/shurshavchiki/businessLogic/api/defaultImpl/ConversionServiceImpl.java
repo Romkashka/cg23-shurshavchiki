@@ -17,25 +17,37 @@ public class ConversionServiceImpl implements ConversionService {
     @Override
     public void applyColorFilters(@NonNull Context context) {
         UserProjectDataHolder dataHolder = extractDataHolder(context);
-        Displayable result = fileService.applyColorFilters(dataHolder.getShownDisplayable(),
+        Displayable result = fileService.applyColorFilters(dataHolder.getStartingDisplayable(),
                 dataHolder.getColorSpaceFactory().getColorSpaceConverter(),
                 dataHolder.getChannelChooser());
-        dataHolder.setShownDisplayable(result);
         dataHolder.setDisplayableWithFilters(result);
+        applyGamma(dataHolder);
     }
 
     @Override
     public void assignGamma(@NonNull Context context) {
         UserProjectDataHolder dataHolder = extractDataHolder(context);
-        Displayable result = fileService.assignGamma(dataHolder.getShownDisplayable(), dataHolder.getNewGammaConverter());
-        dataHolder.setShownDisplayable(result);
+//        Displayable result = fileService.assignGamma(dataHolder.getShownDisplayable(), dataHolder.getNewGammaConverter());
+//        dataHolder.setShownDisplayable(result);
         dataHolder.setInputGammaConverter(dataHolder.getNewGammaConverter());
         dataHolder.setNewGammaConverter(null);
+        applyGamma(dataHolder);
     }
 
     @Override
     public void convertGamma(@NonNull Context context) {
-        throw new UnsupportedOperationException("I will implement it eventually");
+        UserProjectDataHolder dataHolder = extractDataHolder(context);
+        dataHolder.setInputGammaConverter(dataHolder.getNewGammaConverter());
+        dataHolder.setShownGammaConverter(dataHolder.getNewGammaConverter());
+        dataHolder.setNewGammaConverter(null);
+        applyGamma(dataHolder);
+    }
+
+    private void applyGamma(@NonNull UserProjectDataHolder dataHolder) {
+        dataHolder.setDisplayableWithLinearGamma(fileService.useGamma(dataHolder.getDisplayableWithFilters(),
+                dataHolder.getInputGammaConverter()));
+        dataHolder.setShownDisplayable(fileService.correctGamma(dataHolder.getDisplayableWithLinearGamma(),
+                dataHolder.getShownGammaConverter()));
     }
 
     private UserProjectDataHolder extractDataHolder(@NonNull Context context) {
