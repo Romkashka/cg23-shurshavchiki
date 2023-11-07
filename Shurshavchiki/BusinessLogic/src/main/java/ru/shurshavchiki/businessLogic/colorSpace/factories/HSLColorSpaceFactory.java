@@ -19,7 +19,7 @@ public class HSLColorSpaceFactory implements ColorSpaceFactory {
 
     @Override
     public ColorSpace getColorSpace() {
-        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.HUE, Channel.SATURATION, Channel.LIGHTNESS));
+        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.HUE, Channel.SATURATION, Channel.LIGHTNESS), List.of(Channel.SATURATION, Channel.LIGHTNESS));
     }
 
     @Override

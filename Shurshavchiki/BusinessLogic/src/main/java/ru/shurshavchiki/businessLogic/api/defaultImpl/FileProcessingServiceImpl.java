@@ -4,6 +4,7 @@ import lombok.NonNull;
 import ru.shurshavchiki.businessLogic.api.Context;
 import ru.shurshavchiki.businessLogic.api.FileProcessingService;
 import ru.shurshavchiki.businessLogic.api.UserProjectDataHolder;
+import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.services.FileService;
 import ru.shurshavchiki.businessLogic.domain.services.ImageProcessingService;
 
@@ -22,9 +23,12 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     @Override
     public void createNewImage(@NonNull Context context) throws IOException {
         UserProjectDataHolder dataHolder = extractDataHolder(context);
-        imageProcessingService.createNewImage(dataHolder.getImageCreationAlgorithm(),
+        Displayable image = imageProcessingService.createNewImage(dataHolder.getImageCreationAlgorithm(),
                 dataHolder.getNewImageHeader().getHeight(),
                 dataHolder.getNewImageHeader().getWidth());
+        dataHolder.setStartingDisplayable(image);
+        dataHolder.setDisplayableWithFilters(image);
+        dataHolder.setShownDisplayable(image);
     }
 
     @Override

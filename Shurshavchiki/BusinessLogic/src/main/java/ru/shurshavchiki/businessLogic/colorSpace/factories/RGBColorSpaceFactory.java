@@ -17,7 +17,7 @@ public class RGBColorSpaceFactory implements ColorSpaceFactory {
 
     @Override
     public ColorSpace getColorSpace() {
-        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.RED, Channel.GREEN, Channel.BLUE));
+        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.RED, Channel.GREEN, Channel.BLUE), List.of(Channel.RED, Channel.GREEN, Channel.BLUE));
     }
 
     @Override

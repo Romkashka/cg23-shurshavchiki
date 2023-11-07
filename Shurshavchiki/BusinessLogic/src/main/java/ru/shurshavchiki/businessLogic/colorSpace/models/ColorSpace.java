@@ -2,5 +2,5 @@ package ru.shurshavchiki.businessLogic.colorSpace.models;
 
 import java.util.List;
 
-public record ColorSpace(String Name, List<Channel> Channels) {
+public record ColorSpace(String Name, List<Channel> Channels, List<Channel> usedInAutocorrection) {
 }

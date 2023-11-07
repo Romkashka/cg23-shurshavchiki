@@ -46,4 +46,9 @@ public class RgbPixel implements RgbConvertable {
     public float FloatBlue() {
         return blueComponent;
     }
+
+    @Override
+    public float getByIndex(int index) {
+        return 0;
+    }
 }

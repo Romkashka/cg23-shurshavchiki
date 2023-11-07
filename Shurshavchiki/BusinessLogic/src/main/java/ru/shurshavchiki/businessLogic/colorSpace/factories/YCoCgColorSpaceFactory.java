@@ -18,7 +18,7 @@ public class YCoCgColorSpaceFactory implements ColorSpaceFactory {
 
     @Override
     public ColorSpace getColorSpace() {
-        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.Y_VALUE, Channel.CHROMATIC_ORANGE, Channel.CHROMATIC_GREEN));
+        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.Y_VALUE, Channel.CHROMATIC_ORANGE, Channel.CHROMATIC_GREEN), List.of(Channel.Y_VALUE));
     }
 
     @Override

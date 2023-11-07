@@ -8,4 +8,6 @@ public interface RgbConvertable {
     float FloatRed();
     float FloatGreen();
     float FloatBlue();
+
+    float getByIndex(int index);
 }

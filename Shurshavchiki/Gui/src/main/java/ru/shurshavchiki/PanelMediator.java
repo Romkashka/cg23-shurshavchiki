@@ -56,7 +56,7 @@ public class PanelMediator {
 	@Getter
 	private JScrollPane scrollPane = new JScrollPane();
 
-	public void run(){
+	public void run() {
 		imageFrame.create();
 		scrollPane.getViewport().add(drawingPanel);
 	}
@@ -65,6 +65,8 @@ public class PanelMediator {
 		mainContext.setNewImageParameters(height, width);
 		mainContext.setImageCreationAlgorithm(type);
 		fileProcessingService.createNewImage(mainContext);
+		drawingPanel.loadImage(mainContext.getShownDisplayable());
+		setGammaDefault();
 		settingPanel.enableImageButtons();
 		somethingChanged = true;
 	}

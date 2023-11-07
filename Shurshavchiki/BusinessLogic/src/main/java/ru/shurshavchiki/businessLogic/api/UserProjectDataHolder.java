@@ -16,12 +16,15 @@ import ru.shurshavchiki.businessLogic.drawing.models.Drawing;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.gamma.util.GammaConvertersRegistry;
+import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.ContrastCorrector;
+import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithmRepository;
 
 import java.io.File;
+import java.util.List;
 
 public interface UserProjectDataHolder {
     File getFile();
@@ -34,6 +37,7 @@ public interface UserProjectDataHolder {
     Displayable getStartingDisplayable();
     Displayable getDisplayableWithFilters();
     Displayable getDisplayableWithLinearGamma();
+    Displayable getDisplayableWithDrawings();
     ColorSpaceConverter getStartingColorSpaceConverter();
     ChannelChooser getStartingChannelChooser();
     ColorSpaceRepository getColorSpaceRepository();
@@ -56,6 +60,9 @@ public interface UserProjectDataHolder {
     Header setNewImageHeader(Header header);
     ImageCreationAlgorithmRepository getImageCreationAlgorithmRepository();
 
+    List<Histogram> getHistograms();
+    ContrastCorrector getContrastCorrector();
+
 
     void setFile(File file);
     void setShownDisplayable(Displayable displayable);
@@ -67,6 +74,7 @@ public interface UserProjectDataHolder {
     void setStartingDisplayable(Displayable displayable);
     void setDisplayableWithFilters(Displayable displayable);
     void setDisplayableWithLinearGamma(Displayable displayable);
+    void setDisplayableWithDrawings(Displayable displayable);
     void setStartingColorSpaceConverter(ColorSpaceConverter converter);
     void setStartingChannelChooser(ChannelChooser channelChooser);
 
@@ -81,4 +89,8 @@ public interface UserProjectDataHolder {
 
     int addDrawing(Drawing drawing);
     void deleteDrawing(int index);
+    List<Drawing> getDrawings();
+
+    void setHistograms(List<Histogram> histograms);
+    void setContrastCorrector(ContrastCorrector contrastCorrector);
 }

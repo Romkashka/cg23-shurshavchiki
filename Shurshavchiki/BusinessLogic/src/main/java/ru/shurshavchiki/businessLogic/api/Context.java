@@ -4,7 +4,9 @@ import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
 import ru.shurshavchiki.businessLogic.drawing.lineDrawers.LineDrawer;
 import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
+import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
+import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 
 import java.io.File;
 import java.util.List;
@@ -22,6 +24,7 @@ public interface Context {
     void setLineBase(String name);
     void setStartLineTip(String name);
     void setEndLineTip(String name);
+    void setNewLine(Line line);
     void setImageCreationAlgorithm(String name);
     default void setNewImageParameters(int height, int width) {
         setNewImageParameters(height, width, "P6");
@@ -40,4 +43,7 @@ public interface Context {
     LineTipDrawer getStartLineTipDrawer();
     LineTipDrawer getEndLineTipDrawer();
     GammaConverter getInputGammaConverter();
+
+    List<Histogram> getHistograms();
+    void chooseContrastCorrector(float lowerBoundary, float upperBoundary);
 }

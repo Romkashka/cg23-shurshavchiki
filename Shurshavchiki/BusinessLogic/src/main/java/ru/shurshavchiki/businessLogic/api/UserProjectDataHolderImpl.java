@@ -8,6 +8,8 @@ import ru.shurshavchiki.businessLogic.colorSpace.factories.ColorSpaceFactory;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRepository;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
 import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseRepository;
 import ru.shurshavchiki.businessLogic.drawing.lineDrawers.LineDrawer;
@@ -19,6 +21,8 @@ import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.gamma.util.GammaConvertersRegistry;
 import ru.shurshavchiki.businessLogic.gamma.util.PlainGammaConvertersRegistry;
+import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.ContrastCorrector;
+import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
@@ -38,6 +42,8 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     private Displayable displayableWithFilters;
     @Getter @Setter
     private Displayable displayableWithLinearGamma;
+    @Getter @Setter
+    private Displayable displayableWithDrawings;
     @Getter @Setter
     private Displayable shownDisplayable;
 
@@ -69,7 +75,7 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     private final LineBaseRepository lineBaseRepository;
     @Getter
     private final LineTipRepository lineTipRepository;
-    @Getter @Setter
+    @Getter
     private Line newLine;
 
     @Getter
@@ -84,7 +90,13 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     @Getter @Setter
     ImageCreationAlgorithm imageCreationAlgorithm;
 
+    @Getter
     private final List<Drawing> drawings;
+
+    @Getter @Setter
+    private List<Histogram> histograms;
+    @Getter @Setter
+    private ContrastCorrector contrastCorrector;
 
     public UserProjectDataHolderImpl() {
         this.gammaConvertersRegistry = new PlainGammaConvertersRegistry();
@@ -134,6 +146,16 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     @Override
     public void setEndLineTipDrawer(LineTipDrawer lineTipDrawer) {
         lineDrawer.setEndLineTipDrawer(lineTipDrawer);
+    }
+
+    @Override
+    public void setNewLine(Line newLine) {
+        RgbConvertable linearColor = new RgbPixel(
+                this.inputGammaConverter.correctGamma(newLine.color().FloatRed()),
+                this.inputGammaConverter.correctGamma(newLine.color().FloatGreen()),
+                this.inputGammaConverter.correctGamma(newLine.color().FloatBlue())
+        );
+        this.newLine = new Line(newLine.start(), newLine.end(), newLine.width(), linearColor);
     }
 
     @Override

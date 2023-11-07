@@ -7,9 +7,12 @@ import ru.shurshavchiki.businessLogic.domain.models.Header;
 import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
 import ru.shurshavchiki.businessLogic.drawing.lineDrawers.LineDrawer;
 import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
+import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
 import ru.shurshavchiki.businessLogic.exceptions.DitheringException;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
+import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
+import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.PlainContrastCorrector;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmWithBitRate;
 
@@ -86,6 +89,11 @@ public class DataHolderAdapter implements Context {
     }
 
     @Override
+    public void setNewLine(Line line) {
+        dataHolder.setNewLine(line);
+    }
+
+    @Override
     public void setImageCreationAlgorithm(String name) {
         dataHolder.setImageCreationAlgorithm(dataHolder.getImageCreationAlgorithmRepository().getImplementationByName(name));
     }
@@ -159,6 +167,16 @@ public class DataHolderAdapter implements Context {
     @Override
     public GammaConverter getInputGammaConverter() {
         return dataHolder.getInputGammaConverter();
+    }
+
+    @Override
+    public List<Histogram> getHistograms() {
+        return dataHolder.getHistograms();
+    }
+
+    @Override
+    public void chooseContrastCorrector(float lowerBoundary, float upperBoundary) {
+        dataHolder.setContrastCorrector(new PlainContrastCorrector(upperBoundary, lowerBoundary));
     }
 
     private Channel getChannelFromName(String channelName) {

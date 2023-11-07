@@ -2,6 +2,9 @@ package ru.shurshavchiki.businessLogic.domain.services;
 
 import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
 import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
+import ru.shurshavchiki.businessLogic.colorSpace.factories.ColorSpaceFactory;
+import ru.shurshavchiki.businessLogic.colorSpace.models.SingleChannelUnit;
+import ru.shurshavchiki.businessLogic.colorSpace.util.ChannelRearranger;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
 import ru.shurshavchiki.businessLogic.domain.io.PnmFileReader;
@@ -78,6 +81,18 @@ public class FileServiceImpl implements FileService {
         Displayable result = source.clone();
         applyToEachPixel(gammaConverter::correctGamma, result);
         return result;
+    }
+
+    @Override
+    public List<SingleChannelUnit> splitToChannels(Displayable source, ColorSpaceFactory colorSpaceFactory) {
+        ChannelRearranger channelRearranger = new ChannelRearranger();
+        return channelRearranger.splitToChannels(concatenateRows(source.getAllPixels()), colorSpaceFactory);
+    }
+
+    @Override
+    public Displayable concatenateChannelUnits(Header header, List<SingleChannelUnit> channelUnits, ColorSpaceFactory colorSpaceFactory) {
+        ChannelRearranger channelRearranger = new ChannelRearranger();
+        return new PnmFile(header, splitToRows(header, channelRearranger.concatenateChannelUnits(channelUnits, colorSpaceFactory)));
     }
 
     private Displayable applyGamma(Displayable displayable, GammaConverter inputGammaConverter, GammaConverter ShownGammaConverter) {

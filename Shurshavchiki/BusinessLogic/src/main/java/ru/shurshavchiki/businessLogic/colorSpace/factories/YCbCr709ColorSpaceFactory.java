@@ -17,7 +17,7 @@ public class YCbCr709ColorSpaceFactory implements ColorSpaceFactory {
 
     @Override
     public ColorSpace getColorSpace() {
-        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.Y_VALUE, Channel.CHROMATIC_BLUE, Channel.CHROMATIC_RED));
+        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.Y_VALUE, Channel.CHROMATIC_BLUE, Channel.CHROMATIC_RED), List.of(Channel.Y_VALUE));
     }
 
     @Override

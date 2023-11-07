@@ -36,11 +36,11 @@ public class ServiceFactoryImpl implements ServicesFactory {
 
     @Override
     public ImageProcessingService getImageProcessingService() {
-        return new ru.shurshavchiki.businessLogic.api.defaultImpl.ImageProcessingServiceImpl(imageProcessingService);
+        return new ru.shurshavchiki.businessLogic.api.defaultImpl.ImageProcessingServiceImpl(imageProcessingService, fileService);
     }
 
     @Override
     public DrawingService getDrawingService() {
-        return new ru.shurshavchiki.businessLogic.api.defaultImpl.DrawingServiceImpl(drawingService);
+        return new ru.shurshavchiki.businessLogic.api.defaultImpl.DrawingServiceImpl(drawingService, fileService);
     }
 }

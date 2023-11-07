@@ -17,7 +17,7 @@ public class CMYColorSpaceFactory implements ColorSpaceFactory {
 
     @Override
     public ColorSpace getColorSpace() {
-        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.CYAN, Channel.MAGENTA, Channel.YELLOW));
+        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.CYAN, Channel.MAGENTA, Channel.YELLOW), List.of(Channel.CYAN, Channel.MAGENTA, Channel.YELLOW));
     }
 
     @Override
