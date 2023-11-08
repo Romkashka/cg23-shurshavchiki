@@ -7,6 +7,8 @@ import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.ContrastCor
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 
 import java.util.List;
 
@@ -15,4 +17,5 @@ public interface ImageProcessingService {
     Displayable createNewImage(ImageCreationAlgorithm algorithm, int height, int width);
     List<Histogram> generateHistograms(List<SingleChannelUnit> singleChannelUnits, ColorSpace colorSpace);
     List<SingleChannelUnit> autocorrectImage(List<SingleChannelUnit> channelUnits, ColorSpace colorSpace, List<Histogram> distributions, ContrastCorrector contrastCorrector);
+    Displayable scaleImage(Displayable source, ScalingAlgorithm scalingAlgorithm, ScalingParameters scalingParameters);
 }

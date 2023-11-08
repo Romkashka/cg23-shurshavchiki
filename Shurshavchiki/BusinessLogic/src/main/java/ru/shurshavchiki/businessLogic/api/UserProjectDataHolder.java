@@ -22,6 +22,9 @@ import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorit
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithmRepository;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
 
 import java.io.File;
 import java.util.List;
@@ -32,6 +35,7 @@ public interface UserProjectDataHolder {
     GammaConverter getInputGammaConverter();
     GammaConverter getShownGammaConverter();
     GammaConverter getNewGammaConverter();
+    GammaConverter getDefaultGammaConverter();
     ColorSpaceFactory getColorSpaceFactory();
     ChannelChooser getChannelChooser();
     Displayable getStartingDisplayable();
@@ -63,6 +67,9 @@ public interface UserProjectDataHolder {
     List<Histogram> getHistograms();
     ContrastCorrector getContrastCorrector();
 
+    ScalingAlgorithm getScalingAlgorithm();
+    ScalingParameters getScalingParameters();
+
 
     void setFile(File file);
     void setShownDisplayable(Displayable displayable);
@@ -93,4 +100,7 @@ public interface UserProjectDataHolder {
 
     void setHistograms(List<Histogram> histograms);
     void setContrastCorrector(ContrastCorrector contrastCorrector);
+
+    void setScalingAlgorithm(ScalingAlgorithm scalingAlgorithm);
+    void setScalingParameters(ScalingParameters scalingParameters);
 }

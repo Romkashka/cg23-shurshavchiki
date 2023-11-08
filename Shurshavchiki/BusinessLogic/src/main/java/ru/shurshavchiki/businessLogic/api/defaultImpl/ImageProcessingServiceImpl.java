@@ -54,6 +54,14 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         dataHolderUpdateWizard.updateDisplayableWithFilters(dataHolder);
     }
 
+    @Override
+    public void scaleImage(@NonNull Context context) {
+        UserProjectDataHolder dataHolder = extractDataHolder(context);
+        Displayable result = imageProcessingService.scaleImage(dataHolder.getShownDisplayable(), dataHolder.getScalingAlgorithm(), dataHolder.getScalingParameters());
+        dataHolder.setStartingDisplayable(result);
+        dataHolderUpdateWizard.forceUpdateDataHolder(dataHolder);
+    }
+
     private UserProjectDataHolder extractDataHolder(Context context) {
         return context.getDataHolder();
     }}

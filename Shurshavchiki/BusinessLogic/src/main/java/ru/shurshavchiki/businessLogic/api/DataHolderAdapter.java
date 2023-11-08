@@ -15,6 +15,9 @@ import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.PlainContrastCorrector;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmWithBitRate;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
 
 import java.io.File;
 import java.util.List;
@@ -177,6 +180,22 @@ public class DataHolderAdapter implements Context {
     @Override
     public void chooseContrastCorrector(float lowerBoundary, float upperBoundary) {
         dataHolder.setContrastCorrector(new PlainContrastCorrector(upperBoundary, lowerBoundary));
+    }
+
+    @Override
+    public ScalingAlgorithm getScalingAlgorithm() {
+        return dataHolder.getScalingAlgorithm();
+    }
+
+    @Override
+    public void setScalingAlgorithm(ScalingAlgorithm scalingAlgorithm, List<ScalingAlgorithmParameter> parameters) {
+        scalingAlgorithm.init(parameters);
+        dataHolder.setScalingAlgorithm(scalingAlgorithm);
+    }
+
+    @Override
+    public void setScalingParameters(ScalingParameters scalingParameters) {
+        dataHolder.setScalingParameters(scalingParameters);
     }
 
     private Channel getChannelFromName(String channelName) {

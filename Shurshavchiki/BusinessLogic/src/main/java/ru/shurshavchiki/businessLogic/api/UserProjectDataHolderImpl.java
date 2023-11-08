@@ -27,6 +27,9 @@ import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorit
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithmRepository;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithmRepository;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,7 +51,7 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     private Displayable shownDisplayable;
 
     @Getter
-    private GammaConvertersRegistry gammaConvertersRegistry;
+    private final GammaConvertersRegistry gammaConvertersRegistry;
     @Getter @Setter
     private GammaConverter inputGammaConverter;
     @Getter @Setter
@@ -98,6 +101,13 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     @Getter @Setter
     private ContrastCorrector contrastCorrector;
 
+    @Getter
+    private final ScalingAlgorithmRepository scalingAlgorithmRepository;
+    @Getter @Setter
+    private ScalingAlgorithm scalingAlgorithm;
+    @Getter @Setter
+    private ScalingParameters scalingParameters;
+
     public UserProjectDataHolderImpl() {
         this.gammaConvertersRegistry = new PlainGammaConvertersRegistry();
         this.colorSpaceRepository = new ColorSpaceRepository();
@@ -105,12 +115,21 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
         this.imageCreationAlgorithmRepository = new ImageCreationAlgorithmRepository();
         this.lineBaseRepository = new LineBaseRepository();
         this.lineTipRepository = new LineTipRepository();
+        this.scalingAlgorithmRepository = new ScalingAlgorithmRepository();
+
         this.lineDrawer = new SimpleLineDrawer();
         setLineBaseDrawer(lineBaseRepository.getImplementationByName(lineBaseRepository.getAllImplementations().get(0)));
         setStartLineTipDrawer(lineTipRepository.getImplementationByName(lineTipRepository.getAllImplementations().get(0)));
         setEndLineTipDrawer(lineTipRepository.getImplementationByName(lineTipRepository.getAllImplementations().get(0)));
 
+        setScalingAlgorithm(scalingAlgorithmRepository.getImplementationByName(scalingAlgorithmRepository.getAllImplementations().get(0)));
+
         drawings = new ArrayList<>();
+    }
+
+    @Override
+    public GammaConverter getDefaultGammaConverter() {
+        return getGammaConvertersRegistry().getGammaConverter(0);
     }
 
     @Override
@@ -150,10 +169,11 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
 
     @Override
     public void setNewLine(Line newLine) {
+        GammaConverter gammaConverter = getDefaultGammaConverter();
         RgbConvertable linearColor = new RgbPixel(
-                this.inputGammaConverter.correctGamma(newLine.color().FloatRed()),
-                this.inputGammaConverter.correctGamma(newLine.color().FloatGreen()),
-                this.inputGammaConverter.correctGamma(newLine.color().FloatBlue())
+                gammaConverter.useGamma(this.inputGammaConverter.correctGamma(newLine.color().FloatRed())),
+                gammaConverter.useGamma(this.inputGammaConverter.correctGamma(newLine.color().FloatGreen())),
+                gammaConverter.useGamma(this.inputGammaConverter.correctGamma(newLine.color().FloatBlue()))
         );
         this.newLine = new Line(newLine.start(), newLine.end(), newLine.width(), linearColor);
     }

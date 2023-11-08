@@ -7,6 +7,9 @@ import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
 
 import java.io.File;
 import java.util.List;
@@ -46,4 +49,8 @@ public interface Context {
 
     List<Histogram> getHistograms();
     void chooseContrastCorrector(float lowerBoundary, float upperBoundary);
+
+    ScalingAlgorithm getScalingAlgorithm();
+    void setScalingAlgorithm(ScalingAlgorithm scalingAlgorithm, List<ScalingAlgorithmParameter> parameters);
+    void setScalingParameters(ScalingParameters scalingParameters);
 }

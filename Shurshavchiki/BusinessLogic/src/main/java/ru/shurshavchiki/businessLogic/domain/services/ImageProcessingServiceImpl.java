@@ -9,6 +9,8 @@ import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.PlainContrastCorrector;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,5 +59,9 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         }
 
         return updatedUnits;
+    }
+
+    public Displayable scaleImage(Displayable source, ScalingAlgorithm scalingAlgorithm, ScalingParameters scalingParameters) {
+        return scalingAlgorithm.scale(scalingParameters, source);
     }
 }
