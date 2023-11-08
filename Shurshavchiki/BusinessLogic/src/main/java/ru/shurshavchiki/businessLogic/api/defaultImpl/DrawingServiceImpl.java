@@ -4,18 +4,16 @@ import lombok.NonNull;
 import ru.shurshavchiki.businessLogic.api.Context;
 import ru.shurshavchiki.businessLogic.api.DrawingService;
 import ru.shurshavchiki.businessLogic.api.UserProjectDataHolder;
-import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
-import ru.shurshavchiki.businessLogic.domain.services.FileService;
 import ru.shurshavchiki.businessLogic.drawing.models.Drawing;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 
 public class DrawingServiceImpl implements DrawingService {
     private final ru.shurshavchiki.businessLogic.domain.services.DrawingService drawingService;
-    private final FileService fileService;
+    private final DataHolderUpdateWizard dataHolderUpdateWizard;
 
-    public DrawingServiceImpl(ru.shurshavchiki.businessLogic.domain.services.DrawingService drawingService, FileService fileService) {
+    public DrawingServiceImpl(ru.shurshavchiki.businessLogic.domain.services.DrawingService drawingService, DataHolderUpdateWizard dataHolderUpdateWizard) {
         this.drawingService = drawingService;
-        this.fileService = fileService;
+        this.dataHolderUpdateWizard = dataHolderUpdateWizard;
     }
 
 
@@ -25,12 +23,7 @@ public class DrawingServiceImpl implements DrawingService {
         Drawing drawing = drawingService.drawLine(dataHolder.getNewLine(), dataHolder.getLineDrawer());
         dataHolder.addDrawing(drawing);
         dataHolder.setNewLine(null);
-        Displayable withDrawings = drawingService.mergeDrawings(dataHolder.getDisplayableWithLinearGamma(), dataHolder.getDrawings());
-        dataHolder.setDisplayableWithDrawings(withDrawings);
-        Displayable resultingImage = fileService.useGamma(withDrawings, dataHolder.getShownGammaConverter());
-        resultingImage = fileService.applyColorFilters(resultingImage, dataHolder.getColorSpaceFactory().getColorSpaceConverter(), dataHolder.getChannelChooser());
-        dataHolder.setShownDisplayable(resultingImage);
-        dataHolder.setDisplayableWithFilters(resultingImage);
+        dataHolderUpdateWizard.updateDisplayableWithDrawings(dataHolder);
     }
 
     private UserProjectDataHolder extractDataHolder(Context context) {

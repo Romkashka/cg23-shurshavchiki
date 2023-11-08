@@ -4,31 +4,22 @@ import lombok.NonNull;
 import ru.shurshavchiki.businessLogic.api.Context;
 import ru.shurshavchiki.businessLogic.api.ConversionService;
 import ru.shurshavchiki.businessLogic.api.UserProjectDataHolder;
-import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
-import ru.shurshavchiki.businessLogic.domain.services.FileService;
 
 public class ConversionServiceImpl implements ConversionService {
-    private final FileService fileService;
+    private final DataHolderUpdateWizard dataHolderUpdateWizard;
 
-    public ConversionServiceImpl(FileService fileService) {
-        this.fileService = fileService;
+    public ConversionServiceImpl(DataHolderUpdateWizard dataHolderUpdateWizard) {
+        this.dataHolderUpdateWizard = dataHolderUpdateWizard;
     }
 
     @Override
     public void applyColorFilters(@NonNull Context context) {
-        UserProjectDataHolder dataHolder = extractDataHolder(context);
-        Displayable result = fileService.applyColorFilters(dataHolder.getStartingDisplayable(),
-                dataHolder.getColorSpaceFactory().getColorSpaceConverter(),
-                dataHolder.getChannelChooser());
-        dataHolder.setDisplayableWithFilters(result);
-        applyGamma(dataHolder);
+        applyColorFilters(extractDataHolder(context));
     }
 
     @Override
     public void assignGamma(@NonNull Context context) {
         UserProjectDataHolder dataHolder = extractDataHolder(context);
-//        Displayable result = fileService.assignGamma(dataHolder.getShownDisplayable(), dataHolder.getNewGammaConverter());
-//        dataHolder.setShownDisplayable(result);
         dataHolder.setInputGammaConverter(dataHolder.getNewGammaConverter());
         dataHolder.setNewGammaConverter(null);
         applyGamma(dataHolder);
@@ -43,11 +34,12 @@ public class ConversionServiceImpl implements ConversionService {
         applyGamma(dataHolder);
     }
 
+    private void applyColorFilters(UserProjectDataHolder dataHolder) {
+        dataHolderUpdateWizard.updateDisplayableWithFilters(dataHolder);
+    }
+
     private void applyGamma(@NonNull UserProjectDataHolder dataHolder) {
-        dataHolder.setDisplayableWithLinearGamma(fileService.useGamma(dataHolder.getDisplayableWithFilters(),
-                dataHolder.getInputGammaConverter()));
-        dataHolder.setShownDisplayable(fileService.correctGamma(dataHolder.getDisplayableWithLinearGamma(),
-                dataHolder.getShownGammaConverter()));
+        dataHolderUpdateWizard.updateDisplayableWithLinearGamma(dataHolder);
     }
 
     private UserProjectDataHolder extractDataHolder(@NonNull Context context) {

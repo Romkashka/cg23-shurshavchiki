@@ -14,10 +14,12 @@ import java.io.IOException;
 public class FileProcessingServiceImpl implements FileProcessingService {
     private final FileService fileService;
     private final ImageProcessingService imageProcessingService;
+    private final DataHolderUpdateWizard dataHolderUpdateWizard;
 
-    public FileProcessingServiceImpl(FileService fileService, ImageProcessingService imageProcessingService) {
+    public FileProcessingServiceImpl(FileService fileService, ImageProcessingService imageProcessingService, DataHolderUpdateWizard dataHolderUpdateWizard) {
         this.fileService = fileService;
         this.imageProcessingService = imageProcessingService;
+        this.dataHolderUpdateWizard = dataHolderUpdateWizard;
     }
 
     @Override
@@ -28,7 +30,8 @@ public class FileProcessingServiceImpl implements FileProcessingService {
                 dataHolder.getNewImageHeader().getWidth());
         dataHolder.setStartingDisplayable(image);
         dataHolder.setDisplayableWithFilters(image);
-        dataHolder.setShownDisplayable(image);
+        resetToDefaultSettings(dataHolder);
+        dataHolderUpdateWizard.updateDisplayableWithLinearGamma(dataHolder);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
                 userProjectDataHolder.getColorSpaceFactory().getColorSpaceConverter(),
                 userProjectDataHolder.getChannelChooser()));
         userProjectDataHolder.setDisplayableWithFilters(userProjectDataHolder.getStartingDisplayable());
-        userProjectDataHolder.setShownDisplayable(userProjectDataHolder.getStartingDisplayable());
+        dataHolderUpdateWizard.updateDisplayableWithLinearGamma(userProjectDataHolder);
     }
 
     @Override

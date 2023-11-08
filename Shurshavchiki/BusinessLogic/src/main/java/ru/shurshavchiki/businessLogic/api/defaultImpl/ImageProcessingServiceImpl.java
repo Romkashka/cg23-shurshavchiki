@@ -15,10 +15,12 @@ import java.util.List;
 public class ImageProcessingServiceImpl implements ImageProcessingService {
     private final ru.shurshavchiki.businessLogic.domain.services.ImageProcessingService imageProcessingService;
     private final FileService fileService;
+    private final DataHolderUpdateWizard dataHolderUpdateWizard;
 
-    public ImageProcessingServiceImpl(ru.shurshavchiki.businessLogic.domain.services.ImageProcessingService imageProcessingService, FileService fileService) {
+    public ImageProcessingServiceImpl(ru.shurshavchiki.businessLogic.domain.services.ImageProcessingService imageProcessingService, FileService fileService, DataHolderUpdateWizard dataHolderUpdateWizard) {
         this.imageProcessingService = imageProcessingService;
         this.fileService = fileService;
+        this.dataHolderUpdateWizard = dataHolderUpdateWizard;
     }
 
     @Override
@@ -48,7 +50,8 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
                 dataHolder.getHistograms(),
                 dataHolder.getContrastCorrector());
         Displayable result = fileService.concatenateChannelUnits(dataHolder.getShownDisplayable().getHeader(), channelUnits, dataHolder.getColorSpaceFactory());
-        dataHolder.setShownDisplayable(result);
+        dataHolder.setStartingDisplayable(result);
+        dataHolderUpdateWizard.updateDisplayableWithFilters(dataHolder);
     }
 
     private UserProjectDataHolder extractDataHolder(Context context) {
