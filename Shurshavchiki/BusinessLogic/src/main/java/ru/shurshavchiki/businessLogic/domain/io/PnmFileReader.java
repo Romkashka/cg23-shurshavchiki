@@ -17,15 +17,12 @@ import java.util.Scanner;
 
 public class PnmFileReader {
     @Getter
-    private Header header;
-    private String name;
-    private File file;
-    //private List<List<RgbConvertable>> pixels;
+    private final Header header;
+    private final File file;
 
     public PnmFileReader(java.io.File file) throws IOException {
         this.file = file;
         header = readHeader(file);
-        name = file.getName();
     }
 
     public Displayable getDisplayablePnmFile() throws IOException {
@@ -56,13 +53,6 @@ public class PnmFileReader {
             case "P6" -> dataReader = new P6DataReader(header, file);
             default -> throw OpenFileException.unsupportedFileVersion(header.getMagicNumber());
         }
-//        ArrayList<RgbConvertable> pixelList = dataReader.nextPixel();
-//        float[] pixels = new float[header.getHeight() * header.getWidth() * 3];
-//        for (int i = 0; i < header.getHeight() * header.getWidth(); i++){
-//            pixels[3*i] = pixelList.get(i).FloatRed();
-//            pixels[3*i + 1] = pixelList.get(i).FloatGreen();
-//            pixels[3*i + 2] = pixelList.get(i).FloatBlue();
-//        }
         return new ImageDataHolder(header, dataReader.getFloatPixels());
     }
 

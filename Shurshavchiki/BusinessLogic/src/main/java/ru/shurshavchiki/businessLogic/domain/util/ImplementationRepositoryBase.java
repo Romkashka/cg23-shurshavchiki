@@ -5,7 +5,7 @@ import ru.shurshavchiki.businessLogic.exceptions.ImplementationRepositoryExcepti
 import java.util.List;
 
 public abstract class ImplementationRepositoryBase<T extends WithName> implements ImplementationsRepository {
-    protected List<T> implementations;
+    protected final List<T> implementations;
 
     protected ImplementationRepositoryBase(List<T> implementations) {
         this.implementations = implementations;

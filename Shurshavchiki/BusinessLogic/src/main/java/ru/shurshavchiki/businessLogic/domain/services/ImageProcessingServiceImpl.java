@@ -6,14 +6,12 @@ import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.ContrastCorrector;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.DistributionGenerator;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
-import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.PlainContrastCorrector;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ImageProcessingServiceImpl implements ImageProcessingService {

@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.function.Function;
 
 public class PredicateBasedConverter implements ColorSpaceConverter {
-    public Function<Float[], Float[]> toRgb;
-    public Function<Float[], Float[]> fromRgb;
+    public final Function<Float[], Float[]> toRgb;
+    public final Function<Float[], Float[]> fromRgb;
 
     public PredicateBasedConverter(Function<Float[], Float[]> toRgb, Function<Float[], Float[]> fromRgb) {
         this.toRgb = toRgb;

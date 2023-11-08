@@ -6,8 +6,7 @@ import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 public abstract class AbstractDataEncoder implements PnmImageDataEncoder {
     protected static final int MIN_BITS_PER_COLOR = 8;
     protected static final int MIN_DATA_SIZE = (int) Math.pow(2, MIN_BITS_PER_COLOR) - 1;
-//    protected Header header;
-    protected Displayable displayable;
+    protected final Displayable displayable;
     protected int x;
     protected int y;
     protected final int colorDataSize;

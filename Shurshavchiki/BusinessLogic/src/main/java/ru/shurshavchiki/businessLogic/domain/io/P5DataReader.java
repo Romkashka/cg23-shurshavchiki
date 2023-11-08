@@ -12,10 +12,10 @@ import java.util.List;
 
 public class P5DataReader implements PixelDataReader {
 
-    private Header header;
-    private DataInputStream dataInputStream;
+    private final Header header;
+    private final DataInputStream dataInputStream;
 
-    private int totalPixels;
+    private final int totalPixels;
     private int readPixels;
 
     public P5DataReader(Header header, java.io.File file) throws IOException {
@@ -87,15 +87,11 @@ public class P5DataReader implements PixelDataReader {
     }
 
     private float normalizeChannel(float value) {
-        return (float) (value / header.getMaxValue());
+        return value / header.getMaxValue();
     }
 
     @Override
     public boolean hasNext() {
-        if (readPixels < totalPixels) {
-            return true;
-        } else {
-            return false;
-        }
+        return readPixels < totalPixels;
     }
 }

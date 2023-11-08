@@ -11,9 +11,9 @@ import java.util.List;
 
 public class PnmFile implements Displayable {
     @Getter
-    private Header header;
+    private final Header header;
     @Getter
-    private List<List<RgbConvertable>> pixels;
+    private final List<List<RgbConvertable>> pixels;
 
     public PnmFile(Header header, List<List<RgbConvertable>> pixels) {
         this.header = header;

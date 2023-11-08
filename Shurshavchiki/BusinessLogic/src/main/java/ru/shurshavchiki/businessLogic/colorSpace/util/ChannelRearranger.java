@@ -5,7 +5,6 @@ import ru.shurshavchiki.businessLogic.colorSpace.factories.ColorSpaceFactory;
 import ru.shurshavchiki.businessLogic.colorSpace.models.Channel;
 import ru.shurshavchiki.businessLogic.colorSpace.models.ColorSpace;
 import ru.shurshavchiki.businessLogic.colorSpace.models.SingleChannelUnit;
-import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 
 import java.util.ArrayList;

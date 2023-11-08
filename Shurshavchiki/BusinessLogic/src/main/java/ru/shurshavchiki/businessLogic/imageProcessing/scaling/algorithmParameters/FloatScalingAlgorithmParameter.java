@@ -1,7 +1,6 @@
 package ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters;
 
 import lombok.Getter;
-import lombok.Setter;
 import ru.shurshavchiki.businessLogic.exceptions.ScalingException;
 
 public class FloatScalingAlgorithmParameter extends ScalingAlgorithmParameter {

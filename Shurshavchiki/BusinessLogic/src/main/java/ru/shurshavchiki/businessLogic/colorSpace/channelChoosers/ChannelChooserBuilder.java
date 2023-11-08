@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChannelChooserBuilder {
-    private ColorSpace colorSpace;
+    private final ColorSpace colorSpace;
     @Getter
-    private List<Float> constants;
+    private final List<Float> constants;
     private List<Integer> channelMask;
 
     public ChannelChooserBuilder(ColorSpace colorSpace, List<Float> constants) {

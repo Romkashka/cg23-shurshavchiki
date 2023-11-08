@@ -3,7 +3,6 @@ package ru.shurshavchiki.businessLogic.api;
 import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
 import ru.shurshavchiki.businessLogic.colorSpace.converters.ColorSpaceConverter;
 import ru.shurshavchiki.businessLogic.colorSpace.factories.ColorSpaceFactory;
-import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRepository;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
@@ -24,7 +23,6 @@ import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgor
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
 
 import java.io.File;
 import java.util.List;

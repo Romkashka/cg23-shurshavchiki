@@ -1,7 +1,6 @@
 package ru.shurshavchiki.businessLogic.imageProcessing.autocorrection;
 
 import ru.shurshavchiki.businessLogic.colorSpace.models.SingleChannelUnit;
-import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 
 import java.util.List;
 

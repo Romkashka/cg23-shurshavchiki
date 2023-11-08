@@ -12,10 +12,10 @@ import java.util.List;
 
 public class P6DataReader implements PixelDataReader {
 
-    private Header header;
-    private DataInputStream dataInputStream;
+    private final Header header;
+    private final DataInputStream dataInputStream;
 
-    private int totalPixels;
+    private final int totalPixels;
     private int readPixels;
 
     public P6DataReader(Header header, java.io.File file) throws IOException {
@@ -89,7 +89,7 @@ public class P6DataReader implements PixelDataReader {
     }
 
     private float normalizeChannel(float value) {
-        return (float) (value / header.getMaxValue());
+        return value / header.getMaxValue();
     }
 
     @Override

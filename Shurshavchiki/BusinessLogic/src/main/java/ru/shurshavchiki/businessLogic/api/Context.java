@@ -2,7 +2,6 @@ package ru.shurshavchiki.businessLogic.api;
 
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
-import ru.shurshavchiki.businessLogic.drawing.lineDrawers.LineDrawer;
 import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;

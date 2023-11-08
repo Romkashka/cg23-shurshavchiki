@@ -33,10 +33,9 @@ public class FileServiceImpl implements FileService {
     public Displayable readFile(File file, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) throws IOException {
         checkFileIsReadable(file);
         ImageDataHolder imageDataHolder = new PnmFileReader(file).getImageDataHolder();
-        Displayable image = new PnmFile(imageDataHolder.getHeader(),
-                splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getData(), colorSpaceConverter, channelChooser)));
 
-        return image;
+        return new PnmFile(imageDataHolder.getHeader(),
+                splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getData(), colorSpaceConverter, channelChooser)));
     }
 
     @Override

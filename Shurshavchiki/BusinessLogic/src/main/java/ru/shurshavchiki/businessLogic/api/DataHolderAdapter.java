@@ -5,7 +5,6 @@ import ru.shurshavchiki.businessLogic.colorSpace.models.Channel;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
 import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
-import ru.shurshavchiki.businessLogic.drawing.lineDrawers.LineDrawer;
 import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.exceptions.ChannelException;

@@ -1,9 +1,9 @@
 package ru.shurshavchiki.businessLogic.domain.models;
 
 public class RgbPixel implements RgbConvertable {
-    float redComponent;
-    float greenComponent;
-    float blueComponent;
+    final float redComponent;
+    final float greenComponent;
+    final float blueComponent;
 
     public RgbPixel(float redComponent, float greenComponent, float blueComponent) {
         this.redComponent = redComponent;
