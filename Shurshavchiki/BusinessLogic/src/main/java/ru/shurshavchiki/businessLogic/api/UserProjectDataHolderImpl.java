@@ -64,6 +64,8 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     @Getter @Setter
     private ColorSpaceFactory colorSpaceFactory;
     @Getter @Setter
+    private boolean colorSpaceChanged;
+    @Getter @Setter
     private ChannelChooser channelChooser;
 
     @Getter @Setter

@@ -35,6 +35,7 @@ public interface UserProjectDataHolder {
     GammaConverter getNewGammaConverter();
     GammaConverter getDefaultGammaConverter();
     ColorSpaceFactory getColorSpaceFactory();
+    boolean isColorSpaceChanged();
     ChannelChooser getChannelChooser();
     Displayable getStartingDisplayable();
     Displayable getDisplayableWithFilters();
@@ -75,6 +76,7 @@ public interface UserProjectDataHolder {
     void setShownGammaConverter(GammaConverter gammaConverter);
     void setNewGammaConverter(GammaConverter gammaConverter);
     void setColorSpaceFactory(ColorSpaceFactory colorSpaceFactory);
+    void setColorSpaceChanged(boolean value);
     void setChannelChooser(ChannelChooser channelChooser);
     void setStartingDisplayable(Displayable displayable);
     void setDisplayableWithFilters(Displayable displayable);

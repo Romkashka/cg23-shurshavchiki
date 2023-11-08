@@ -14,7 +14,11 @@ public class ConversionServiceImpl implements ConversionService {
 
     @Override
     public void applyColorFilters(@NonNull Context context) {
-        applyColorFilters(extractDataHolder(context));
+        UserProjectDataHolder dataHolder = extractDataHolder(context);
+        if (dataHolder.isColorSpaceChanged()) {
+            dataHolder.setStartingDisplayable(dataHolder.getShownDisplayable());
+        }
+        applyColorFilters(dataHolder);
     }
 
     @Override

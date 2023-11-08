@@ -133,7 +133,9 @@ public class DataHolderAdapter implements Context {
 
     @Override
     public void chooseColorSpace(String colorSpaceName) {
+        dataHolder.setColorSpaceChanged(true);
         dataHolder.setColorSpaceFactory(dataHolder.getColorSpaceRepository().getImplementationByName(colorSpaceName));
+        dataHolder.setChannelChooser(dataHolder.getColorSpaceFactory().getChannelChooserBuilder().withAllChannels().build());
     }
 
     @Override

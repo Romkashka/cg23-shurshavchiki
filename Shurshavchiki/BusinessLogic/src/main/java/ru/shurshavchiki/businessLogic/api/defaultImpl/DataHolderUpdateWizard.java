@@ -28,6 +28,7 @@ public class DataHolderUpdateWizard {
         dataHolder.setDisplayableWithFilters(fileService.applyColorFilters(dataHolder.getStartingDisplayable(),
                 dataHolder.getColorSpaceFactory().getColorSpaceConverter(),
                 dataHolder.getChannelChooser()));
+        dataHolder.setColorSpaceChanged(false);
 
         updateDisplayableWithLinearGamma(dataHolder);
     }
