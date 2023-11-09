@@ -15,6 +15,7 @@ import ru.shurshavchiki.Panels.SettingPanel;
 import ru.shurshavchiki.businessLogic.api.*;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
+import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 
 import javax.swing.*;
 
@@ -167,7 +168,6 @@ public class PanelMediator {
     }
 
 	public void validateScrollPane(){
-		scrollPane.setViewportView(drawingPanel);
 		scrollPane.validate();
 	}
 
@@ -206,8 +206,9 @@ public class PanelMediator {
 		settingPanel.setDisplayGamma(0F);
 	}
 
-	public void getHistogramInfo(){
-		return;
+	public List<Histogram> getHistogramsInfo(){
+		imageProcessingService.generateHistograms(mainContext);
+		return mainContext.getHistograms();
 	}
 
 	public static PanelMediator getInstance() {
