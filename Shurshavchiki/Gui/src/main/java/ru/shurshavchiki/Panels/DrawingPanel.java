@@ -20,6 +20,8 @@ public class DrawingPanel extends JPanel {
 
 	private BufferedImage image = null;
 
+//	private
+
 	@Getter
 	private Displayable displayable = null;
 
