@@ -167,7 +167,6 @@ public class PanelMediator {
     }
 
 	public void validateScrollPane(){
-		scrollPane.setViewportView(drawingPanel);
 		scrollPane.validate();
 	}
 

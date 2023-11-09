@@ -35,7 +35,6 @@ public class DrawingPanel extends JPanel {
 	public void loadImage(Displayable displayable) {
 		this.setDisplayable(displayable);
 		this.castToBuffer();
-		setBackground(Color.WHITE);
 		this.paint(getGraphics());
 		PanelMediator.getInstance().validateScrollPane();
 	}
