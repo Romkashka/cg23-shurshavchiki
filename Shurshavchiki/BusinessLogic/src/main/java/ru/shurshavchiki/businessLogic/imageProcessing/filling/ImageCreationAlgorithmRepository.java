@@ -7,7 +7,8 @@ import java.util.List;
 public class ImageCreationAlgorithmRepository extends ImplementationRepositoryBase<ImageCreationAlgorithm> {
     public ImageCreationAlgorithmRepository() {
         super(List.of(
-                new BlankImageCreationAlgorithm()
+                new BlankImageCreationAlgorithm(),
+                new GradientImageCreationAlgorithm()
         ));
     }
 }

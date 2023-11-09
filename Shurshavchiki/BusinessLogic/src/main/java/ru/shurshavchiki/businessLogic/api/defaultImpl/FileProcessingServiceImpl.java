@@ -29,9 +29,8 @@ public class FileProcessingServiceImpl implements FileProcessingService {
                 dataHolder.getNewImageHeader().getHeight(),
                 dataHolder.getNewImageHeader().getWidth());
         dataHolder.setStartingDisplayable(image);
-        dataHolder.setDisplayableWithFilters(image);
         resetToDefaultSettings(dataHolder);
-        dataHolderUpdateWizard.updateDisplayableWithLinearGamma(dataHolder);
+        dataHolderUpdateWizard.forceUpdateDataHolder(dataHolder);
     }
 
     @Override
