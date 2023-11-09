@@ -1,6 +1,6 @@
 package ru.shurshavchiki.Helpers;
 
-import ru.shurshavchiki.Listeners.SpinnerChangeListener;
+import ru.shurshavchiki.Listeners.ChangeListeners.SpinnerChangeListener;
 
 import javax.swing.*;
 import java.awt.*;

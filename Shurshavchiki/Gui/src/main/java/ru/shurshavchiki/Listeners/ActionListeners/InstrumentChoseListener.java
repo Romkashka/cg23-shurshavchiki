@@ -1,7 +1,6 @@
-package ru.shurshavchiki.Listeners;
+package ru.shurshavchiki.Listeners.ActionListeners;
 
 import ru.shurshavchiki.Frames.ColorChooserFrame;
-import ru.shurshavchiki.Frames.GammaInputFrame;
 import ru.shurshavchiki.Panels.OneToolPanel;
 
 import java.awt.event.ActionEvent;

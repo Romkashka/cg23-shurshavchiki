@@ -1,6 +1,5 @@
 package ru.shurshavchiki;
 
-import ru.shurshavchiki.businessLogic.exceptions.GeneralPhotoshopException;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 

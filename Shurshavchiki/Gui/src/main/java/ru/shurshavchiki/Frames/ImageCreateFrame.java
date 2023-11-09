@@ -3,7 +3,7 @@ package ru.shurshavchiki.Frames;
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
-import ru.shurshavchiki.Listeners.CreateComboBoxListener;
+import ru.shurshavchiki.Listeners.ActionListeners.CreateComboBoxListener;
 import ru.shurshavchiki.PanelMediator;
 
 import javax.swing.*;
@@ -108,6 +108,7 @@ public class ImageCreateFrame extends JFrame {
 
     private void handleOk(){
         try {
+            PanelMediator.getInstance().closeImage();
             height = (int)spinnerHeight.getValue();
             width = (int)spinnerWidth.getValue();
             PanelMediator.getInstance().createImage(width, height, selectedType);

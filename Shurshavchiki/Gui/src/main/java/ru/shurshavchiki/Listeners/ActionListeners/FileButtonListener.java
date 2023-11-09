@@ -1,4 +1,4 @@
-package ru.shurshavchiki.Listeners;
+package ru.shurshavchiki.Listeners.ActionListeners;
 
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Frames.ExportFileFrame;
@@ -32,6 +32,9 @@ public class FileButtonListener implements ActionListener {
                     exportFile();
                     break;
                 case "Close":
+                    if (PanelMediator.getInstance().getSomethingChanged())
+                        if (!PanelMediator.getInstance().getConfirm())
+                            return;
                     PanelMediator.getInstance().closeImage();
                     break;
                 case "Exit":
@@ -44,19 +47,24 @@ public class FileButtonListener implements ActionListener {
     }
 
     private void newFile(){
-        PanelMediator.getInstance().closeImage();
-        if (!PanelMediator.getInstance().getSomethingChanged()){
-            new ImageCreateFrame();
-        }
+        if (PanelMediator.getInstance().getSomethingChanged())
+            if (!PanelMediator.getInstance().getConfirm())
+                return;
+
+        new ImageCreateFrame();
     }
 
     private void openFile() throws IOException {
-        PanelMediator.getInstance().closeImage();
+        if (PanelMediator.getInstance().getSomethingChanged())
+            if (!PanelMediator.getInstance().getConfirm())
+                return;
+
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File("C:/Users/1/Desktop"));
         int result = fileChooser.showOpenDialog(PanelMediator.getInstance().getSettingPanel());
 
         if (result == JFileChooser.APPROVE_OPTION) {
+            PanelMediator.getInstance().closeImage();
             PanelMediator.getInstance().getSettingPanel().setSelectedFile(fileChooser.getSelectedFile());
             PanelMediator.getInstance().openNewImage(PanelMediator.getInstance().getSettingPanel().getSelectedFile());
         }

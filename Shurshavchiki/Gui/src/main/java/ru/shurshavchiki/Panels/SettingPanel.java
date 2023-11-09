@@ -2,12 +2,11 @@ package ru.shurshavchiki.Panels;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Frames.GammaInputFrame;
 import ru.shurshavchiki.Frames.HistogramFrame;
 import ru.shurshavchiki.Listeners.ColorChannelListener;
 import ru.shurshavchiki.Listeners.ColorSpaceListener;
-import ru.shurshavchiki.Listeners.FileButtonListener;
+import ru.shurshavchiki.Listeners.ActionListeners.FileButtonListener;
 import ru.shurshavchiki.PanelMediator;
 
 import java.awt.*;
@@ -124,7 +123,6 @@ public class SettingPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				new HistogramFrame();
-//						PanelMediator.getInstance().getHistogramInfo());
 			}
 		};
 

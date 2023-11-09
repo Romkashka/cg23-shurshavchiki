@@ -1,17 +1,11 @@
 package ru.shurshavchiki.Panels;
 
-import lombok.Getter;
 import ru.shurshavchiki.Helpers.ChannelColorHelper;
-import ru.shurshavchiki.Listeners.MouseListener;
-import ru.shurshavchiki.PanelMediator;
-import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 
-import java.util.Comparator;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class HistogramPanel extends JPanel {
 
@@ -25,9 +19,9 @@ public class HistogramPanel extends JPanel {
 		this.maxValue = maxValue;
 		color = ChannelColorHelper.map(histogram.ChannelName());
 		values = histogram.ValueDistribution();
-		setPreferredSize(new Dimension(256, 200));
-		setMinimumSize(new Dimension(256, 200));
-		setSize(new Dimension(256, 200));
+		setPreferredSize(new Dimension(300, 200));
+		setMinimumSize(new Dimension(300, 200));
+		setSize(new Dimension(300, 200));
 	}
 
 	@Override
@@ -38,6 +32,7 @@ public class HistogramPanel extends JPanel {
 		his.fillRect(44, 0, 300, 200);
 
 		his.setColor(color);
+		System.out.println(values.size());
 
 		for (int i = 0; i < 256; ++i){
 			his.fillRect(44 + i, 200 - (int)((200. / (float)maxValue) * values.get(i)), 1, (int)((200. / (float)maxValue) * values.get(i)));

@@ -1,6 +1,5 @@
-package ru.shurshavchiki.Listeners;
+package ru.shurshavchiki.Listeners.ChangeListeners;
 
-import ru.shurshavchiki.Frames.ExportFileFrame;
 import ru.shurshavchiki.Frames.HistogramFrame;
 
 import javax.swing.*;

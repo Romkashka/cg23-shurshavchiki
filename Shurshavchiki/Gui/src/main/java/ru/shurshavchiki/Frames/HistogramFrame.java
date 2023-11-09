@@ -1,10 +1,9 @@
 package ru.shurshavchiki.Frames;
 
 import ru.shurshavchiki.ExceptionHandler;
-import ru.shurshavchiki.Helpers.ChannelColorHelper;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
-import ru.shurshavchiki.Listeners.HistogramListener;
+import ru.shurshavchiki.Listeners.ChangeListeners.HistogramListener;
 import ru.shurshavchiki.PanelMediator;
 import ru.shurshavchiki.Panels.HistogramPanel;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
@@ -68,7 +67,7 @@ public class HistogramFrame extends JFrame {
         generateRightChange.setText("Upper bound:");
         generateRightChange.setVisible(true);
 
-        this.setMinimumSize(new Dimension(preview.size() * 380, 500));
+        this.setMinimumSize(new Dimension(Integer.max(preview.size() * 380, 500), 600));
         this.setSize(new Dimension(preview.size() * 380, 500));
 
         this.setLayout(new GridBagLayout());

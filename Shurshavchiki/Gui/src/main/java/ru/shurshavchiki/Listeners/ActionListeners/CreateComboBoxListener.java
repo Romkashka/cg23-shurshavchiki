@@ -1,4 +1,4 @@
-package ru.shurshavchiki.Listeners;
+package ru.shurshavchiki.Listeners.ActionListeners;
 
 import ru.shurshavchiki.Frames.ImageCreateFrame;
 

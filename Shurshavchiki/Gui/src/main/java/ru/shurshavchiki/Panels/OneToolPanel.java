@@ -2,15 +2,12 @@ package ru.shurshavchiki.Panels;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.shurshavchiki.Frames.ColorChooserFrame;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
-import ru.shurshavchiki.Listeners.InstrumentChoseListener;
-import ru.shurshavchiki.Listeners.SpinnerChangeListener;
+import ru.shurshavchiki.Listeners.ActionListeners.InstrumentChoseListener;
 import ru.shurshavchiki.PanelMediator;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class OneToolPanel extends JPanel {
@@ -18,7 +15,7 @@ public class OneToolPanel extends JPanel {
 	@Getter
 	private String chosen;
 
-	private JTextPane title = new JTextPane();
+	private JTextPane title;
 
 	private JButton buttonMainColor;
 

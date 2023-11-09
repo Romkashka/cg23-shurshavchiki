@@ -8,11 +8,7 @@ import ru.shurshavchiki.Panels.SettingPanel;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.File;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Random;
 
 import javax.swing.*;

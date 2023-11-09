@@ -1,13 +1,10 @@
 package ru.shurshavchiki.Panels;
 
 import lombok.Getter;
-import ru.shurshavchiki.ExceptionHandler;
-import ru.shurshavchiki.Listeners.InstrumentChoseListener;
+import ru.shurshavchiki.Listeners.ActionListeners.InstrumentChoseListener;
 import ru.shurshavchiki.PanelMediator;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
 
 import javax.swing.*;

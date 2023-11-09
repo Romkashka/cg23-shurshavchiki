@@ -12,7 +12,7 @@ public class ChannelColorHelper {
             case "SATURATION" -> new Color(77, 0, 0);
             case "LIGHTNESS" -> new Color(247, 123, 123);
             case "BRIGHTNESS" -> new Color(157, 0, 0);
-            case "Y_VALUE" -> new Color(85, 81, 81);
+            case "Y_VALUE" -> new Color(123, 123, 123);
             case "CHROMATIC_BLUE" -> new Color(43, 66, 116);
             case "CHROMATIC_RED" -> new Color(213, 46, 113);
             case "CHROMATIC_GREEN" -> new Color(97, 149, 97);

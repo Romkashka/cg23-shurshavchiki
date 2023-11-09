@@ -20,8 +20,6 @@ public class DrawingPanel extends JPanel {
 
 	private BufferedImage image = null;
 
-//	private
-
 	@Getter
 	private Displayable displayable = null;
 
@@ -35,7 +33,7 @@ public class DrawingPanel extends JPanel {
 	}
 
 	public void loadImage(Displayable displayable) {
-		this.setDisplayable(displayable);
+		this.displayable = displayable;
 		this.castToBuffer();
 		this.paint(getGraphics());
 	}
@@ -58,10 +56,6 @@ public class DrawingPanel extends JPanel {
 		return new Dimension(image.getWidth(), image.getHeight());
 	}
 
-	private void setDisplayable(Displayable displayable) {
-		this.displayable = displayable;
-	}
-
 	public void closeImage(){
 		displayable = null;
 		image = null;
@@ -70,6 +64,7 @@ public class DrawingPanel extends JPanel {
 
 	public void completeLinePreview(Point startPoint, Point endPoint){
 		preview = null;
+		PanelMediator.getInstance().drawLine(startPoint, endPoint);
 		paintComponent(this.getGraphics());
 	}
 
@@ -81,7 +76,7 @@ public class DrawingPanel extends JPanel {
 	}
 
 	public void showLinePreview(Point startPoint, Point endPoint){
-		if (displayable != null){
+		if (displayable != null && endPoint.x < image.getWidth() && endPoint.y < image.getHeight()){
 			preview = deepCopy(image);
 			int rgb = PanelMediator.getInstance().getOneToolPanel().getMainColor().getRGB();
 			float size = PanelMediator.getInstance().getOneToolPanel().getMainSize()/2;
@@ -125,6 +120,7 @@ public class DrawingPanel extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		if (preview == null) {
 			g2.drawImage(image, 0, 0, null);
+            this.setVisible(image != null);
 		}else
 			g2.drawImage(preview, 0, 0, null);
 

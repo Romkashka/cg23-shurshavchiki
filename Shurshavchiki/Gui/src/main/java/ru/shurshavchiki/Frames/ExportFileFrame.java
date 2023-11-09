@@ -3,9 +3,8 @@ package ru.shurshavchiki.Frames;
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
-import ru.shurshavchiki.Listeners.BitRateListener;
-import ru.shurshavchiki.Listeners.CreateComboBoxListener;
-import ru.shurshavchiki.Listeners.DitheringComboBoxListener;
+import ru.shurshavchiki.Listeners.ChangeListeners.BitRateListener;
+import ru.shurshavchiki.Listeners.ActionListeners.DitheringComboBoxListener;
 import ru.shurshavchiki.PanelMediator;
 import ru.shurshavchiki.Panels.DrawingPanel;
 

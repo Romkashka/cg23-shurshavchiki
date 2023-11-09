@@ -1,8 +1,8 @@
 package ru.shurshavchiki;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -15,6 +15,8 @@ import ru.shurshavchiki.Panels.SettingPanel;
 import ru.shurshavchiki.businessLogic.api.*;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ColorSpaceRegistry;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
+import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
+import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 
 import javax.swing.*;
@@ -96,27 +98,24 @@ public class PanelMediator {
 		somethingChanged = false;
 	}
 
+	public Boolean getConfirm(){
+		int answer = JOptionPane.showConfirmDialog(null,
+				"Some changes weren't save. Are you sure you want to close the picture?",
+				"close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+		if (answer == JOptionPane.YES_OPTION)
+			return true;
+		else
+			return false;
+	}
+
 	public void closeImage() {
-		if (somethingChanged){
-			int answer = JOptionPane.showConfirmDialog(null,
-					"Some changes weren't save. Are you sure you want to close the picture?",
-					"close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-			if (answer == JOptionPane.YES_OPTION){
-				drawingPanel.closeImage();
-				setGammaDefault();
-				settingPanel.disableImageButtons();
-				somethingChanged = false;
-				settingPanel.eraseFileTitle();
-				mainContext = new ServiceFactoryImpl().getBlankContext();
-				validateScrollPane();
-			}
-		}else {
-			drawingPanel.closeImage();
-			setGammaDefault();
-			settingPanel.disableImageButtons();
-			settingPanel.eraseFileTitle();
-			validateScrollPane();
-		}
+		somethingChanged = false;
+		drawingPanel.closeImage();
+		setGammaDefault();
+		settingPanel.disableImageButtons();
+		settingPanel.eraseFileTitle();
+		mainContext = new ServiceFactoryImpl().getBlankContext();
+		validateScrollPane();
 	}
 
 	public void exit() {
@@ -215,6 +214,16 @@ public class PanelMediator {
 	public List<Histogram> getHistogramsInfo(){
 		imageProcessingService.generateHistograms(mainContext);
 		return mainContext.getHistograms();
+	}
+
+	public void drawLine(Point start, Point end){
+		mainContext.setLineBase("Solid");
+		mainContext.setStartLineTip("None");
+		mainContext.setEndLineTip("None");
+		RgbPixel color = new RgbPixel((float)oneToolPanel.getMainColor().getRed()/255.f,
+				(float)oneToolPanel.getMainColor().getGreen()/255.f,
+				(float)oneToolPanel.getMainColor().getGreen()/255.f);
+		mainContext.setNewLine(new Line(start, end, oneToolPanel.getMainSize(), color));
 	}
 
 	public static PanelMediator getInstance() {
