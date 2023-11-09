@@ -111,6 +111,7 @@ public class ImageCreateFrame extends JFrame {
             PanelMediator.getInstance().closeImage();
             height = (int)spinnerHeight.getValue();
             width = (int)spinnerWidth.getValue();
+            PanelMediator.getInstance().closeImage();
             PanelMediator.getInstance().createImage(width, height, selectedType);
 
             handleCancel();

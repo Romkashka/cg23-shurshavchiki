@@ -20,6 +20,8 @@ public class DrawingPanel extends JPanel {
 
 	private BufferedImage image = null;
 
+	private JLabel imageLabel;
+
 	@Getter
 	private Displayable displayable = null;
 
@@ -60,6 +62,8 @@ public class DrawingPanel extends JPanel {
 		displayable = null;
 		image = null;
 		paintComponent(this.getGraphics());
+		PanelMediator.getInstance().getImageFrame().setSize(PanelMediator.getInstance().getImageFrame().getWidth(), PanelMediator.getInstance().getImageFrame().getHeight() + 1);
+		PanelMediator.getInstance().getImageFrame().setSize(PanelMediator.getInstance().getImageFrame().getWidth(), PanelMediator.getInstance().getImageFrame().getHeight() - 1);
 	}
 
 	public void completeLinePreview(Point startPoint, Point endPoint){
@@ -119,10 +123,10 @@ public class DrawingPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		if (preview == null) {
-			g2.drawImage(image, 0, 0, null);
-            this.setVisible(image != null);
+			if (image != null)
+				g2.drawImage(image, 0, 0, this);
 		}else
-			g2.drawImage(preview, 0, 0, null);
+			g2.drawImage(preview, 0, 0, this);
 
 		PanelMediator.getInstance().validateScrollPane();
 	}
