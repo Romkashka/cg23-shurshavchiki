@@ -29,13 +29,13 @@ public class ChannelRearranger {
     }
 
     public List<RgbConvertable> concatenateChannelUnits(List<SingleChannelUnit> channelUnits, ColorSpaceFactory colorSpaceFactory) {
-        int channelsAmount = channelUnits.get(0).Values().length;
-        float[] rawData = new float[channelUnits.size() * channelsAmount];
+        int channelDataLength = channelUnits.get(0).Values().length;
+        float[] rawData = new float[channelUnits.size() * channelDataLength];
 
         for (int i = 0; i < channelUnits.size(); i++) {
             SingleChannelUnit unit = channelUnits.get(i);
-            for (int j = 0; j < unit.Values().length; j++) {
-                rawData[j * channelsAmount + i] = unit.Values()[j];
+            for (int j = 0; j < channelDataLength; j++) {
+                rawData[j * channelUnits.size() + i] = unit.Values()[j];
             }
         }
 
