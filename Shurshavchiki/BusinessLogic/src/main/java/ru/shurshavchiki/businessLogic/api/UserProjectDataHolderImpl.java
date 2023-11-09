@@ -125,6 +125,8 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
         setEndLineTipDrawer(lineTipRepository.getImplementationByName(lineTipRepository.getAllImplementations().get(0)));
 
         setScalingAlgorithm(scalingAlgorithmRepository.getImplementationByName(scalingAlgorithmRepository.getAllImplementations().get(0)));
+        setColorSpaceFactory(colorSpaceRepository.getImplementationByName("RGB"));
+        setChannelChooser(colorSpaceFactory.getChannelChooserBuilder().withAllChannels().build());
 
         drawings = new ArrayList<>();
     }

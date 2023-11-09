@@ -36,7 +36,6 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     @Override
     public void openImage(@NonNull Context context) throws IOException {
         UserProjectDataHolder userProjectDataHolder = context.getDataHolder();
-        userProjectDataHolder.setFile(userProjectDataHolder.getFile());
         resetToDefaultSettings(userProjectDataHolder);
         userProjectDataHolder.setStartingDisplayable(fileService.readFile(userProjectDataHolder.getFile(),
                 userProjectDataHolder.getColorSpaceFactory().getColorSpaceConverter(),

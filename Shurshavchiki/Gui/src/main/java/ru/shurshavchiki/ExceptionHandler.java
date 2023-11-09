@@ -51,7 +51,7 @@ public class ExceptionHandler {
             javax.swing.JOptionPane.showMessageDialog(null,
                     exp.getClass() + "\nMessage: " + exp.getMessage(), "Unexpected exception",
                     JOptionPane.ERROR_MESSAGE);
-            exp.printStackTrace();
+//            exp.printStackTrace();
         }
 
         exp.printStackTrace();
