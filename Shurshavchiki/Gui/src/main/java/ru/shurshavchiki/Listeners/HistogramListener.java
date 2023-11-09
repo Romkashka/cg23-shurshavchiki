@@ -1,21 +1,19 @@
 package ru.shurshavchiki.Listeners;
 
 import ru.shurshavchiki.Frames.ExportFileFrame;
-import ru.shurshavchiki.PanelMediator;
+import ru.shurshavchiki.Frames.HistogramFrame;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class BitRateListener implements ChangeListener {
+public class HistogramListener implements ChangeListener {
 
     private String type;
 
-    private ExportFileFrame frame;
+    private HistogramFrame frame;
 
-    public BitRateListener(ExportFileFrame frame, String type){
+    public HistogramListener(HistogramFrame frame, String type){
         this.type = type;
         this.frame = frame;
     }
@@ -24,8 +22,11 @@ public class BitRateListener implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         JSpinner spinner = (JSpinner) e.getSource();
         switch (type){
-            case "bit rate":
-                frame.setBitRate((int)spinner.getValue());
+            case "left":
+                frame.setLeftChange(((Double)spinner.getValue()).floatValue());
+                break;
+            case "right":
+                frame.setRightChange(((Double)spinner.getValue()).floatValue());
                 break;
             default:
                 break;

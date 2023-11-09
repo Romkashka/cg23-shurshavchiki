@@ -191,6 +191,12 @@ public class PanelMediator {
 			somethingChanged = true;
 	}
 
+	public void makeAutocorrection(float lower, float upper){
+		mainContext.chooseContrastCorrector(lower, upper);
+		imageProcessingService.autocorrectImage(mainContext);
+		drawingPanel.loadImage(mainContext.getShownDisplayable());
+	}
+
 	public void assignGamma(float displayGamma) {
 		mainContext.chooseGamma(displayGamma);
 		conversionService.assignGamma(mainContext);
