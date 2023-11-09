@@ -21,7 +21,7 @@ public class GradientImageCreationAlgorithm implements ImageCreationAlgorithm {
 
         List<RgbConvertable> template = new ArrayList<>();
         for (int i = 0; i < width; i++) {
-            template.add(new RgbPixel((float) i / (float) width));
+            template.add(new RgbPixel((float) i / (float) (width - 1)));
         }
 
         List<List<RgbConvertable>> pixels = new ArrayList<>();
