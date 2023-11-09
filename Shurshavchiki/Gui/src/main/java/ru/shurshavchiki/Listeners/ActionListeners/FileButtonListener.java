@@ -38,6 +38,9 @@ public class FileButtonListener implements ActionListener {
                     PanelMediator.getInstance().closeImage();
                     break;
                 case "Exit":
+                    if (PanelMediator.getInstance().getSomethingChanged())
+                        if (!PanelMediator.getInstance().getConfirm())
+                            return;
                     PanelMediator.getInstance().exit();
                     break;
             }

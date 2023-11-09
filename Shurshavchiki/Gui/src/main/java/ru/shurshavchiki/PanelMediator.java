@@ -102,10 +102,7 @@ public class PanelMediator {
 		int answer = JOptionPane.showConfirmDialog(null,
 				"Some changes weren't save. Are you sure you want to close the picture?",
 				"close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-		if (answer == JOptionPane.YES_OPTION)
-			return true;
-		else
-			return false;
+        return answer == JOptionPane.YES_OPTION;
 	}
 
 	public void closeImage() {
@@ -119,16 +116,7 @@ public class PanelMediator {
 	}
 
 	public void exit() {
-		if (somethingChanged){
-			int answer = JOptionPane.showConfirmDialog(null,
-					"Some changes weren't save. Are you sure you want to close the window?",
-					"close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-			if (answer == JOptionPane.YES_OPTION){
-				imageFrame.dispose();
-			}
-		}else {
-			imageFrame.dispose();
-		}
+		imageFrame.dispose();
 	}
 
     public List<String>getListColorSpaces(){

@@ -65,6 +65,10 @@ public class ImageFrame extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                if (PanelMediator.getInstance().getSomethingChanged())
+                    if (!PanelMediator.getInstance().getConfirm())
+                        return;
+
                 PanelMediator.getInstance().exit();
             }
         });

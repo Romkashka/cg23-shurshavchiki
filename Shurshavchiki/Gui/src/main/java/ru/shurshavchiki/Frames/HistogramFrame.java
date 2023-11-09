@@ -45,7 +45,7 @@ public class HistogramFrame extends JFrame {
             preview.add(previewSingle);
         }
 
-        SpinnerModel modelLeft = new SpinnerNumberModel(0, 0, 0.5, 0.05);
+        SpinnerModel modelLeft = new SpinnerNumberModel(0, 0, 0.5, 0.01);
         spinnerLeftChange = new JSpinner(modelLeft);
         spinnerLeftChange.setPreferredSize(new Dimension(48, 28));
         spinnerLeftChange.addChangeListener(new HistogramListener(this, "left"));
@@ -56,7 +56,7 @@ public class HistogramFrame extends JFrame {
         generateLeftChange.setText("Lower bound:");
         generateLeftChange.setVisible(true);
 
-        SpinnerModel modelRight = new SpinnerNumberModel(0, 0, 0.5, 0.05);
+        SpinnerModel modelRight = new SpinnerNumberModel(0, 0, 0.5, 0.01);
         spinnerRightChange = new JSpinner(modelRight);
         spinnerRightChange.setPreferredSize(new Dimension(48, 28));
         spinnerRightChange.addChangeListener(new HistogramListener(this, "right"));
