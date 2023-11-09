@@ -57,11 +57,11 @@ public class PanelMediator {
 	private ImageFrame imageFrame = new ImageFrame();
 
 	@Getter
-	private JScrollPane scrollPane = new JScrollPane();
+	private JScrollPane scrollPane;
 
 	public void run() {
+		scrollPane = new JScrollPane(drawingPanel);
 		imageFrame.create();
-		scrollPane.getViewport().add(drawingPanel);
 	}
 
 	public void createImage(int width, int height, String type) throws IOException {
@@ -112,7 +112,6 @@ public class PanelMediator {
 		settingPanel.disableImageButtons();
 		settingPanel.eraseFileTitle();
 		mainContext = new ServiceFactoryImpl().getBlankContext();
-		validateScrollPane();
 	}
 
 	public void exit() {

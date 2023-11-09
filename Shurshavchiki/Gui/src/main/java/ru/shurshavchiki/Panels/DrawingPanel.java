@@ -61,15 +61,13 @@ public class DrawingPanel extends JPanel {
 	public void closeImage(){
 		displayable = null;
 		image = null;
-		paintComponent(this.getGraphics());
-		PanelMediator.getInstance().getImageFrame().setSize(PanelMediator.getInstance().getImageFrame().getWidth(), PanelMediator.getInstance().getImageFrame().getHeight() + 1);
-		PanelMediator.getInstance().getImageFrame().setSize(PanelMediator.getInstance().getImageFrame().getWidth(), PanelMediator.getInstance().getImageFrame().getHeight() - 1);
+		paintComponent(getGraphics());
 	}
 
 	public void completeLinePreview(Point startPoint, Point endPoint){
 		preview = null;
 		PanelMediator.getInstance().drawLine(startPoint, endPoint);
-		paintComponent(this.getGraphics());
+		paintComponent(getGraphics());
 	}
 
 	public static BufferedImage deepCopy(BufferedImage bi) {
@@ -108,7 +106,7 @@ public class DrawingPanel extends JPanel {
 			for (Point point : points){
 				preview.setRGB(point.x, point.y, rgb);
 			}
-			paintComponent(this.getGraphics());
+			paintComponent(getGraphics());
 		}
 	}
 
@@ -116,18 +114,20 @@ public class DrawingPanel extends JPanel {
 		preview = null;
 		mouseListener.clear();
 		if (displayable != null)
-			paintComponent(this.getGraphics());
+			paintComponent(getGraphics());
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g.create();
 		if (preview == null) {
 			if (image != null)
-				g2.drawImage(image, 0, 0, this);
+				g2.drawImage(image, 0, 0, null);
 		}else
-			g2.drawImage(preview, 0, 0, this);
+			g2.drawImage(preview, 0, 0, null);
 
 		PanelMediator.getInstance().validateScrollPane();
+		g2.dispose();
 	}
 }
