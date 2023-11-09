@@ -17,7 +17,7 @@ public class PlainContrastCorrector implements ContrastCorrector {
     @Override
     public float calculateLowerLimit(List<Histogram> histograms) {
         int discardedPixelMaxAmount = (int) (histograms.get(0).ValueDistribution().stream().reduce(0, Integer::sum) * lowerBoundary);
-        int minValue = histograms.size();
+        int minValue = 256;
 
         for (var histogram: histograms) {
             int totalAmount = 0;
@@ -30,14 +30,13 @@ public class PlainContrastCorrector implements ContrastCorrector {
             }
         }
 
-        return minValue;
+        return minValue / 255f;
     }
 
     @Override
     public float calculateUpperLimit(List<Histogram> histograms) {
         int discardedPixelMaxAmount = (int) (histograms.get(0).ValueDistribution().stream().reduce(0, Integer::sum) * upperBoundary);
         int maxValue = 0;
-
         for (var histogram: histograms) {
             int totalAmount = 0;
             for (int i = histogram.ValueDistribution().size() - 1; i >= 0; i--) {
@@ -49,7 +48,7 @@ public class PlainContrastCorrector implements ContrastCorrector {
             }
         }
 
-        return maxValue;
+        return maxValue / 255f;
     }
 
     @Override
@@ -64,6 +63,7 @@ public class PlainContrastCorrector implements ContrastCorrector {
 
     @Override
     public SingleChannelUnit correctContrast(SingleChannelUnit channelUnit, float lowerLimit, float upperLimit) {
+        System.out.println("Upper limit: " + upperLimit + ", lower limit: " + lowerLimit);
         Float[] updatedValues = new Float[channelUnit.Values().length];
         for (int i = 0; i < channelUnit.Values().length; i++) {
             updatedValues[i] = calculateCorrectedValue(channelUnit.Values()[i], lowerLimit, upperLimit);
@@ -73,6 +73,7 @@ public class PlainContrastCorrector implements ContrastCorrector {
     }
 
     private float calculateCorrectedValue(float startValue, float lowerLimit, float upperLimit) {
-        return (startValue - lowerLimit) / (upperLimit - lowerLimit);
+        float result = (startValue - lowerLimit) / (upperLimit - lowerLimit);
+        return Math.min(Math.max(result, 0f), 1f);
     }
 }

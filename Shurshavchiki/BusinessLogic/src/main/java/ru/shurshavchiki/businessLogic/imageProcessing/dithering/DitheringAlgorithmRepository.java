@@ -7,7 +7,7 @@ import java.util.List;
 public class DitheringAlgorithmRepository extends ImplementationRepositoryBase<DitheringAlgorithm> {
     public DitheringAlgorithmRepository() {
         super(List.of(
-
+                new MockDitheringAlgorithm()
         ));
     }
 }
