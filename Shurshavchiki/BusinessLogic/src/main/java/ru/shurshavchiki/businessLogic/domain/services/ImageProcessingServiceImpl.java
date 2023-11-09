@@ -1,5 +1,6 @@
 package ru.shurshavchiki.businessLogic.domain.services;
 
+import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
 import ru.shurshavchiki.businessLogic.colorSpace.models.ColorSpace;
 import ru.shurshavchiki.businessLogic.colorSpace.models.SingleChannelUnit;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
@@ -26,12 +27,13 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
     }
 
     @Override
-    public List<Histogram> generateHistograms(List<SingleChannelUnit> singleChannelUnits, ColorSpace colorSpace) {
+    public List<Histogram> generateHistograms(List<SingleChannelUnit> singleChannelUnits, ColorSpace colorSpace, ChannelChooser channelChooser) {
         List<Histogram> result = new ArrayList<>();
         DistributionGenerator distributionGenerator = new DistributionGenerator();
 
         for (SingleChannelUnit unit: singleChannelUnits) {
-            if (!colorSpace.usedInAutocorrection().contains(unit.Channel())) {
+            if (!colorSpace.usedInAutocorrection().contains(unit.Channel()) ||
+                    !channelChooser.getChannels().contains(unit.Channel())) {
                 continue;
             }
 
@@ -39,6 +41,7 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
             result.add(new Histogram(unit.Channel().name(), values));
         }
 
+        System.out.println("Histograms amount: " + result.size());
         return result;
     }
 

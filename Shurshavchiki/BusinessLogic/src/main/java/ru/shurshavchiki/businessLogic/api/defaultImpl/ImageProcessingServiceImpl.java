@@ -37,7 +37,7 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
     public void generateHistograms(@NonNull Context context) {
         UserProjectDataHolder dataHolder = extractDataHolder(context);
         List<SingleChannelUnit> channelUnitList = fileService.splitToChannels(dataHolder.getShownDisplayable(), dataHolder.getColorSpaceFactory());
-        List<Histogram> histograms = imageProcessingService.generateHistograms(channelUnitList, dataHolder.getColorSpaceFactory().getColorSpace());
+        List<Histogram> histograms = imageProcessingService.generateHistograms(channelUnitList, dataHolder.getColorSpaceFactory().getColorSpace(), dataHolder.getChannelChooser());
         dataHolder.setHistograms(histograms);
     }
 

@@ -1,5 +1,6 @@
 package ru.shurshavchiki.businessLogic.domain.services;
 
+import ru.shurshavchiki.businessLogic.colorSpace.channelChoosers.ChannelChooser;
 import ru.shurshavchiki.businessLogic.colorSpace.models.ColorSpace;
 import ru.shurshavchiki.businessLogic.colorSpace.models.SingleChannelUnit;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface ImageProcessingService {
     Displayable ditherImage(DitheringAlgorithm algorithm, Displayable source);
     Displayable createNewImage(ImageCreationAlgorithm algorithm, int height, int width);
-    List<Histogram> generateHistograms(List<SingleChannelUnit> singleChannelUnits, ColorSpace colorSpace);
+    List<Histogram> generateHistograms(List<SingleChannelUnit> singleChannelUnits, ColorSpace colorSpace, ChannelChooser channelChooser);
     List<SingleChannelUnit> autocorrectImage(List<SingleChannelUnit> channelUnits, ColorSpace colorSpace, List<Histogram> distributions, ContrastCorrector contrastCorrector);
     Displayable scaleImage(Displayable source, ScalingAlgorithm scalingAlgorithm, ScalingParameters scalingParameters);
 }
