@@ -111,7 +111,10 @@ public class PanelMediator {
 		setGammaDefault();
 		settingPanel.disableImageButtons();
 		settingPanel.eraseFileTitle();
-		mainContext = new ServiceFactoryImpl().getBlankContext();
+		Context newMainContext = new ServiceFactoryImpl().getBlankContext();
+		newMainContext.chooseColorSpace(settingPanel.getChosenColorSpace());
+		newMainContext.chooseChannel(settingPanel.getChosenChannels());
+		mainContext = newMainContext;
 	}
 
 	public void exit() {
