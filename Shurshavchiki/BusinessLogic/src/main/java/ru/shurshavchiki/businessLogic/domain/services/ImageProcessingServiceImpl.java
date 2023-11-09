@@ -31,7 +31,7 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         DistributionGenerator distributionGenerator = new DistributionGenerator();
 
         for (SingleChannelUnit unit: singleChannelUnits) {
-            if (!colorSpace.Channels().contains(unit.Channel())) {
+            if (!colorSpace.usedInAutocorrection().contains(unit.Channel())) {
                 continue;
             }
 
