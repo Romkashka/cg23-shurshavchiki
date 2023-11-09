@@ -3,12 +3,9 @@ package ru.shurshavchiki.Frames;
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Helpers.ChannelColorHelper;
 import ru.shurshavchiki.Helpers.GridBagHelper;
-import ru.shurshavchiki.Helpers.InputSetHelper;
-import ru.shurshavchiki.Listeners.BitRateListener;
-import ru.shurshavchiki.Listeners.DitheringComboBoxListener;
 import ru.shurshavchiki.PanelMediator;
-import ru.shurshavchiki.Panels.DrawingPanel;
 import ru.shurshavchiki.Panels.HistogramPanel;
+import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -17,14 +14,15 @@ import java.awt.*;
 
 public class HistogramFrame extends JFrame {
 
-    private List<HistogramPanel> preview = new ArrayList<HistogramPanel>();
+    private List<HistogramPanel> preview = new ArrayList<>();
+
+
 
     public HistogramFrame(){
         this.setTitle("Color histogram");
 
-        for (String channel : PanelMediator.getInstance().getSettingPanel().getChosenChannels()){
-            System.out.println(channel);
-            HistogramPanel previewSingle = new HistogramPanel(ChannelColorHelper.map(channel));
+        for (Histogram histogram : PanelMediator.getInstance().getHistogramsInfo()){
+            HistogramPanel previewSingle = new HistogramPanel(histogram);
             previewSingle.setVisible(true);
             preview.add(previewSingle);
         }
@@ -46,6 +44,11 @@ public class HistogramFrame extends JFrame {
         buttonOk.setPreferredSize(new Dimension(100, 60));
         buttonOk.addActionListener(e -> handleOk());
         this.add(buttonOk, gridSetter.get());
+        gridSetter.nextCell().alignRight();
+        var buttonCancel = new JButton("Cancel");
+        buttonCancel.setPreferredSize(new Dimension(100, 60));
+        buttonCancel.addActionListener(e -> handleCancel());
+        this.add(buttonCancel, gridSetter.get());
 
         this.pack();
         this.setLocationRelativeTo(null);
@@ -54,11 +57,14 @@ public class HistogramFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
+    private void handleCancel(){
+        this.dispose();
+    }
+
     private void handleOk(){
         try {
 //            PanelMediator.getInstance().setDisplayableDithered(selectedAlgorithm, selectedBitRate);
-
-            this.dispose();
+            handleCancel();
         }catch (Exception exception){
             new ExceptionHandler().handleException(exception);
         }

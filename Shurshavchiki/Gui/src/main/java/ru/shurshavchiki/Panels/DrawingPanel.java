@@ -36,7 +36,6 @@ public class DrawingPanel extends JPanel {
 		this.setDisplayable(displayable);
 		this.castToBuffer();
 		this.paint(getGraphics());
-		PanelMediator.getInstance().validateScrollPane();
 	}
 
 	public void castToBuffer() {
@@ -64,8 +63,7 @@ public class DrawingPanel extends JPanel {
 	public void closeImage(){
 		displayable = null;
 		image = null;
-		this.paint(getGraphics());
-		PanelMediator.getInstance().validateScrollPane();
+		paintComponent(this.getGraphics());
 	}
 
 	public void completeLinePreview(Point startPoint, Point endPoint){
@@ -123,9 +121,11 @@ public class DrawingPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		if (preview == null)
+		if (preview == null) {
 			g2.drawImage(image, 0, 0, null);
-		else
+		}else
 			g2.drawImage(preview, 0, 0, null);
+
+		PanelMediator.getInstance().validateScrollPane();
 	}
 }
