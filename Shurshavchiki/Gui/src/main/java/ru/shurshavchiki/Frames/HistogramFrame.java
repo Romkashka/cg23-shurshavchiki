@@ -4,6 +4,7 @@ import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Helpers.ChannelColorHelper;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
+import ru.shurshavchiki.Listeners.HistogramListener;
 import ru.shurshavchiki.PanelMediator;
 import ru.shurshavchiki.Panels.HistogramPanel;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
@@ -46,17 +47,25 @@ public class HistogramFrame extends JFrame {
         }
 
         SpinnerModel modelLeft = new SpinnerNumberModel(0, 0, 0.5, 0.05);
-        spinnerLeftChange = InputSetHelper.setJSpinner(modelLeft, "Left autocorrection");
-        generateLeftChange = InputSetHelper.setJText();
-        generateLeftChange.setText("Left autocorrection:");
+        spinnerLeftChange = new JSpinner(modelLeft);
+        spinnerLeftChange.setPreferredSize(new Dimension(48, 28));
+        spinnerLeftChange.addChangeListener(new HistogramListener(this, "left"));
+        spinnerLeftChange.setOpaque(false);
         spinnerLeftChange.setVisible(true);
+
+        generateLeftChange = InputSetHelper.setJText();
+        generateLeftChange.setText("Lower bound:");
         generateLeftChange.setVisible(true);
 
         SpinnerModel modelRight = new SpinnerNumberModel(0, 0, 0.5, 0.05);
-        spinnerRightChange = InputSetHelper.setJSpinner(modelRight, "Right autocorrection");
-        generateRightChange = InputSetHelper.setJText();
-        generateRightChange.setText("Right autocorrection:");
+        spinnerRightChange = new JSpinner(modelRight);
+        spinnerRightChange.setPreferredSize(new Dimension(48, 28));
+        spinnerRightChange.addChangeListener(new HistogramListener(this, "right"));
+        spinnerRightChange.setOpaque(false);
         spinnerRightChange.setVisible(true);
+
+        generateRightChange = InputSetHelper.setJText();
+        generateRightChange.setText("Upper bound:");
         generateRightChange.setVisible(true);
 
         this.setMinimumSize(new Dimension(preview.size() * 380, 500));
@@ -72,7 +81,15 @@ public class HistogramFrame extends JFrame {
 
         gridSetter.insertEmptyRow(this, 20);
 
+        gridSetter.nextCell().alignCenter();
+        this.add(generateLeftChange, gridSetter.get());
+        gridSetter.nextCell().alignLeft();
+        this.add(spinnerLeftChange, gridSetter.get());
 
+        gridSetter.nextRow().nextCell().alignCenter();
+        this.add(generateRightChange, gridSetter.get());
+        gridSetter.nextCell().alignLeft();
+        this.add(spinnerRightChange, gridSetter.get());
 
         gridSetter.insertEmptyRow(this, 20);
         gridSetter.nextRow().alignLeft();
@@ -93,13 +110,21 @@ public class HistogramFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
+    public void setLeftChange(float value){
+        leftChange = value;
+    }
+
+    public void setRightChange(float value){
+        rightChange = value;
+    }
+
     private void handleCancel(){
         this.dispose();
     }
 
     private void handleOk(){
         try {
-//            PanelMediator.getInstance().setDisplayableDithered(selectedAlgorithm, selectedBitRate);
+            PanelMediator.getInstance().makeAutocorrection(leftChange, rightChange);
             handleCancel();
         }catch (Exception exception){
             new ExceptionHandler().handleException(exception);
