@@ -21,6 +21,7 @@ public class SimpleLineDrawer implements LineDrawer {
     public FigureOverlap drawLine(Point2D start, Point2D end, float width, float alpha) {
         FigureOverlap result = new FigureOverlap();
         Point2D center = new Point2D.Float((float) ((end.getX() + start.getX()) / 2F), (float) ((end.getY() + start.getY()) / 2F));
+        System.out.println(222222222);
         result.addAll(lineBaseDrawer.drawLineBase(start, end, width, alpha).getPixelOverlaps());
         result.addAll(startLineTipDrawer.drawLineEnd(start, new Vector(start, center), width, alpha).getPixelOverlaps());
         result.addAll(endLineTipDrawer.drawLineEnd(start, new Vector(center, end), width, alpha).getPixelOverlaps());
