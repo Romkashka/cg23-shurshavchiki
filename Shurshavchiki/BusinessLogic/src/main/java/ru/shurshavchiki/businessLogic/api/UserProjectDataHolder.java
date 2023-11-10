@@ -22,6 +22,7 @@ import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorit
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 
 import java.io.File;
@@ -68,6 +69,7 @@ public interface UserProjectDataHolder {
 
     ScalingAlgorithm getScalingAlgorithm();
     ScalingParameters getScalingParameters();
+    ScalingAlgorithmRepository getScalingAlgorithmRepository();
 
 
     void setFile(File file);
