@@ -22,7 +22,7 @@ public class AtkinsonDitheringAlgorithm extends DitheringAlgorithmBase{
         List<List<RgbConvertable>> newPixels = new ArrayList<>();
         Displayable tmp = inputImage.clone();
         List<List<RgbConvertable>> oldPixels = tmp.getAllPixels();
-        float coeficient = 1.f / 8.f;
+        float coefficient = 1.f / 8.f;
         for (int i = 0; i < oldPixels.size(); ++i){
             List<RgbConvertable> row = new ArrayList<>();
             for (int j = 0; j < oldPixels.get(0).size(); ++j){
@@ -35,45 +35,45 @@ public class AtkinsonDitheringAlgorithm extends DitheringAlgorithmBase{
                         Math.max(Math.min(((float)newPixelGreen) / 255.f, 1.f), 0f),
                         Math.max(Math.min(((float)newPixelBlue) / 255.f, 1.f), 0f)));
 
-                float errRed = pixel.FloatRed() - (float)newPixelRed / 255;
-                float errGreen = pixel.FloatGreen() - (float)newPixelGreen / 255;
-                float errBlue = pixel.FloatBlue() - (float)newPixelBlue / 255;
+                float errRed = pixel.FloatRed() - ((float)newPixelRed) / 255.f;
+                float errGreen = pixel.FloatGreen() - ((float)newPixelGreen) / 255.f;
+                float errBlue = pixel.FloatBlue() - ((float)newPixelBlue) / 255.f;
                 if (i < oldPixels.size() - 1){
                     oldPixels.get(i + 1).set(j, new RgbPixel(
-                            Math.max(Math.min(oldPixels.get(i + 1).get(j).FloatRed() + errRed * coeficient, 255), 0),
-                            Math.max(Math.min(oldPixels.get(i + 1).get(j).FloatGreen() + errGreen * coeficient, 255), 0),
-                            Math.max(Math.min(oldPixels.get(i + 1).get(j).FloatBlue() + errBlue * coeficient,  255), 0)));
+                            Math.max(Math.min(oldPixels.get(i + 1).get(j).FloatRed() + errRed * coefficient, 255), 0),
+                            Math.max(Math.min(oldPixels.get(i + 1).get(j).FloatGreen() + errGreen * coefficient, 255), 0),
+                            Math.max(Math.min(oldPixels.get(i + 1).get(j).FloatBlue() + errBlue * coefficient,  255), 0)));
 
                     if (i < oldPixels.size() - 2){
-                        oldPixels.get(i + 1).set(j, new RgbPixel(
-                                Math.max(Math.min(oldPixels.get(i + 2).get(j).FloatRed() + errRed * coeficient, 255), 0),
-                                Math.max(Math.min(oldPixels.get(i + 2).get(j).FloatGreen() + errGreen * coeficient, 255), 0),
-                                Math.max(Math.min(oldPixels.get(i + 2).get(j).FloatBlue() + errBlue * coeficient,  255), 0)));
+                        oldPixels.get(i + 2).set(j, new RgbPixel(
+                                Math.max(Math.min(oldPixels.get(i + 2).get(j).FloatRed() + errRed * coefficient, 255), 0),
+                                Math.max(Math.min(oldPixels.get(i + 2).get(j).FloatGreen() + errGreen * coefficient, 255), 0),
+                                Math.max(Math.min(oldPixels.get(i + 2).get(j).FloatBlue() + errBlue * coefficient,  255), 0)));
                     }
 
                     if (j < oldPixels.get(0).size() - 1){
                         oldPixels.get(i + 1).set(j + 1, new RgbPixel(
-                                Math.max(Math.min(oldPixels.get(i + 1).get(j + 1).FloatRed() + errRed * coeficient, 255), 0),
-                                Math.max(Math.min(oldPixels.get(i + 1).get(j + 1).FloatGreen() + errGreen * coeficient, 255), 0),
-                                Math.max(Math.min(oldPixels.get(i + 1).get(j + 1).FloatBlue() + errBlue * coeficient,  255), 0)));
+                                Math.max(Math.min(oldPixels.get(i + 1).get(j + 1).FloatRed() + errRed * coefficient, 255), 0),
+                                Math.max(Math.min(oldPixels.get(i + 1).get(j + 1).FloatGreen() + errGreen * coefficient, 255), 0),
+                                Math.max(Math.min(oldPixels.get(i + 1).get(j + 1).FloatBlue() + errBlue * coefficient,  255), 0)));
                     }
                     if (j > 0){
                         oldPixels.get(i + 1).set(j - 1, new RgbPixel(
-                                Math.max(Math.min(oldPixels.get(i + 1).get(j - 1).FloatRed() + errRed * coeficient, 255), 0),
-                                Math.max(Math.min(oldPixels.get(i + 1).get(j - 1).FloatGreen() + errGreen * coeficient, 255), 0),
-                                Math.max(Math.min(oldPixels.get(i + 1).get(j - 1).FloatBlue() + errBlue * coeficient,  255), 0)));
+                                Math.max(Math.min(oldPixels.get(i + 1).get(j - 1).FloatRed() + errRed * coefficient, 255), 0),
+                                Math.max(Math.min(oldPixels.get(i + 1).get(j - 1).FloatGreen() + errGreen * coefficient, 255), 0),
+                                Math.max(Math.min(oldPixels.get(i + 1).get(j - 1).FloatBlue() + errBlue * coefficient,  255), 0)));
                     }
                 }
                 if (j < oldPixels.get(0).size() - 1){
                     oldPixels.get(i).set(j + 1, new RgbPixel(
-                            Math.max(Math.min(oldPixels.get(i).get(j + 1).FloatRed() + errRed * coeficient, 255), 0),
-                            Math.max(Math.min(oldPixels.get(i).get(j + 1).FloatGreen() + errGreen * coeficient, 255), 0),
-                            Math.max(Math.min(oldPixels.get(i).get(j + 1).FloatBlue() + errBlue * coeficient, 255), 0)));
+                            Math.max(Math.min(oldPixels.get(i).get(j + 1).FloatRed() + errRed * coefficient, 255), 0),
+                            Math.max(Math.min(oldPixels.get(i).get(j + 1).FloatGreen() + errGreen * coefficient, 255), 0),
+                            Math.max(Math.min(oldPixels.get(i).get(j + 1).FloatBlue() + errBlue * coefficient, 255), 0)));
                     if (j < oldPixels.get(0).size() - 2){
                         oldPixels.get(i).set(j + 2, new RgbPixel(
-                                Math.max(Math.min(oldPixels.get(i).get(j + 2).FloatRed() + errRed * coeficient, 255), 0),
-                                Math.max(Math.min(oldPixels.get(i).get(j + 2).FloatGreen() + errGreen * coeficient, 255), 0),
-                                Math.max(Math.min(oldPixels.get(i).get(j + 2).FloatBlue() + errBlue * coeficient, 255), 0)));
+                                Math.max(Math.min(oldPixels.get(i).get(j + 2).FloatRed() + errRed * coefficient, 255), 0),
+                                Math.max(Math.min(oldPixels.get(i).get(j + 2).FloatGreen() + errGreen * coefficient, 255), 0),
+                                Math.max(Math.min(oldPixels.get(i).get(j + 2).FloatBlue() + errBlue * coefficient, 255), 0)));
                     }
                 }
             }
@@ -84,7 +84,7 @@ public class AtkinsonDitheringAlgorithm extends DitheringAlgorithmBase{
 
     @Override
     public boolean isInLineGamma() {
-        return true;
+        return false;
     }
 
     private int findClosest(int color){
