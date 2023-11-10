@@ -42,7 +42,6 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
             result.add(new Histogram(unit.Channel().name(), values));
         }
 
-        System.out.println("Histograms amount: " + result.size());
         return result;
     }
 

@@ -183,10 +183,15 @@ public class DataHolderAdapter implements Context {
     }
 
     @Override
-    public void setScalingAlgorithm(String algorithmName, List<ScalingAlgorithmParameter> parameters) {
+    public void setScalingAlgorithm(String algorithmName) {
         dataHolder.setScalingAlgorithm(dataHolder.getScalingAlgorithmRepository().getImplementationByName(algorithmName));
+    }
+
+    @Override
+    public void initScalingAlgorithm(List<ScalingAlgorithmParameter> parameters) {
         dataHolder.getScalingAlgorithm().init(parameters);
     }
+
 
     @Override
     public void setScalingParameters(ScalingParameters scalingParameters) {
