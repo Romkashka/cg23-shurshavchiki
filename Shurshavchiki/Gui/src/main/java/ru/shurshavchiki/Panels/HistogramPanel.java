@@ -33,7 +33,6 @@ public class HistogramPanel extends JPanel {
 		his.fillRect(44, 0, 300, 200);
 
 		his.setColor(color);
-		System.out.println(Arrays.toString(values.toArray()));
 
 		for (int i = 0; i < 256; ++i){
 			his.fillRect(44 + i, 200 - (int)((200. / (float)maxValue) * values.get(i)), 1, (int)((200. / (float)maxValue) * values.get(i)));
