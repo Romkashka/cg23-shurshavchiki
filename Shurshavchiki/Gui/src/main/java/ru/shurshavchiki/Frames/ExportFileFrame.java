@@ -28,7 +28,11 @@ public class ExportFileFrame extends JFrame {
     public ExportFileFrame(){
         this.setTitle("Export image");
 
+        preview = new DrawingPanel();
+        preview.loadImage(PanelMediator.getInstance().getDrawingPanel().getDisplayable());
+
         String[] ditheringAlgorithms = PanelMediator.getInstance().getDitheringAlgorithms();
+
 
         ditheringBox = new JComboBox<>(ditheringAlgorithms);
         ditheringBox.setSelectedIndex(0);
@@ -48,9 +52,6 @@ public class ExportFileFrame extends JFrame {
         JTextPane ditheringText = InputSetHelper.setJText();
         ditheringText.setText("Dithering algorithm:");
         ditheringText.setVisible(true);
-
-        preview = new DrawingPanel();
-        preview.loadImage(PanelMediator.getInstance().getDrawingPanel().getDisplayable());
 
         this.setLayout(new GridBagLayout());
         GridBagHelper gridSetter = new GridBagHelper();
@@ -92,12 +93,12 @@ public class ExportFileFrame extends JFrame {
 
     public void setAlgorithm(String type){
         selectedAlgorithm = type;
-        preview.loadImage(PanelMediator.getInstance().getDisplayablePreview(selectedAlgorithm, selectedBitRate));
+//        preview.loadImage(PanelMediator.getInstance().getDitheredPreview(selectedAlgorithm, selectedBitRate));
     }
 
     public void setBitRate(int bitRate){
         selectedBitRate = bitRate;
-        preview.loadImage(PanelMediator.getInstance().getDisplayablePreview(selectedAlgorithm, selectedBitRate));
+//        preview.loadImage(PanelMediator.getInstance().getDitheredPreview(selectedAlgorithm, selectedBitRate));
     }
 
     private void handleCancel(){

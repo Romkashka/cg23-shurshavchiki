@@ -12,7 +12,7 @@ public class ExceptionHandler {
     public void handleException(Throwable exp) {
         if (exp instanceof NullPointerException) {
             JOptionPane.showMessageDialog(null,
-                    "File or input missing" + Arrays.toString(exp.getStackTrace()), "Error 404",
+                    "File or input missing", "Error 404",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp instanceof WriteFileException) {
             javax.swing.JOptionPane.showMessageDialog(null,

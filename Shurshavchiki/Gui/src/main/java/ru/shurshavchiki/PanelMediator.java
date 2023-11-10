@@ -140,14 +140,14 @@ public class PanelMediator {
 
 	public void setDisplayableDithered(String selectedAlgorithm, int selectedBitRate){
 		mainContext.setDitheringAlgorithm(selectedAlgorithm);
-		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
+//		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
 		ditheredContext = imageProcessingService.ditherImage(mainContext);
 		wasDithered = true;
 	}
 
-	public Displayable getDisplayablePreview(String selectedAlgorithm, int selectedBitRate){
+	public Displayable getDitheredPreview(String selectedAlgorithm, int selectedBitRate){
 		mainContext.setDitheringAlgorithm(selectedAlgorithm);
-		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
+//		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
 		return imageProcessingService.ditherImage(mainContext).getShownDisplayable();
 	}
 
@@ -213,8 +213,7 @@ public class PanelMediator {
 		RgbPixel color = new RgbPixel((float)oneToolPanel.getMainColor().getRed()/255.f,
 				(float)oneToolPanel.getMainColor().getGreen()/255.f,
 				(float)oneToolPanel.getMainColor().getGreen()/255.f);
-		//TODO: add actual alpha
-		mainContext.setNewLine(new Line(start, end, oneToolPanel.getMainSize(), color, 1f));
+		mainContext.setNewLine(new Line(start, end, oneToolPanel.getMainSize(), color, (float)oneToolPanel.getMainColor().getAlpha()/255.f));
 	}
 
 	public static PanelMediator getInstance() {
