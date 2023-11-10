@@ -41,6 +41,11 @@ public class PnmFile implements Displayable {
     }
 
     @Override
+    public void setPixel(int x, int y, RgbConvertable pixel) {
+        pixels.get(y).set(x, pixel);
+    }
+
+    @Override
     public List<List<RgbConvertable>> getAllPixels() {
         return pixels;
     }

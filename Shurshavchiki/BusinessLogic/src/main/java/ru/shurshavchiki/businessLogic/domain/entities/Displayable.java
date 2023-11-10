@@ -13,6 +13,7 @@ public interface Displayable {
     Header getHeader();
 
     @NonNull RgbConvertable getPixel(int x, int y);
+    void setPixel(int x, int y, RgbConvertable pixel);
     List<List<RgbConvertable>> getAllPixels();
 
     Displayable clone();
