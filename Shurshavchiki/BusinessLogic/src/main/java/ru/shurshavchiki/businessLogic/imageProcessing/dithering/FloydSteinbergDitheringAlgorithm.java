@@ -40,28 +40,28 @@ public class FloydSteinbergDitheringAlgorithm extends DitheringAlgorithmBase{
                 float errGreen = pixel.FloatGreen() - (float)newPixelGreen / 255;
                 float errBlue = pixel.FloatBlue() - (float)newPixelBlue / 255;
                 if (i < inputImage.getHeight() - 1){
-                    oldPixels.get(j).get(i + 1) = new RgbPixel(
-                            oldPixels.get(j).get(i + 1).FloatRed() + errRed * 5.f / 16.f,
-                            oldPixels.get(j).get(i + 1).FloatGreen() + errGreen * 5.f / 16.f,
-                            oldPixels.get(j).get(i + 1).FloatBlue() + errBlue * 5.f / 16.f);
+                    oldPixels.get(j).set(i + 1, new RgbPixel(
+                            Math.max(Math.min(oldPixels.get(j).get(i + 1).FloatRed() + errRed * 5.f / 16.f, 255), 0),
+                            Math.max(Math.min(oldPixels.get(j).get(i + 1).FloatGreen() + errGreen * 5.f / 16.f, 255), 0),
+                            Math.max(Math.min(oldPixels.get(j).get(i + 1).FloatBlue() + errBlue * 5.f / 16.f,  255), 0)));
                     if (j < inputImage.getWidth() - 1){
-                        oldPixels.get(j + 1).get(i + 1) = new RgbPixel(
-                                oldPixels.get(j + 1).get(i + 1).FloatRed() + errRed / 16.f,
-                                oldPixels.get(j + 1).get(i + 1).FloatGreen() + errGreen / 16.f,
-                                oldPixels.get(j + 1).get(i + 1).FloatBlue() + errBlue / 16.f);
+                        oldPixels.get(j + 1).set(i + 1, new RgbPixel(
+                                Math.max(Math.min(oldPixels.get(j + 1).get(i + 1).FloatRed() + errRed / 16.f, 255), 0),
+                                Math.max(Math.min(oldPixels.get(j + 1).get(i + 1).FloatGreen() + errGreen / 16.f, 255), 0),
+                                Math.max(Math.min(oldPixels.get(j + 1).get(i + 1).FloatBlue() + errBlue / 16.f,  255), 0)));
                     }
                     if (j > 0){
-                        oldPixels.get(j - 1).get(i + 1) = new RgbPixel(
-                                oldPixels.get(j - 1).get(i + 1).FloatRed() + errRed * 3.f / 16.f,
-                                oldPixels.get(j - 1).get(i + 1).FloatGreen() + errGreen * 3.f / 16.f,
-                                oldPixels.get(j - 1).get(i + 1).FloatBlue() + errBlue * 3.f / 16.f);
+                        oldPixels.get(j - 1).set(i + 1, new RgbPixel(
+                                Math.max(Math.min(oldPixels.get(j - 1).get(i + 1).FloatRed() + errRed * 3.f / 16.f, 255), 0),
+                                Math.max(Math.min(oldPixels.get(j - 1).get(i + 1).FloatGreen() + errGreen * 3.f / 16.f, 255), 0),
+                                Math.max(Math.min(oldPixels.get(j - 1).get(i + 1).FloatBlue() + errBlue * 3.f / 16.f,  255), 0)));
                     }
                 }
                 if (j < inputImage.getWidth() - 1){
-                    oldPixels.get(j + 1).get(i) = new RgbPixel(
-                            oldPixels.get(j + 1).get(i).FloatRed() + errRed * 7.f / 16.f,
-                            oldPixels.get(j + 1).get(i).FloatGreen() + errGreen * 7.f / 16.f,
-                            oldPixels.get(j + 1).get(i).FloatBlue() + errBlue * 7.f / 16.f);
+                    oldPixels.get(j + 1).set(i, new RgbPixel(
+                            Math.max(Math.min(oldPixels.get(j + 1).get(i).FloatRed() + errRed * 7.f / 16.f, 255), 0),
+                            Math.max(Math.min(oldPixels.get(j + 1).get(i).FloatGreen() + errGreen * 7.f / 16.f, 255), 0),
+                            Math.max(Math.min(oldPixels.get(j + 1).get(i).FloatBlue() + errBlue * 7.f / 16.f, 255), 0)));
                 }
             }
             newPixels.add(row);
