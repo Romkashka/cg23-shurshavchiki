@@ -51,7 +51,7 @@ public class DitherFileFrame extends JFrame {
         ditheringBox.addActionListener(new DitheringComboBoxListener(this, ditheringBox));
         ditheringBox.setPreferredSize(new Dimension(80, 30));
 
-        SpinnerModel modelBitRate = new SpinnerNumberModel(4, 1, 8, 1);
+        SpinnerModel modelBitRate = new SpinnerNumberModel(8, 1, 8, 1);
         spinnerBitRate = InputSetHelper.setJSpinner(modelBitRate, "bit rate");
         spinnerBitRate.addChangeListener(new BitRateListener(this, "bit rate"));
         setBitRate((int)spinnerBitRate.getValue());
@@ -113,12 +113,14 @@ public class DitherFileFrame extends JFrame {
 
     public void setAlgorithm(String type){
         selectedAlgorithm = type;
+        ditheringBox.setSelectedItem(type);
         preview.loadImage(PanelMediator.getInstance().getDitheredPreview(selectedAlgorithm, selectedBitRate));
         scrollPane.validate();
     }
 
     public void setBitRate(int bitRate){
         selectedBitRate = bitRate;
+        spinnerBitRate.setValue(selectedBitRate);
         preview.loadImage(PanelMediator.getInstance().getDitheredPreview(selectedAlgorithm, selectedBitRate));
         scrollPane.validate();
     }
