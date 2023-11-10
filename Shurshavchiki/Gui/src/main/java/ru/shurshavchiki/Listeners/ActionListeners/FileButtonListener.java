@@ -1,11 +1,12 @@
 package ru.shurshavchiki.Listeners.ActionListeners;
 
 import ru.shurshavchiki.ExceptionHandler;
-import ru.shurshavchiki.Frames.ExportFileFrame;
+import ru.shurshavchiki.Frames.DitherFileFrame;
 import ru.shurshavchiki.Frames.ImageCreateFrame;
 import ru.shurshavchiki.PanelMediator;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -31,19 +32,21 @@ public class FileButtonListener implements ActionListener {
                 case "SaveAs":
                     saveAsFile();
                     break;
-                case "Export":
-                    exportFile();
+                case "Dither":
+                    ditherFile();
                     break;
                 case "Close":
                     if (PanelMediator.getInstance().getSomethingChanged())
                         if (!PanelMediator.getInstance().getConfirm())
                             return;
+
                     PanelMediator.getInstance().closeImage();
                     break;
                 case "Exit":
                     if (PanelMediator.getInstance().getSomethingChanged())
                         if (!PanelMediator.getInstance().getConfirm())
                             return;
+
                     PanelMediator.getInstance().exit();
                     break;
             }
@@ -65,8 +68,7 @@ public class FileButtonListener implements ActionListener {
             if (!PanelMediator.getInstance().getConfirm())
                 return;
 
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File("C:/Users/1/Desktop"));
+        JFileChooser fileChooser = getFileChooser();
         int result = fileChooser.showOpenDialog(PanelMediator.getInstance().getSettingPanel());
 
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -76,9 +78,38 @@ public class FileButtonListener implements ActionListener {
         }
     }
 
-    private void saveAsFile() throws IOException {
+    private static JFileChooser getFileChooser() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setCurrentDirectory(new File("C:/Users/1/Desktop"));
+        fileChooser.addChoosableFileFilter(new FileFilter() {
+            public String getDescription() {
+                return "P6 Documents (*.ppm)";
+            }
+
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(".ppm");
+                }
+            }});
+        fileChooser.addChoosableFileFilter(new FileFilter() {
+            public String getDescription() {
+                return "P5 Documents (*.pgm)";
+            }
+
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(".pgm");
+                }
+            }});
+        return fileChooser;
+    }
+
+    private void saveAsFile() throws IOException {
+        JFileChooser fileChooser = getFileChooser();
         int result = fileChooser.showSaveDialog(PanelMediator.getInstance().getSettingPanel());
 
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -87,7 +118,7 @@ public class FileButtonListener implements ActionListener {
         }
     }
 
-    public void exportFile() throws IOException {
-        new ExportFileFrame();
+    public void ditherFile() {
+        new DitherFileFrame();
     }
 }

@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-public class ExportFileFrame extends JFrame {
+public class DitherFileFrame extends JFrame {
 
     private String selectedAlgorithm;
 
@@ -28,8 +28,8 @@ public class ExportFileFrame extends JFrame {
 
     private JScrollPane scrollPane;
 
-    public ExportFileFrame(){
-        this.setTitle("Export image");
+    public DitherFileFrame(){
+        this.setTitle("Dither image");
 
         preview = new DrawingPanel();
         preview.loadImage(PanelMediator.getInstance().getDrawingPanel().getDisplayable());
@@ -37,6 +37,8 @@ public class ExportFileFrame extends JFrame {
         scrollPane.setMinimumSize(new Dimension(200, 200));
         scrollPane.setPreferredSize(new Dimension(200, 200));
         scrollPane.setSize(new Dimension(200, 200));
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
         scrollPane.validate();
 
         String[] ditheringAlgorithms = PanelMediator.getInstance().getDitheringAlgorithms();
@@ -97,7 +99,7 @@ public class ExportFileFrame extends JFrame {
         buttonCancel.addActionListener(e -> handleCancel());
         this.add(buttonCancel, gridSetter.get());
 
-        this.setMinimumSize(new Dimension(800, 800));
+        this.setMinimumSize(new Dimension(600, 600));
         this.setSize(new Dimension(600, 600));
         this.setPreferredSize(new Dimension(600, 600));
         this.pack();
@@ -109,13 +111,13 @@ public class ExportFileFrame extends JFrame {
 
     public void setAlgorithm(String type){
         selectedAlgorithm = type;
-//        preview.loadImage(PanelMediator.getInstance().getDitheredPreview(selectedAlgorithm, selectedBitRate));
+        preview.loadImage(PanelMediator.getInstance().getDitheredPreview(selectedAlgorithm, selectedBitRate));
         scrollPane.validate();
     }
 
     public void setBitRate(int bitRate){
         selectedBitRate = bitRate;
-//        preview.loadImage(PanelMediator.getInstance().getDitheredPreview(selectedAlgorithm, selectedBitRate));
+        preview.loadImage(PanelMediator.getInstance().getDitheredPreview(selectedAlgorithm, selectedBitRate));
         scrollPane.validate();
     }
 

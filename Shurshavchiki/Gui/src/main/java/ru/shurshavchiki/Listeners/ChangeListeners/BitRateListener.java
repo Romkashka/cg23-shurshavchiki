@@ -1,6 +1,6 @@
 package ru.shurshavchiki.Listeners.ChangeListeners;
 
-import ru.shurshavchiki.Frames.ExportFileFrame;
+import ru.shurshavchiki.Frames.DitherFileFrame;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -10,9 +10,9 @@ public class BitRateListener implements ChangeListener {
 
     private String type;
 
-    private ExportFileFrame frame;
+    private DitherFileFrame frame;
 
-    public BitRateListener(ExportFileFrame frame, String type){
+    public BitRateListener(DitherFileFrame frame, String type){
         this.type = type;
         this.frame = frame;
     }

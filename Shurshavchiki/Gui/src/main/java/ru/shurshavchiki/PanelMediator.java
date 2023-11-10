@@ -143,20 +143,20 @@ public class PanelMediator {
 	}
 
 	public List<ScalingAlgorithm> getScaleAlgorithms(){
-//		return mainContext.
+//		return mainContext;
 		return null;
 	}
 
 	public void setDisplayableDithered(String selectedAlgorithm, int selectedBitRate){
 		mainContext.setDitheringAlgorithm(selectedAlgorithm);
-//		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
+		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
 		ditheredContext = imageProcessingService.ditherImage(mainContext);
 		wasDithered = true;
 	}
 
 	public Displayable getDitheredPreview(String selectedAlgorithm, int selectedBitRate){
 		mainContext.setDitheringAlgorithm(selectedAlgorithm);
-//		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
+		mainContext.setDitheringAlgorithmBitRate(selectedBitRate);
 		return imageProcessingService.ditherImage(mainContext).getShownDisplayable();
 	}
 

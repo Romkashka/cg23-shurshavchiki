@@ -1,6 +1,6 @@
 package ru.shurshavchiki.Listeners.ActionListeners;
 
-import ru.shurshavchiki.Frames.ExportFileFrame;
+import ru.shurshavchiki.Frames.DitherFileFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,9 +10,9 @@ public class DitheringComboBoxListener implements ActionListener {
 
     private JComboBox<String> comboBox;
 
-    private ExportFileFrame frame;
+    private DitherFileFrame frame;
 
-    public DitheringComboBoxListener(ExportFileFrame frame, JComboBox<String> comboBox){
+    public DitheringComboBoxListener(DitherFileFrame frame, JComboBox<String> comboBox){
         this.comboBox = comboBox;
         this.frame = frame;
     }
