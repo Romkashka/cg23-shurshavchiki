@@ -78,16 +78,17 @@ public class BCSplinesScalingAlgorithm extends ScalingAlgorithmBase {
     }
 
     float calculateChannel(float value, double dist) {
-        if (Math.abs(dist) < 1) {
-            return (float) (((12 - (9 * parameterB) - (6 * parameterC)) * dist * dist * dist) +
-                            ((-18 + 12 * parameterB + 6 * parameterC) * dist * dist) +
-                            (6 - 2 * parameterB)) * value / 6.f;
+        dist = Math.abs(dist);
+        if (Math.abs(dist) < 1.0) {
+            return (float) ((12.0 - (9.0 * parameterB) - (6 * parameterC)) * dist * dist * dist +
+                            (-18.0 + 12.0 * parameterB + 6 * parameterC) * dist * dist +
+                            (6.0 - 2.0 * parameterB)) * value / 6.f;
         }
-        if (Math.abs(dist) < 2) {
-            return (float) (((-parameterB - (6 * parameterC)) * dist * dist * dist)
-                    + ((6 * parameterB + 30 * parameterC) * dist * dist)
-                    + ((-12 * parameterB - 48 * parameterC) * dist)
-                    + (8 * parameterB + 24 * parameterC)) * value / 6.f;
+        else if (Math.abs(dist) < 2.0) {
+            return (float) (((-parameterB - (6.0 * parameterC)) * dist * dist * dist)
+                    + ((6.0 * parameterB + 30.0 * parameterC) * dist * dist)
+                    + ((-12.0 * parameterB - 48.0 * parameterC) * dist)
+                    + (8.0 * parameterB + 24.0 * parameterC)) * value / 6.f;
         }
         return 0;
     }
