@@ -24,7 +24,7 @@ public class ScaleFrame extends JFrame {
 
     private ScaleAlgorithmPanel panel;
 
-    private List<ScalingAlgorithm> algorithms;
+    private List<String> algorithms;
 
     public ScaleFrame(){
         this.setTitle("Scale picture");
@@ -36,11 +36,12 @@ public class ScaleFrame extends JFrame {
         GridBagHelper gridSetter = new GridBagHelper();
 
         algorithms = PanelMediator.getInstance().getScaleAlgorithms();
-        algorithmBox = new JComboBox<>(algorithms.stream().map(WithName::getName).toList().toArray(new String[0]));
+        algorithmBox = new JComboBox<>(algorithms.toArray(new String[0]));
         algorithmBox.setSelectedIndex(0);
 
         panel = new ScaleAlgorithmPanel();
-        panel.createPanel(algorithms.get(algorithmBox.getSelectedIndex()));
+        panel.createPanel(PanelMediator.getInstance().getScaleAlgorithm(algorithms.get(algorithmBox.getSelectedIndex())));
+        panel.setVisible(true);
 
         gridSetter.alignCenter();
         this.add(algorithmBox, gridSetter.get());
@@ -68,7 +69,7 @@ public class ScaleFrame extends JFrame {
 
     public void changeAlgorithm(int index){
         algorithmBox.setSelectedIndex(index);
-        panel.createPanel(algorithms.get(algorithmBox.getSelectedIndex()));
+        panel.createPanel(PanelMediator.getInstance().getScaleAlgorithm(algorithms.get(algorithmBox.getSelectedIndex())));
     }
 
     private void handleCancel(){

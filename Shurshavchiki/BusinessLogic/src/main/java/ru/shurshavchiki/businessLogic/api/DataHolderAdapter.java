@@ -65,7 +65,6 @@ public class DataHolderAdapter implements Context {
     @Override
     public void setDitheringAlgorithmBitRate(int bitRate) {
         DitheringAlgorithm ditheringAlgorithm = dataHolder.getDitheringAlgorithm();
-
         ditheringAlgorithm.setBitRate(bitRate);
     }
 

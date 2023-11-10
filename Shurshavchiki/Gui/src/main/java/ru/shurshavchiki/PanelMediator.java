@@ -142,9 +142,13 @@ public class PanelMediator {
 		return mainContext.getAllDitheringAlgorithms().toArray(new String[0]);
 	}
 
-	public List<ScalingAlgorithm> getScaleAlgorithms(){
-//		return mainContext;
-		return null;
+	public List<String> getScaleAlgorithms(){
+		return mainContext.getScalingAlgorithms();
+	}
+
+	public ScalingAlgorithm getScaleAlgorithm(String algorithm){
+		mainContext.setScalingAlgorithm(algorithm);
+		return mainContext.getScalingAlgorithm();
 	}
 
 	public void setDisplayableDithered(String selectedAlgorithm, int selectedBitRate){
@@ -223,7 +227,8 @@ public class PanelMediator {
 		RgbPixel color = new RgbPixel((float)oneToolPanel.getMainColor().getRed()/255.f,
 				(float)oneToolPanel.getMainColor().getGreen()/255.f,
 				(float)oneToolPanel.getMainColor().getGreen()/255.f);
-		mainContext.setNewLine(new Line(start, end, oneToolPanel.getMainSize(), color, (float)oneToolPanel.getMainColor().getAlpha()/255.f));
+		mainContext.setNewLine( new Line(start, end, oneToolPanel.getMainSize(), color, (float)oneToolPanel.getMainColor().getAlpha()/255.f));
+		drawingService.drawLine(mainContext);
 	}
 
 	public static PanelMediator getInstance() {

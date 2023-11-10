@@ -32,6 +32,8 @@ public class ScaleAlgorithmPanel extends JPanel {
 			parameterText.setText(parameter.getName());
 			parameterText.setVisible(true);
 			this.add(parameterText, gridSetter.get());
+			gridSetter.nextCell().alignCenter();
+
 		}
 	}
 }

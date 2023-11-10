@@ -33,6 +33,8 @@ public class DitherFileFrame extends JFrame {
 
         preview = new DrawingPanel();
         preview.loadImage(PanelMediator.getInstance().getDrawingPanel().getDisplayable());
+        System.out.println(preview.getDisplayable());
+
         scrollPane = new JScrollPane(preview);
         scrollPane.setMinimumSize(new Dimension(200, 200));
         scrollPane.setPreferredSize(new Dimension(200, 200));
@@ -45,7 +47,7 @@ public class DitherFileFrame extends JFrame {
 
         ditheringBox = new JComboBox<>(ditheringAlgorithms);
         ditheringBox.setSelectedIndex(0);
-        setAlgorithm((String)ditheringBox.getSelectedItem());
+        selectedAlgorithm = (String)ditheringBox.getSelectedItem();
         ditheringBox.addActionListener(new DitheringComboBoxListener(this, ditheringBox));
         ditheringBox.setPreferredSize(new Dimension(80, 30));
 
