@@ -8,7 +8,8 @@ public class ImageCreationAlgorithmRepository extends ImplementationRepositoryBa
     public ImageCreationAlgorithmRepository() {
         super(List.of(
                 new BlankImageCreationAlgorithm(),
-                new GradientImageCreationAlgorithm()
+                new GradientImageCreationAlgorithm(),
+                new RandomImageCreationAlgorithm()
         ));
     }
 }

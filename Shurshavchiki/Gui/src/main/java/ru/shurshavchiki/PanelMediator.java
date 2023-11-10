@@ -213,7 +213,8 @@ public class PanelMediator {
 		RgbPixel color = new RgbPixel((float)oneToolPanel.getMainColor().getRed()/255.f,
 				(float)oneToolPanel.getMainColor().getGreen()/255.f,
 				(float)oneToolPanel.getMainColor().getGreen()/255.f);
-		mainContext.setNewLine(new Line(start, end, oneToolPanel.getMainSize(), color));
+		//TODO: add actual alpha
+		mainContext.setNewLine(new Line(start, end, oneToolPanel.getMainSize(), color, 1f));
 	}
 
 	public static PanelMediator getInstance() {

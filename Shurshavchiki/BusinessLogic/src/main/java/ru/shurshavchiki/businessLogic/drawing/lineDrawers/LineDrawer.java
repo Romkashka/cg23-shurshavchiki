@@ -7,7 +7,7 @@ import ru.shurshavchiki.businessLogic.drawing.models.FigureOverlap;
 import java.awt.geom.Point2D;
 
 public interface LineDrawer {
-    FigureOverlap drawLine(Point2D start, Point2D end, float width);
+    FigureOverlap drawLine(Point2D start, Point2D end, float width, float alpha);
     LineBaseDrawer getLineBaseDrawer();
     LineTipDrawer getStartLineTipDrawer();
     LineTipDrawer getEndLineTipDrawer();

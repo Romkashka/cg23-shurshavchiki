@@ -12,7 +12,7 @@ public class NoneLineTipDrawer implements LineTipDrawer {
     }
 
     @Override
-    public FigureOverlap drawLineEnd(Point2D start, Vector vectorToLineCenter, float width) {
+    public FigureOverlap drawLineEnd(Point2D start, Vector vectorToLineCenter, float width, float alpha) {
         return new FigureOverlap();
     }
 }

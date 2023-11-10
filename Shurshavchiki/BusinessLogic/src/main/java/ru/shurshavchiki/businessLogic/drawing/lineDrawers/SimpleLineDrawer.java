@@ -18,12 +18,12 @@ public class SimpleLineDrawer implements LineDrawer {
     private LineTipDrawer endLineTipDrawer;
 
     @Override
-    public FigureOverlap drawLine(Point2D start, Point2D end, float width) {
+    public FigureOverlap drawLine(Point2D start, Point2D end, float width, float alpha) {
         FigureOverlap result = new FigureOverlap();
         Point2D center = new Point2D.Float((float) ((end.getX() + start.getX()) / 2F), (float) ((end.getY() + start.getY()) / 2F));
-        result.addAll(lineBaseDrawer.drawLineBase(start, end, width).getPixelOverlaps());
-        result.addAll(startLineTipDrawer.drawLineEnd(start, new Vector(start, center), width).getPixelOverlaps());
-        result.addAll(endLineTipDrawer.drawLineEnd(start, new Vector(center, end), width).getPixelOverlaps());
+        result.addAll(lineBaseDrawer.drawLineBase(start, end, width, alpha).getPixelOverlaps());
+        result.addAll(startLineTipDrawer.drawLineEnd(start, new Vector(start, center), width, alpha).getPixelOverlaps());
+        result.addAll(endLineTipDrawer.drawLineEnd(start, new Vector(center, end), width, alpha).getPixelOverlaps());
 
         return result;
     }

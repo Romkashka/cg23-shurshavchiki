@@ -179,7 +179,7 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
                 gammaConverter.useGamma(this.inputGammaConverter.correctGamma(newLine.color().FloatGreen())),
                 gammaConverter.useGamma(this.inputGammaConverter.correctGamma(newLine.color().FloatBlue()))
         );
-        this.newLine = new Line(newLine.start(), newLine.end(), newLine.width(), linearColor);
+        this.newLine = new Line(newLine.start(), newLine.end(), newLine.width(), linearColor, newLine.alpha());
     }
 
     @Override

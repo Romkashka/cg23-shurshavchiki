@@ -13,6 +13,7 @@ import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ImageProcessingServiceImpl implements ImageProcessingService {
@@ -50,12 +51,13 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         float lowerLimit = contrastCorrector.calculateLowerLimit(distributions);
         float upperLimit = contrastCorrector.calculateUpperLimit(distributions);
         List<SingleChannelUnit> updatedUnits = new ArrayList<>();
-        for (SingleChannelUnit unit: channelUnits) {
-            if (colorSpace.usedInAutocorrection().contains(unit.Channel())) {
-                updatedUnits.add(contrastCorrector.correctContrast(unit, lowerLimit, upperLimit));
+        for (int i = 0; i < channelUnits.size(); i++) {
+            if (colorSpace.usedInAutocorrection().contains(channelUnits.get(i).Channel()) &&
+                    distributions.get(i).ValueDistribution().stream().filter(value -> value > 0f).count() > 1) {
+                updatedUnits.add(contrastCorrector.correctContrast(channelUnits.get(i), lowerLimit, upperLimit));
             }
             else {
-                updatedUnits.add(unit);
+                updatedUnits.add(channelUnits.get(i));
             }
         }
 

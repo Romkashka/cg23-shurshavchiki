@@ -7,5 +7,5 @@ import ru.shurshavchiki.businessLogic.drawing.models.Vector;
 import java.awt.geom.Point2D;
 
 public interface LineTipDrawer extends WithName {
-    FigureOverlap drawLineEnd(Point2D start, Vector vectorToLineCenter, float width);
+    FigureOverlap drawLineEnd(Point2D start, Vector vectorToLineCenter, float width, float alpha);
 }

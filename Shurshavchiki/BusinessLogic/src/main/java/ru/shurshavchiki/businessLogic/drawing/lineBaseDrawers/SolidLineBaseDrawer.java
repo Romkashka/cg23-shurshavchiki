@@ -11,7 +11,7 @@ public class SolidLineBaseDrawer implements LineBaseDrawer {
     }
 
     @Override
-    public FigureOverlap drawLineBase(Point2D start, Point2D end, float width) {
+    public FigureOverlap drawLineBase(Point2D start, Point2D end, float width, float alpha) {
         return null;
     }
 }
