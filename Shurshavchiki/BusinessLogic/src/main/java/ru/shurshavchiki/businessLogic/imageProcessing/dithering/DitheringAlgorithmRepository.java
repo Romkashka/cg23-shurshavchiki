@@ -9,7 +9,8 @@ public class DitheringAlgorithmRepository extends ImplementationRepositoryBase<D
         super(List.of(
                 new OrderedDitheringAlgorithm(),
                 new RandomDitheringAlgorithm(),
-                new FloydSteinbergDitheringAlgorithm()
+                new FloydSteinbergDitheringAlgorithm(),
+                new AtkinsonDitheringAlgorithm()
         ));
     }
 }
