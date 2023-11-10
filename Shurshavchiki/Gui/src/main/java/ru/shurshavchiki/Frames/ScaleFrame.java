@@ -21,10 +21,6 @@ import java.util.Vector;
 
 public class ScaleFrame extends JFrame {
 
-    private int height;
-
-    private int width;
-
     private JComboBox<String> algorithmBox;
 
     private ScaleAlgorithmPanel panel;
@@ -35,9 +31,17 @@ public class ScaleFrame extends JFrame {
 
     private JSpinner spinnerWidth;
 
+    private JSpinner spinnerOffsetX;
+
+    private JSpinner spinnerOffsetY;
+
     private JTextPane mainHeightText;
 
     private JTextPane mainWidthText;
+
+    private JTextPane offsetXText;
+
+    private JTextPane offsetYText;
 
     public ScaleFrame(){
         this.setTitle("Scale picture");
@@ -70,6 +74,20 @@ public class ScaleFrame extends JFrame {
         spinnerHeight.setVisible(true);
         mainHeightText.setVisible(true);
 
+        SpinnerModel modelOffsetX = new SpinnerNumberModel(0., -0.5, 0.5, 0.01);
+        spinnerOffsetX = InputSetHelper.setJSpinner(modelOffsetX, "create offset x");
+        offsetXText = InputSetHelper.setJText();
+        offsetXText.setText("Offset X:");
+        spinnerOffsetX.setVisible(true);
+        offsetXText.setVisible(true);
+
+        SpinnerModel modelOffsetY = new SpinnerNumberModel(0., -0.5, 0.5, 0.01);
+        spinnerOffsetY = InputSetHelper.setJSpinner(modelOffsetY, "create offset y");
+        offsetYText = InputSetHelper.setJText();
+        offsetYText.setText("Offset Y:");
+        spinnerOffsetY.setVisible(true);
+        offsetYText.setVisible(true);
+
         gridSetter.alignCenter();
         this.add(algorithmBox, gridSetter.get());
         gridSetter.insertEmptyRow(this, 20);
@@ -86,6 +104,18 @@ public class ScaleFrame extends JFrame {
         this.add(mainHeightText, gridSetter.get());
         gridSetter.nextCell().alignCenter();
         this.add(spinnerHeight, gridSetter.get());
+
+        gridSetter.insertEmptyRow(this, 20);
+
+        gridSetter.nextRow().nextCell().alignCenter();
+        this.add(offsetXText, gridSetter.get());
+        gridSetter.nextCell().alignCenter();
+        this.add(spinnerOffsetX, gridSetter.get());
+
+        gridSetter.nextRow().nextCell().alignCenter();
+        this.add(offsetYText, gridSetter.get());
+        gridSetter.nextCell().alignCenter();
+        this.add(spinnerOffsetY, gridSetter.get());
 
         gridSetter.insertEmptyRow(this, 20);
         gridSetter.nextRow().alignLeft();
@@ -117,9 +147,11 @@ public class ScaleFrame extends JFrame {
 
     private void handleOk(){
         try {
-            height = (int)spinnerHeight.getValue();
-            width = (int)spinnerWidth.getValue();
-            var parameters = new ScalingParameters(height, width, 0, 0);
+            int height = (int)spinnerHeight.getValue();
+            int width = (int)spinnerWidth.getValue();
+            float offsetX = ((Double)spinnerOffsetX.getValue()).floatValue();
+            float offsetY = ((Double)spinnerOffsetY.getValue()).floatValue();
+            var parameters = new ScalingParameters(height, width, offsetX, offsetY);
             PanelMediator.getInstance().scaleImage(algorithms.get(algorithmBox.getSelectedIndex()), new ArrayList<>(), parameters);
             handleCancel();
         }catch (Exception exception){

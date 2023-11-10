@@ -236,9 +236,10 @@ public class PanelMediator {
 
 	public void scaleImage(String algorithm, List<ScalingAlgorithmParameter> algorithmParameters, ScalingParameters parameters){
 		mainContext.setScalingAlgorithm(algorithm);
-//		mainContext.initScalingAlgorithm(algorithmParameters);
+		mainContext.initScalingAlgorithm(algorithmParameters);
 		mainContext.setScalingParameters(parameters);
 		imageProcessingService.scaleImage(mainContext);
+		drawingPanel.loadImage(mainContext.getShownDisplayable());
 	}
 
 	public static PanelMediator getInstance() {
