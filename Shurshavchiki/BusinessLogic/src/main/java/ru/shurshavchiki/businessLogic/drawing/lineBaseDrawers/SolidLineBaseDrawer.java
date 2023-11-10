@@ -9,8 +9,8 @@ import java.util.*;
 import static java.lang.Math.*;
 
 public class SolidLineBaseDrawer implements LineBaseDrawer {
-    private final int PrecisionCoefficient = 71;
-    private final int HalfOfCoeff = (int) (PrecisionCoefficient - 1) / 2;
+    private final float PrecisionCoefficient = 71F;
+    private final float HalfOfCoeff = (int) (PrecisionCoefficient - 1F) / 2F;
     @Override
     public String getName() {
         return "Solid";
@@ -20,9 +20,8 @@ public class SolidLineBaseDrawer implements LineBaseDrawer {
     public FigureOverlap drawLineBase(Point2D start, Point2D end, float width, float alpha) {
         // https://stackoverflow.com/questions/57484099/algorithm-for-finding-grid-cells-contained-in-arbitrary-rotated-rectangle-raste
         FigureOverlap figure = new FigureOverlap();
-        System.out.println(start.getX() + " " + start.getY() + " " + end.getX() + " " + end.getY());
         double pi = 3.14159265359;
-        double EPSILON = 1e-9;
+        double EPSILON = 1e-2;
         class Bounds {
             public double left;
             public double right;
@@ -43,9 +42,9 @@ public class SolidLineBaseDrawer implements LineBaseDrawer {
         y1 = start.getY() * PrecisionCoefficient;
         x2 = end.getX() * PrecisionCoefficient;
         y2 = end.getY() * PrecisionCoefficient;
-        width = width * PrecisionCoefficient / 2;
-
+        width = width * PrecisionCoefficient / 2F;
         double angle = atan2(y2 - y1, x2 - x1);
+
         Point2D p1 = new Point2D.Double(x1 + width * cos(angle + pi / 2), y1 + width * sin(angle + pi / 2));
         Point2D p2 = new Point2D.Double(x1 + width * cos(angle - pi / 2), y1 + width * sin(angle - pi / 2));
         Point2D p3 = new Point2D.Double(x2 + width * cos(angle - pi / 2), y2 + width * sin(angle - pi / 2));
@@ -83,16 +82,16 @@ public class SolidLineBaseDrawer implements LineBaseDrawer {
         for (int y = (int) floor(minY); y <= (int) ceil(maxY); y += PrecisionCoefficient) {
             for (int x = (int) floor(yBounds.get(y).left * 0.95); x <= (int) ceil(yBounds.get(y).right * 1.05); x += PrecisionCoefficient) {
                 float perc = 0;
-                for (int i = x - HalfOfCoeff; i <= x + HalfOfCoeff; i++) {
-                    for (int j = y - HalfOfCoeff; j <= y + HalfOfCoeff; j++) {
+                for (int i = (int) (x - HalfOfCoeff); i <= x + HalfOfCoeff; i++) {
+                    for (int j = (int) (y - HalfOfCoeff); j <= y + HalfOfCoeff; j++) {
                         if (yBounds.containsKey(j)) {
-                            if (i >= yBounds.get(j).left && i <= yBounds.get(j).right) {
+                            if (i >= yBounds.get(j).left - EPSILON && i <= yBounds.get(j).right + EPSILON) {
                                 perc += 1;
                             }
                         }
                     }
                 }
-                figure.addAll(new PixelOverlap((int) x / PrecisionCoefficient, (int) y / PrecisionCoefficient, perc / (PrecisionCoefficient * PrecisionCoefficient)));
+                figure.addAll(new PixelOverlap((int) (x / PrecisionCoefficient), (int) (y / PrecisionCoefficient), perc / (PrecisionCoefficient * PrecisionCoefficient)));
             }
         }
         return figure;

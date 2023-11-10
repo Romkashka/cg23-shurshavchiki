@@ -12,7 +12,7 @@ import java.util.List;
 public class DrawingServiceImpl implements DrawingService {
     @Override
     public Drawing drawLine(Line line, LineDrawer lineDrawer) {
-        FigureOverlap overlap = lineDrawer.drawLine(line.start(), line.end(), (int) line.width(), line.alpha());
+        FigureOverlap overlap = lineDrawer.drawLine(line.start(), line.end(), line.width(), line.alpha());
         return new Drawing(overlap, line.color());
     }
 
