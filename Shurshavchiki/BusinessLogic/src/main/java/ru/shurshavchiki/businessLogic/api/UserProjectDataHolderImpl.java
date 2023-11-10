@@ -173,11 +173,17 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
 
     @Override
     public void setNewLine(Line newLine) {
+        if (newLine == null) {
+            this.newLine = null;
+            return;
+        }
+        System.out.println(newLine.color().FloatRed() + " " + newLine.color().FloatGreen() + " " + newLine.color().FloatBlue());
+
         GammaConverter gammaConverter = getDefaultGammaConverter();
         RgbConvertable linearColor = new RgbPixel(
-                gammaConverter.useGamma(this.inputGammaConverter.correctGamma(newLine.color().FloatRed())),
-                gammaConverter.useGamma(this.inputGammaConverter.correctGamma(newLine.color().FloatGreen())),
-                gammaConverter.useGamma(this.inputGammaConverter.correctGamma(newLine.color().FloatBlue()))
+                this.inputGammaConverter.useGamma(newLine.color().FloatRed()),
+                this.inputGammaConverter.useGamma(newLine.color().FloatGreen()),
+                this.inputGammaConverter.useGamma(newLine.color().FloatBlue())
         );
         this.newLine = new Line(newLine.start(), newLine.end(), newLine.width(), linearColor, newLine.alpha());
     }

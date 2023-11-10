@@ -226,9 +226,9 @@ public class PanelMediator {
 		mainContext.setLineBase("Solid");
 		mainContext.setStartLineTip("None");
 		mainContext.setEndLineTip("None");
-		RgbPixel color = new RgbPixel((float)oneToolPanel.getMainColor().getRed()/255.f,
-				(float)oneToolPanel.getMainColor().getGreen()/255.f,
-				(float)oneToolPanel.getMainColor().getGreen()/255.f);
+		RgbPixel color = new RgbPixel(((float)oneToolPanel.getMainColor().getRed())/255.f,
+				((float)oneToolPanel.getMainColor().getGreen())/255.f,
+				((float)oneToolPanel.getMainColor().getBlue())/255.f);
 		mainContext.setNewLine( new Line(start, end, oneToolPanel.getMainSize(), color, (float)oneToolPanel.getMainColor().getAlpha()/255.f));
 		drawingService.drawLine(mainContext);
 		drawingPanel.loadImage(mainContext.getShownDisplayable());
