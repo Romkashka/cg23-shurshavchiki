@@ -21,7 +21,7 @@ public interface Context {
     List<String> getAllLineTips();
     List<String> getAllImageCreationAlgorithms();
     List<String> getAllDitheringAlgorithms();
-    boolean isDitheringAlgorithmWithBitRate(String name);
+    List<String> getScalingAlgorithms();
     void setDitheringAlgorithmBitRate(int bitRate);
     void setLineBase(String name);
     void setStartLineTip(String name);
@@ -50,6 +50,6 @@ public interface Context {
     void chooseContrastCorrector(float lowerBoundary, float upperBoundary);
 
     ScalingAlgorithm getScalingAlgorithm();
-    void setScalingAlgorithm(ScalingAlgorithm scalingAlgorithm, List<ScalingAlgorithmParameter> parameters);
+    void setScalingAlgorithm(String algorithmName, List<ScalingAlgorithmParameter> parameters);
     void setScalingParameters(ScalingParameters scalingParameters);
 }

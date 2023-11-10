@@ -3,7 +3,7 @@ package ru.shurshavchiki.businessLogic.imageProcessing.dithering;
 import lombok.Getter;
 import ru.shurshavchiki.businessLogic.exceptions.DitheringException;
 
-public abstract class DitheringAlgorithmWithBitRateBase implements DitheringAlgorithmWithBitRate {
+public abstract class DitheringAlgorithmBase implements DitheringAlgorithm {
     protected final int BIT_RATE_LOWER_BOUND = 1;
     protected final int BIT_RATE_UPPER_BOUND = 8;
     @Getter

@@ -13,7 +13,6 @@ import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.PlainContrastCorrector;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
-import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmWithBitRate;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
@@ -59,20 +58,15 @@ public class DataHolderAdapter implements Context {
     }
 
     @Override
-    public boolean isDitheringAlgorithmWithBitRate(String name) {
-        DitheringAlgorithm algorithm = dataHolder.getDitheringAlgorithmRepository().getImplementationByName(name);
-        return algorithm instanceof DitheringAlgorithmWithBitRate;
+    public List<String> getScalingAlgorithms() {
+        return dataHolder.getScalingAlgorithmRepository().getAllImplementations();
     }
 
     @Override
     public void setDitheringAlgorithmBitRate(int bitRate) {
         DitheringAlgorithm ditheringAlgorithm = dataHolder.getDitheringAlgorithm();
 
-        if (!(ditheringAlgorithm instanceof DitheringAlgorithmWithBitRate ditheringAlgorithmWithBitRate)) {
-            throw DitheringException.BitRateIsNotSupported();
-        }
-
-        ditheringAlgorithmWithBitRate.setBitRate(bitRate);
+        ditheringAlgorithm.setBitRate(bitRate);
     }
 
     @Override
@@ -189,9 +183,9 @@ public class DataHolderAdapter implements Context {
     }
 
     @Override
-    public void setScalingAlgorithm(ScalingAlgorithm scalingAlgorithm, List<ScalingAlgorithmParameter> parameters) {
-        scalingAlgorithm.init(parameters);
-        dataHolder.setScalingAlgorithm(scalingAlgorithm);
+    public void setScalingAlgorithm(String algorithmName, List<ScalingAlgorithmParameter> parameters) {
+        dataHolder.setScalingAlgorithm(dataHolder.getScalingAlgorithmRepository().getImplementationByName(algorithmName));
+        dataHolder.getScalingAlgorithm().init(parameters);
     }
 
     @Override
