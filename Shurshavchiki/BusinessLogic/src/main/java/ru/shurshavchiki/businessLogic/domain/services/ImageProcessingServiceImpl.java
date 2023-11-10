@@ -52,8 +52,14 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         List<SingleChannelUnit> updatedUnits = new ArrayList<>();
         for (int i = 0; i < channelUnits.size(); i++) {
             if (colorSpace.usedInAutocorrection().contains(channelUnits.get(i).Channel()) &&
-                    distributions.get(i).ValueDistribution().stream().filter(value -> value > 0f).count() > 1) {
-                updatedUnits.add(contrastCorrector.correctContrast(channelUnits.get(i), lowerLimit, upperLimit));
+            distributions.stream().map(Histogram::ChannelName).toList().contains(channelUnits.get(i).Channel().name())) {
+                for (Histogram hist: distributions) {
+                    if (hist.ValueDistribution().stream().filter(value -> value > 0f).count() > 1)
+                        updatedUnits.add(contrastCorrector.correctContrast(channelUnits.get(i), lowerLimit, upperLimit));
+                    else {
+                        updatedUnits.add(channelUnits.get(i));
+                    }
+                }
             }
             else {
                 updatedUnits.add(channelUnits.get(i));

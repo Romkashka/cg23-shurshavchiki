@@ -47,7 +47,7 @@ public class RandomDitheringAlgorithm extends DitheringAlgorithmBase{
 
     @Override
     public boolean isInLineGamma() {
-        return false;
+        return true;
     }
 
     private int findClosest(int color){

@@ -49,10 +49,18 @@ public class DataHolderUpdateWizard {
             updateDisplayableWithLinearGamma(dataHolder);
         }
 
-        dataHolder.setDisplayableWithDrawings(
+        if (dataHolder.getDrawings().size() == 0) {
+            dataHolder.setDisplayableWithDrawings(dataHolder.getDisplayableWithLinearGamma());
+            updateShownDisplayable(dataHolder);
+            return;
+        }
+
+        dataHolder.setStartingDisplayable(
                 drawingService.mergeDrawings(dataHolder.getDisplayableWithLinearGamma(), dataHolder.getDrawings()));
 
-        updateShownDisplayable(dataHolder);
+        dataHolder.deleteDrawing(0);
+        updateDisplayableWithFilters(dataHolder);
+//        updateShownDisplayable(dataHolder);
     }
 
     public void updateShownDisplayable(UserProjectDataHolder dataHolder) {

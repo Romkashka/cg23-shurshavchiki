@@ -28,8 +28,17 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         UserProjectDataHolder sourceDataHolder = extractDataHolder(source);
         Context resultContext = new ServiceFactoryImpl().getBlankContext();
         UserProjectDataHolder destinationDataHolder = resultContext.getDataHolder();
-        Displayable result = imageProcessingService.ditherImage(sourceDataHolder.getDitheringAlgorithm(), sourceDataHolder.getShownDisplayable());
-        destinationDataHolder.setShownDisplayable(result);
+        if (sourceDataHolder.getDitheringAlgorithm().isInLineGamma()) {
+            Displayable result = imageProcessingService.ditherImage(sourceDataHolder.getDitheringAlgorithm(), sourceDataHolder.getDisplayableWithLinearGamma());
+            destinationDataHolder.setDisplayableWithLinearGamma(result);
+            destinationDataHolder.setShownGammaConverter(sourceDataHolder.getShownGammaConverter());
+            destinationDataHolder.setInputGammaConverter(sourceDataHolder.getInputGammaConverter());
+            dataHolderUpdateWizard.updateDisplayableWithDrawings(destinationDataHolder);
+        }
+        else {
+            Displayable result = imageProcessingService.ditherImage(sourceDataHolder.getDitheringAlgorithm(), sourceDataHolder.getShownDisplayable());
+            destinationDataHolder.setShownDisplayable(result);
+        }
         return resultContext;
     }
 
@@ -57,8 +66,9 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
     @Override
     public void scaleImage(@NonNull Context context) {
         UserProjectDataHolder dataHolder = extractDataHolder(context);
-        Displayable result = imageProcessingService.scaleImage(dataHolder.getShownDisplayable(), dataHolder.getScalingAlgorithm(), dataHolder.getScalingParameters());
-        dataHolder.setStartingDisplayable(result);
+        Displayable result = imageProcessingService.scaleImage(dataHolder.getDisplayableWithLinearGamma(), dataHolder.getScalingAlgorithm(), dataHolder.getScalingParameters());
+        dataHolder.setDisplayableWithLinearGamma(result);
+        dataHolderUpdateWizard.updateDisplayableWithDrawings(dataHolder);
         dataHolderUpdateWizard.forceUpdateDataHolder(dataHolder);
     }
 
