@@ -120,7 +120,7 @@ public class ScaleFrame extends JFrame {
             height = (int)spinnerHeight.getValue();
             width = (int)spinnerWidth.getValue();
             var parameters = new ScalingParameters(height, width, 0, 0);
-            PanelMediator.getInstance().scaleImage(algorithms.get(algorithmBox.getSelectedIndex()), parameters);
+            PanelMediator.getInstance().scaleImage(algorithms.get(algorithmBox.getSelectedIndex()), new ArrayList<>(), parameters);
             handleCancel();
         }catch (Exception exception){
             new ExceptionHandler().handleException(exception);
