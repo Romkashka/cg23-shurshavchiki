@@ -9,6 +9,8 @@ import java.util.*;
 import static java.lang.Math.*;
 
 public class SolidLineBaseDrawer implements LineBaseDrawer {
+    private final int PrecisionCoefficient = 71;
+    private final int HalfOfCoeff = (int) (PrecisionCoefficient - 1) / 2;
     @Override
     public String getName() {
         return "Solid";
@@ -16,44 +18,38 @@ public class SolidLineBaseDrawer implements LineBaseDrawer {
 
     @Override
     public FigureOverlap drawLineBase(Point2D start, Point2D end, float width, float alpha) {
-        alpha = 1F;
+        // https://stackoverflow.com/questions/57484099/algorithm-for-finding-grid-cells-contained-in-arbitrary-rotated-rectangle-raste
         FigureOverlap figure = new FigureOverlap();
-        width = width / 2;
-        System.out.println(1111111);
+        System.out.println(start.getX() + " " + start.getY() + " " + end.getX() + " " + end.getY());
         double pi = 3.14159265359;
         double EPSILON = 1e-9;
-        class Bounds{
+        class Bounds {
             public double left;
             public double right;
-            public Bounds(double left, double right){
+
+            public Bounds(double left, double right) {
                 this.left = left;
                 this.right = right;
             }
-        }
-        String form = "";
-        if (start.getX() > end.getX()){
-            Point2D temp = end;
-            end = start;
-            start = temp;
-        }
 
-        if (start.getY() <= end.getY()){
-            form = "up";
-        } else {
-            form = "down";
+            @Override
+            public String toString() {
+                return left + " " + right;
+            }
         }
 
         double x1, y1, x2, y2;
-        x1 = start.getX();
-        y1 = start.getY();
-        x2 = end.getX();
-        y2 = end.getY();
+        x1 = start.getX() * PrecisionCoefficient;
+        y1 = start.getY() * PrecisionCoefficient;
+        x2 = end.getX() * PrecisionCoefficient;
+        y2 = end.getY() * PrecisionCoefficient;
+        width = width * PrecisionCoefficient / 2;
 
-        double angle = atan2(y2-y1,x2-x1);
-        Point2D p1 = new Point2D.Double(x1 + width*cos(angle+pi/2), y1 + width*sin(angle+pi/2));
-        Point2D p2 = new Point2D.Double(x1 + width*cos(angle-pi/2), y1 + width*sin(angle-pi/2));
-        Point2D p3 = new Point2D.Double(x2 + width*cos(angle-pi/2), y2 + width*sin(angle-pi/2));
-        Point2D p4 = new Point2D.Double(x2 + width*cos(angle+pi/2), y2 + width*sin(angle+pi/2));
+        double angle = atan2(y2 - y1, x2 - x1);
+        Point2D p1 = new Point2D.Double(x1 + width * cos(angle + pi / 2), y1 + width * sin(angle + pi / 2));
+        Point2D p2 = new Point2D.Double(x1 + width * cos(angle - pi / 2), y1 + width * sin(angle - pi / 2));
+        Point2D p3 = new Point2D.Double(x2 + width * cos(angle - pi / 2), y2 + width * sin(angle - pi / 2));
+        Point2D p4 = new Point2D.Double(x2 + width * cos(angle + pi / 2), y2 + width * sin(angle + pi / 2));
         List<Point2D> rectangle = Arrays.asList(p1, p2, p3, p4);
 
         double minY = Double.MAX_VALUE;
@@ -84,13 +80,21 @@ public class SolidLineBaseDrawer implements LineBaseDrawer {
             }
             yBounds.put(y, new Bounds(minX, maxX));
         }
-        List<PixelOverlap> pixels = new ArrayList<>();
-        for (int y = (int) floor(minY); y <= (int) ceil(maxY); y++){
-            for (int x = (int) floor(yBounds.get(y).left); x <= (int) ceil(yBounds.get(y).right); x++) {
-                figure.addAll(new PixelOverlap(x, y, 1 * alpha));
+        for (int y = (int) floor(minY); y <= (int) ceil(maxY); y += PrecisionCoefficient) {
+            for (int x = (int) floor(yBounds.get(y).left * 0.95); x <= (int) ceil(yBounds.get(y).right * 1.05); x += PrecisionCoefficient) {
+                float perc = 0;
+                for (int i = x - HalfOfCoeff; i <= x + HalfOfCoeff; i++) {
+                    for (int j = y - HalfOfCoeff; j <= y + HalfOfCoeff; j++) {
+                        if (yBounds.containsKey(j)) {
+                            if (i >= yBounds.get(j).left && i <= yBounds.get(j).right) {
+                                perc += 1;
+                            }
+                        }
+                    }
+                }
+                figure.addAll(new PixelOverlap((int) x / PrecisionCoefficient, (int) y / PrecisionCoefficient, perc / (PrecisionCoefficient * PrecisionCoefficient)));
             }
         }
-        System.out.println(pixels);
         return figure;
     }
 }
