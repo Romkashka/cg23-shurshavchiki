@@ -50,6 +50,7 @@ public interface Context {
     void chooseContrastCorrector(float lowerBoundary, float upperBoundary);
 
     ScalingAlgorithm getScalingAlgorithm();
-    void setScalingAlgorithm(String algorithmName, List<ScalingAlgorithmParameter> parameters);
+    void setScalingAlgorithm(String algorithmName);
+    void initScalingAlgorithm(List<ScalingAlgorithmParameter> parameters);
     void setScalingParameters(ScalingParameters scalingParameters);
 }
