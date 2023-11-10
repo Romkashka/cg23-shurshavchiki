@@ -14,6 +14,7 @@ import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.security.AlgorithmParameters;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,12 @@ public class ScaleFrame extends JFrame {
         algorithms = PanelMediator.getInstance().getScaleAlgorithms();
         algorithmBox = new JComboBox<>(algorithms.toArray(new String[0]));
         algorithmBox.setSelectedIndex(0);
+        algorithmBox.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeAlgorithm(algorithmBox.getSelectedIndex());
+            }
+        });
 
         panel = new ScaleAlgorithmPanel();
         panel.createPanel(PanelMediator.getInstance().getScaleAlgorithm(algorithms.get(algorithmBox.getSelectedIndex())));
@@ -139,6 +146,9 @@ public class ScaleFrame extends JFrame {
     public void changeAlgorithm(int index){
         algorithmBox.setSelectedIndex(index);
         panel.createPanel(PanelMediator.getInstance().getScaleAlgorithm(algorithms.get(algorithmBox.getSelectedIndex())));
+        panel.setVisible(true);
+        this.validate();
+        super.paintComponents(this.getGraphics());
     }
 
     private void handleCancel(){
@@ -152,7 +162,8 @@ public class ScaleFrame extends JFrame {
             float offsetX = ((Double)spinnerOffsetX.getValue()).floatValue();
             float offsetY = ((Double)spinnerOffsetY.getValue()).floatValue();
             var parameters = new ScalingParameters(height, width, offsetX, offsetY);
-            PanelMediator.getInstance().scaleImage(algorithms.get(algorithmBox.getSelectedIndex()), new ArrayList<>(), parameters);
+            var algorithmParameters = panel.getParameterValues();
+            PanelMediator.getInstance().scaleImage(algorithms.get(algorithmBox.getSelectedIndex()), algorithmParameters, parameters);
             handleCancel();
         }catch (Exception exception){
             new ExceptionHandler().handleException(exception);

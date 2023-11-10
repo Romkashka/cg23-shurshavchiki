@@ -15,6 +15,7 @@ public class FloatScalingAlgorithmParameter extends ScalingAlgorithmParameter {
         super(name);
         this.lowerLimit = lowerLimit;
         this.upperLimit = upperLimit;
+        this.value = lowerLimit;
     }
 
     public FloatScalingAlgorithmParameter(String name, float lowerLimit, float upperLimit, float value) {
