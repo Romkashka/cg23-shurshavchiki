@@ -1,5 +1,6 @@
 package ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers;
 
+import jdk.jfr.Percentage;
 import ru.shurshavchiki.businessLogic.drawing.models.FigureOverlap;
 import ru.shurshavchiki.businessLogic.drawing.models.PixelOverlap;
 
@@ -18,7 +19,6 @@ public class SolidLineBaseDrawer implements LineBaseDrawer {
 
     @Override
     public FigureOverlap drawLineBase(Point2D start, Point2D end, float width, float alpha) {
-        // https://stackoverflow.com/questions/57484099/algorithm-for-finding-grid-cells-contained-in-arbitrary-rotated-rectangle-raste
         FigureOverlap figure = new FigureOverlap();
         double pi = 3.14159265359;
         double EPSILON = 1e-2;
@@ -91,7 +91,8 @@ public class SolidLineBaseDrawer implements LineBaseDrawer {
                         }
                     }
                 }
-                figure.addAll(new PixelOverlap((int) (x / PrecisionCoefficient), (int) (y / PrecisionCoefficient), perc / (PrecisionCoefficient * PrecisionCoefficient)));
+                float percentage = perc / PrecisionCoefficient / PrecisionCoefficient * alpha;
+                    figure.addAll(new PixelOverlap((int) (x / PrecisionCoefficient), (int) (y / PrecisionCoefficient), percentage));
             }
         }
         return figure;
