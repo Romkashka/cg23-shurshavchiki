@@ -4,5 +4,5 @@ import lombok.NonNull;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 
 public interface DrawingService {
-    void drawLine(@NonNull Context context, @NonNull Line line);
+    void drawLine(@NonNull Context context);
 }
