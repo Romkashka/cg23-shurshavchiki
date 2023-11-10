@@ -128,6 +128,5 @@ public class DrawingPanel extends JPanel {
 			g2.drawImage(preview, 0, 0, null);
 
 		PanelMediator.getInstance().validateScrollPane();
-		g2.dispose();
 	}
 }

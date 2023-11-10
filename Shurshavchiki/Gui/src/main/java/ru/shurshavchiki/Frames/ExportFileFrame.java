@@ -133,6 +133,8 @@ public class ExportFileFrame extends JFrame {
                 PanelMediator.getInstance().setDisplayableDithered(selectedAlgorithm, selectedBitRate);
                 PanelMediator.getInstance().getSettingPanel().setSelectedFile(fileChooser.getSelectedFile());
                 PanelMediator.getInstance().saveAsImage(PanelMediator.getInstance().getSettingPanel().getSelectedFile());
+            }else {
+                return;
             }
 
             handleCancel();

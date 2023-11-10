@@ -63,6 +63,8 @@ public class PanelMediator {
 
 	public void run() {
 		scrollPane = new JScrollPane(drawingPanel);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
 		imageFrame.create();
 	}
 
@@ -103,7 +105,7 @@ public class PanelMediator {
 	public Boolean getConfirm(){
 		int answer = JOptionPane.showConfirmDialog(null,
 				"Some changes weren't save. Are you sure you want to close the picture?",
-				"close", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+				"Close opened picture", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         return answer == JOptionPane.YES_OPTION;
 	}
 
@@ -140,7 +142,7 @@ public class PanelMediator {
 		return mainContext.getAllDitheringAlgorithms().toArray(new String[0]);
 	}
 
-	public List<ScalingAlgorithm> getScaleAlgorithms() {
+	public List<ScalingAlgorithm> getScaleAlgorithms(){
 //		return mainContext.
 		return null;
 	}
@@ -164,6 +166,7 @@ public class PanelMediator {
     }
 
 	public void validateScrollPane(){
+		scrollPane.getViewport().setView(drawingPanel);
 		scrollPane.validate();
 	}
 
