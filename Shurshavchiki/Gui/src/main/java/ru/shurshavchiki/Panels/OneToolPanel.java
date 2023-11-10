@@ -8,6 +8,7 @@ import ru.shurshavchiki.Listeners.ActionListeners.InstrumentChoseListener;
 import ru.shurshavchiki.PanelMediator;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 
 public class OneToolPanel extends JPanel {
@@ -19,7 +20,7 @@ public class OneToolPanel extends JPanel {
 
 	private JButton buttonMainColor;
 
-	private JTextArea mainColorPreview = new JTextArea();
+	private JPanel mainColorPreview;
 
 	@Getter
 	private Color mainColor = new Color(0, 0, 0);
@@ -45,10 +46,19 @@ public class OneToolPanel extends JPanel {
 		buttonMainColor.setActionCommand("main color");
 		buttonMainColor.addActionListener(new InstrumentChoseListener(this));
 
+		mainColorPreview = new JPanel(){
+			public void paintComponent(Graphics g)
+			{
+				g.setColor(getBackground());
+				g.fillRect(0, 0, getWidth(), getHeight());
+				super.paintComponent(g);
+			}
+		};
 		mainColorPreview.setBackground(mainColor);
 		mainColorPreview.setPreferredSize(new Dimension(48, 48));
-		mainColorPreview.setOpaque(true);
-		mainColorPreview.setEditable(false);
+		mainColorPreview.setSize(new Dimension(48, 48));
+		mainColorPreview.setOpaque(false);
+		mainColorPreview.setEnabled(false);
 		mainColorPreview.setVisible(false);
 
 		SpinnerModel modelMainSize = new SpinnerNumberModel(4f, 0.01f, 120f, 1f);
@@ -102,7 +112,6 @@ public class OneToolPanel extends JPanel {
 
 	public void setMainColor(Color color){
 		mainColor = color;
-		mainColorPreview.removeAll();
 		mainColorPreview.setBackground(mainColor);
 	}
 }

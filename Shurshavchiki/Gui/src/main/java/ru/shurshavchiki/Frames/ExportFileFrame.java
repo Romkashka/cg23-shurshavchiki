@@ -10,6 +10,7 @@ import ru.shurshavchiki.Panels.DrawingPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class ExportFileFrame extends JFrame {
 
@@ -124,7 +125,15 @@ public class ExportFileFrame extends JFrame {
 
     private void handleOk(){
         try {
-            PanelMediator.getInstance().setDisplayableDithered(selectedAlgorithm, selectedBitRate);
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            int result = fileChooser.showSaveDialog(PanelMediator.getInstance().getSettingPanel());
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                PanelMediator.getInstance().setDisplayableDithered(selectedAlgorithm, selectedBitRate);
+                PanelMediator.getInstance().getSettingPanel().setSelectedFile(fileChooser.getSelectedFile());
+                PanelMediator.getInstance().saveAsImage(PanelMediator.getInstance().getSettingPanel().getSelectedFile());
+            }
 
             handleCancel();
         }catch (Exception exception){

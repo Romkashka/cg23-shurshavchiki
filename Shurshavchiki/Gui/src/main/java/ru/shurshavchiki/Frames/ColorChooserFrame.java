@@ -50,7 +50,6 @@ public class ColorChooserFrame extends JFrame {
     private void handleOk(){
         try {
             if (Objects.equals(operation, "main color")){
-                System.out.println(colorChooser.getColor().toString());
                 PanelMediator.getInstance().getOneToolPanel().setMainColor(colorChooser.getColor());
             }
 
