@@ -16,7 +16,7 @@ public class LanczosScalingAlgorithm extends ScalingAlgorithmBase {
 
     @Override
     public void init(List<ScalingAlgorithmParameter> parameters) {
-        kernelRadius = 3;
+        kernelRadius = 3.5;
     }
 
     @Override
@@ -27,22 +27,27 @@ public class LanczosScalingAlgorithm extends ScalingAlgorithmBase {
     @Override
     protected RgbConvertable calculateColor(Point2D point, Window window) {
         List<PositionedPixel> intermediatePixels = new ArrayList<>();
-        for (int i = 0; i < kernelRadius; i++) {
+        for (int i = 0; i < kernelRadius * 2; i++) {
             RgbConvertable resultColor = new RgbPixel(0);
-            for (int j = 0; j < kernelRadius; j++) {
+            for (int j = 0; j < kernelRadius * 2; j++) {
                 PositionedPixel currentPixel = window.Pixels().get(i).get(j);
-                RgbConvertable tmp = calculateColor(currentPixel.Color(), Point2D.distance(point.getX(), currentPixel.coordinates().getY(), currentPixel.coordinates().getX(), currentPixel.coordinates().getY()));
+                RgbConvertable tmp = calculateColor(currentPixel.Color(), (currentPixel.coordinates().getX() - point.getX()) / sourcePixelWidth);
                 resultColor = colorSum(resultColor, tmp);
             }
+
+            resultColor = validateColor(resultColor);
+
             intermediatePixels.add(new PositionedPixel(resultColor, new Point2D.Double(point.getX(), window.Pixels().get(i).get(0).coordinates().getY())));
         }
 
         RgbConvertable resultColor = new RgbPixel(0);
-        for (int i = 0; i < kernelRadius; i++) {
+        for (int i = 0; i < kernelRadius * 2; i++) {
             PositionedPixel currentPixel = intermediatePixels.get(i);
-            RgbConvertable tmp = calculateColor(currentPixel.Color(), Point2D.distance(point.getX(), point.getY(), currentPixel.coordinates().getX(), currentPixel.coordinates().getY()));
+            RgbConvertable tmp = calculateColor(currentPixel.Color(), (currentPixel.coordinates().getY() - point.getY()) / sourcePixelHeight);
             resultColor = colorSum(resultColor, tmp);
         }
+
+        resultColor = validateColor(resultColor);
 
         return resultColor;
     }
@@ -56,7 +61,7 @@ public class LanczosScalingAlgorithm extends ScalingAlgorithmBase {
     }
 
     float calculateChannel(float value, double dist) {
-        if (dist < 0.0001) {
+        if (Math.abs(dist) < 0.0000001) {
             return value;
         }
         if (Math.abs(dist) > kernelRadius) {
@@ -65,9 +70,17 @@ public class LanczosScalingAlgorithm extends ScalingAlgorithmBase {
 
         return (float) (value * kernelRadius * Math.sin(Math.PI * dist) * Math.sin(Math.PI * dist / kernelRadius) / (Math.PI * Math.PI * dist * dist));
     }
+
     RgbConvertable colorSum(RgbConvertable color1, RgbConvertable color2) {
         return new RgbPixel(color1.FloatRed() + color2.FloatRed(),
                 color1.FloatGreen() + color2.FloatGreen(),
                 color1.FloatBlue() + color2.FloatBlue());
+    }
+
+    RgbConvertable validateColor(RgbConvertable color) {
+        float r = Math.max(Math.min(color.FloatRed() * 1000f, 1000f), 0f) / 1000f;
+        float g = Math.max(Math.min(color.FloatGreen() * 1000f, 1000f), 0f) / 1000f;
+        float b = Math.max(Math.min(color.FloatBlue() * 1000f, 1000f), 0f) / 1000f;
+        return new RgbPixel(r, g, b);
     }
 }
