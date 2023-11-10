@@ -15,6 +15,9 @@ public class FileButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         try {
+            if (!PanelMediator.getInstance().getOneToolPanel().getChosen().equals("Cursor"))
+                return;
+
             switch (event.getActionCommand()){
                 case "New":
                     newFile();

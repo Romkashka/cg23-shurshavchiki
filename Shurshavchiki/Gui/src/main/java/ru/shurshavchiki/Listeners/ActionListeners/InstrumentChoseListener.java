@@ -1,6 +1,7 @@
 package ru.shurshavchiki.Listeners.ActionListeners;
 
 import ru.shurshavchiki.Frames.ColorChooserFrame;
+import ru.shurshavchiki.PanelMediator;
 import ru.shurshavchiki.Panels.OneToolPanel;
 
 import java.awt.event.ActionEvent;
@@ -19,12 +20,13 @@ public class InstrumentChoseListener implements ActionListener {
         switch (event.getActionCommand()){
             case "cursor":
                 toolPanel.setupCursor();
+                PanelMediator.getInstance().getDrawingPanel().clearPreview();
                 break;
             case "line":
                 toolPanel.setupLine();
                 break;
             case "main color":
-                ColorChooserFrame colorChooserFrame = new ColorChooserFrame("main color", toolPanel.getMainColor());
+                new ColorChooserFrame("main color", toolPanel.getMainColor());
                 break;
         }
     }

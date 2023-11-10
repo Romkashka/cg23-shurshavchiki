@@ -119,13 +119,14 @@ public class DrawingPanel extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g.create();
+
 		if (preview == null) {
-			if (image != null)
-				g2.drawImage(image, 0, 0, null);
-		}else
+			super.paintComponent(g);
+			g2.drawImage(image, 0, 0, null);
+		}else{
 			g2.drawImage(preview, 0, 0, null);
+		}
 
 		PanelMediator.getInstance().validateScrollPane();
 	}
