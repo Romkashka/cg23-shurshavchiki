@@ -3,6 +3,7 @@ package ru.shurshavchiki;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.security.AlgorithmParameters;
 import java.util.List;
 
 import lombok.Getter;
@@ -18,6 +19,7 @@ import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 
 import javax.swing.*;
 
@@ -136,6 +138,11 @@ public class PanelMediator {
 
 	public String[] getDitheringAlgorithms(){
 		return mainContext.getAllDitheringAlgorithms().toArray(new String[0]);
+	}
+
+	public List<ScalingAlgorithm> getScaleAlgorithms() {
+//		return mainContext.
+		return null;
 	}
 
 	public void setDisplayableDithered(String selectedAlgorithm, int selectedBitRate){

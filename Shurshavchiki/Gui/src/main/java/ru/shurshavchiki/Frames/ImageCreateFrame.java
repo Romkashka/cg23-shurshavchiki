@@ -32,9 +32,7 @@ public class ImageCreateFrame extends JFrame {
     public ImageCreateFrame(){
         this.setTitle("Create image");
 
-        String[] generateTypes = PanelMediator.getInstance().getGenerateTypes();
-
-        generateTypesBox = new JComboBox<>(generateTypes);
+        generateTypesBox = new JComboBox<>(PanelMediator.getInstance().getGenerateTypes());
         generateTypesBox.setSelectedIndex(0);
         setType((String)generateTypesBox.getSelectedItem());
         generateTypesBox.addActionListener(new CreateComboBoxListener(this, generateTypesBox));

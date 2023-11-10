@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.shurshavchiki.Frames.GammaInputFrame;
 import ru.shurshavchiki.Frames.HistogramFrame;
+import ru.shurshavchiki.Frames.ScaleFrame;
 import ru.shurshavchiki.Listeners.ColorChannelListener;
 import ru.shurshavchiki.Listeners.ColorSpaceListener;
 import ru.shurshavchiki.Listeners.ActionListeners.FileButtonListener;
@@ -41,6 +42,8 @@ public class SettingPanel extends JPanel{
 	private AbstractAction gammaAssignButton;
 
 	private AbstractAction handleHistogramButton;
+
+	private AbstractAction handleScaleButton;
 
 	private JTextPane fileTitle;
 
@@ -113,13 +116,25 @@ public class SettingPanel extends JPanel{
 		createGammaAssign(editMenu);
 		editMenu.addSeparator();
 		createHistogram(editMenu);
+		createScale(editMenu);
 
 		disableImageButtons();
 		menuBar.add(editMenu);
 	}
 
+	private void createScale(JMenu editMenu){
+		handleScaleButton = new AbstractAction("Scale") {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				new ScaleFrame();
+			}
+		};
+
+		editMenu.add(handleScaleButton);
+	}
+
 	private void createHistogram(JMenu editMenu){
-		handleHistogramButton = new AbstractAction("Histogram") {
+		handleHistogramButton = new AbstractAction("Autocorrection") {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				new HistogramFrame();
@@ -231,12 +246,14 @@ public class SettingPanel extends JPanel{
 		gammaConvertButton.setEnabled(false);
 		gammaAssignButton.setEnabled(false);
 		handleHistogramButton.setEnabled(false);
+		handleScaleButton.setEnabled(false);
 	}
 
 	public void enableImageButtons(){
 		gammaConvertButton.setEnabled(true);
 		gammaAssignButton.setEnabled(true);
 		handleHistogramButton.setEnabled(true);
+		handleScaleButton.setEnabled(true);
 	}
 
 	public void setFileTitle(String title){
