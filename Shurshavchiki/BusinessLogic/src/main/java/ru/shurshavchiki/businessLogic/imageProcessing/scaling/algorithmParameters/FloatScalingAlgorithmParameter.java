@@ -11,9 +11,17 @@ public class FloatScalingAlgorithmParameter extends ScalingAlgorithmParameter {
     @Getter
     private float value;
 
-    public FloatScalingAlgorithmParameter(float lowerLimit, float upperLimit) {
+    public FloatScalingAlgorithmParameter(String name, float lowerLimit, float upperLimit) {
+        super(name);
         this.lowerLimit = lowerLimit;
         this.upperLimit = upperLimit;
+    }
+
+    public FloatScalingAlgorithmParameter(String name, float lowerLimit, float upperLimit, float value) {
+        super(name);
+        this.lowerLimit = lowerLimit;
+        this.upperLimit = upperLimit;
+        this.value = value;
     }
 
     public void setValue(float value) {
@@ -22,5 +30,14 @@ public class FloatScalingAlgorithmParameter extends ScalingAlgorithmParameter {
         }
 
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "FloatScalingAlgorithmParameter{" +
+                "lowerLimit=" + lowerLimit +
+                ", upperLimit=" + upperLimit +
+                ", value=" + value +
+                '}';
     }
 }

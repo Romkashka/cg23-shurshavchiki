@@ -26,11 +26,13 @@ public class NearestNeighbourScalingAlgorithm extends ScalingAlgorithmBase {
     protected RgbConvertable calculateColor(Point2D point, Window window) {
         double minDistance = Double.MAX_VALUE;
         RgbConvertable color = null;
-        for (PositionedPixel pixel: window.Pixels()) {
-            double currentDistance = Point2D.distance(point.getX(), point.getY(), pixel.coordinates().getX(), pixel.coordinates().getY());
-            if (currentDistance < minDistance) {
-                minDistance = currentDistance;
-                color = pixel.Color();
+        for (var row: window.Pixels()) {
+            for (PositionedPixel pixel: row) {
+                double currentDistance = Point2D.distance(point.getX(), point.getY(), pixel.coordinates().getX(), pixel.coordinates().getY());
+                if (currentDistance < minDistance) {
+                    minDistance = currentDistance;
+                    color = pixel.Color();
+                }
             }
         }
 
