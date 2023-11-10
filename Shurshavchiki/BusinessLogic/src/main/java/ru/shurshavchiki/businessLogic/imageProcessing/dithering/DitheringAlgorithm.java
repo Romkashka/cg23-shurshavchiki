@@ -9,4 +9,5 @@ public interface DitheringAlgorithm extends WithName {
     int getBitRateUpperBound();
     void setBitRate(int bitRate);
     int getBitRate();
+    boolean isInLineGamma();
 }

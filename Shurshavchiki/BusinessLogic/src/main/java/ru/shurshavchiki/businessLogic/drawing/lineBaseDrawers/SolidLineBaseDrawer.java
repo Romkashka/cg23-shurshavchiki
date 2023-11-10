@@ -1,6 +1,5 @@
 package ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers;
 
-import jdk.jfr.Percentage;
 import ru.shurshavchiki.businessLogic.drawing.models.FigureOverlap;
 import ru.shurshavchiki.businessLogic.drawing.models.PixelOverlap;
 
@@ -10,7 +9,7 @@ import java.util.*;
 import static java.lang.Math.*;
 
 public class SolidLineBaseDrawer implements LineBaseDrawer {
-    private final float PrecisionCoefficient = 71F;
+    private final float PrecisionCoefficient = 21F;
     private final float HalfOfCoeff = (int) (PrecisionCoefficient - 1F) / 2F;
     @Override
     public String getName() {

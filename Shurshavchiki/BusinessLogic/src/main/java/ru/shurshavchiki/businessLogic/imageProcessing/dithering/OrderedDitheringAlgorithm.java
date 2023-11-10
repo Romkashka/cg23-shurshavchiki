@@ -53,6 +53,11 @@ public class OrderedDitheringAlgorithm extends DitheringAlgorithmBase{
         return new PnmFile(header, pixels);
     }
 
+    @Override
+    public boolean isInLineGamma() {
+        return false;
+    }
+
     private int findClosest(int color){
         int step = (int) (256.f / (Math.pow(2, getBitRate()) - 1));
         if (color % step < step - (color % step))

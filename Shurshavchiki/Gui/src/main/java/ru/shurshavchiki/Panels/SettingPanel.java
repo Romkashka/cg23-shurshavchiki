@@ -78,7 +78,7 @@ public class SettingPanel extends JPanel{
 		saveAsMenuItem.setActionCommand("SaveAs");
 
 		JMenuItem exportMenuItem = new JMenuItem("Dither");
-		saveAsMenuItem.setActionCommand("Dither");
+		exportMenuItem.setActionCommand("Dither");
 
 		JMenuItem closeMenuItem = new JMenuItem("Close");
 		closeMenuItem.setActionCommand("Close");

@@ -45,7 +45,7 @@ public class ImageFrame extends JFrame {
         }
 
         var rand = new Random();
-        if (Math.abs(rand.nextLong()) % 10 == 4){
+        if (Math.abs(rand.nextLong()) % 5 == 4){
             setTitle("Shurshavchiki: Also try Draw.Me!");
         }else{
             setTitle("Shurshavchiki");

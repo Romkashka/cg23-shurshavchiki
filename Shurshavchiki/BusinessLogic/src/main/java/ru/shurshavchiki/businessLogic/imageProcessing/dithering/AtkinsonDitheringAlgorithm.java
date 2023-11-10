@@ -82,6 +82,11 @@ public class AtkinsonDitheringAlgorithm extends DitheringAlgorithmBase{
         return new PnmFile(header, newPixels);
     }
 
+    @Override
+    public boolean isInLineGamma() {
+        return true;
+    }
+
     private int findClosest(int color){
         int step = (int) (256.f / (Math.pow(2, getBitRate()) - 1));
         if (color % step < step - (color % step))
