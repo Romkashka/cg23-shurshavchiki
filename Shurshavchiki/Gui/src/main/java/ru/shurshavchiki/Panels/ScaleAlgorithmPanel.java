@@ -1,16 +1,13 @@
 package ru.shurshavchiki.Panels;
 
-import ru.shurshavchiki.Helpers.ChannelColorHelper;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
-import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
+import ru.shurshavchiki.Listeners.ChangeListeners.ScaleListener;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.FloatScalingAlgorithmParameter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.security.AlgorithmParameters;
-import java.util.Arrays;
-import java.util.List;
 
 public class ScaleAlgorithmPanel extends JPanel {
 
@@ -27,13 +24,33 @@ public class ScaleAlgorithmPanel extends JPanel {
 
 		var parameters = algorithm.getParametersToInit();
 		for (var parameter : parameters){
-			gridSetter.nextRow().alignLeft();
+			gridSetter.nextRow().alignCenter();
 			JTextPane parameterText = InputSetHelper.setJText();
 			parameterText.setText(parameter.getName());
 			parameterText.setVisible(true);
 			this.add(parameterText, gridSetter.get());
-			gridSetter.nextCell().alignCenter();
 
+			if (parameter instanceof FloatScalingAlgorithmParameter floatParameter){
+				SpinnerModel model = new SpinnerNumberModel(floatParameter.getValue(), floatParameter.getLowerLimit(), floatParameter.getUpperLimit(), (floatParameter.getUpperLimit() - floatParameter.getLowerLimit()) / 50);
+				JSpinner spinnerModel = new JSpinner(model);
+				spinnerModel.setPreferredSize(new Dimension(48, 28));
+				spinnerModel.addChangeListener(new ScaleListener(this, parameter.getName(), "float"));
+				spinnerModel.setOpaque(false);
+				spinnerModel.setVisible(true);
+				gridSetter.nextCell().alignCenter();
+				this.add(spinnerModel, gridSetter.get());
+			}
+
+//			else if (parameter instanceof )
+//				spinnerModel.addChangeListener(new ScaleListener(this, parameter.getName(), "int"));
 		}
+	}
+
+	public void setFloatParameterChange(String name, float value) {
+
+	}
+
+	public void setIntParameterChange(String name, float value) {
+
 	}
 }

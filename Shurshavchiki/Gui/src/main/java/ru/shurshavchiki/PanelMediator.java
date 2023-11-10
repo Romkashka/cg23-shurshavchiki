@@ -20,6 +20,8 @@ import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
 
 import javax.swing.*;
 
@@ -229,6 +231,14 @@ public class PanelMediator {
 				(float)oneToolPanel.getMainColor().getGreen()/255.f);
 		mainContext.setNewLine( new Line(start, end, oneToolPanel.getMainSize(), color, (float)oneToolPanel.getMainColor().getAlpha()/255.f));
 		drawingService.drawLine(mainContext);
+		drawingPanel.loadImage(mainContext.getShownDisplayable());
+	}
+
+	public void scaleImage(String algorithm, List<ScalingAlgorithmParameter> algorithmParameters, ScalingParameters parameters){
+		mainContext.setScalingAlgorithm(algorithm);
+		mainContext.initScalingAlgorithm(algorithmParameters);
+		mainContext.setScalingParameters(parameters);
+		imageProcessingService.scaleImage(mainContext);
 	}
 
 	public static PanelMediator getInstance() {
