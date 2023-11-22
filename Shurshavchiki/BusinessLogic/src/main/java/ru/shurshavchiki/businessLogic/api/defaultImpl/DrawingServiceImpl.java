@@ -19,7 +19,6 @@ public class DrawingServiceImpl implements DrawingService {
 
     @Override
     public void drawLine(@NonNull Context context) {
-        System.out.println("Api drawing service drawLine");
         UserProjectDataHolder dataHolder = extractDataHolder(context);
         Drawing drawing = drawingService.drawLine(dataHolder.getNewLine(), dataHolder.getLineDrawer());
         dataHolder.addDrawing(drawing);

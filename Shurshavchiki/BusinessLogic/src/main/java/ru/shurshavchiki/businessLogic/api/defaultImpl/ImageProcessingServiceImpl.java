@@ -66,6 +66,8 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
     @Override
     public void scaleImage(@NonNull Context context) {
         UserProjectDataHolder dataHolder = extractDataHolder(context);
+        dataHolder.setStartingDisplayable(dataHolder.getShownDisplayable());
+        dataHolderUpdateWizard.forceUpdateDataHolder(dataHolder);
         Displayable result = imageProcessingService.scaleImage(dataHolder.getDisplayableWithLinearGamma(), dataHolder.getScalingAlgorithm(), dataHolder.getScalingParameters());
         dataHolder.setDisplayableWithLinearGamma(result);
         dataHolderUpdateWizard.updateDisplayableWithDrawings(dataHolder);
