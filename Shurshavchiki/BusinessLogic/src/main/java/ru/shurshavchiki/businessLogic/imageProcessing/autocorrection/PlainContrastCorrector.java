@@ -69,7 +69,7 @@ public class PlainContrastCorrector implements ContrastCorrector {
             updatedValues[i] = calculateCorrectedValue(channelUnit.Values()[i], lowerLimit, upperLimit);
         }
 
-        return new  SingleChannelUnit(channelUnit.Channel(), updatedValues);
+        return new SingleChannelUnit(channelUnit.Channel(), updatedValues);
     }
 
     private float calculateCorrectedValue(float startValue, float lowerLimit, float upperLimit) {

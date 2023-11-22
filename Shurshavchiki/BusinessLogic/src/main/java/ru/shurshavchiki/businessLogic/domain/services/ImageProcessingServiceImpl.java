@@ -15,6 +15,7 @@ import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class ImageProcessingServiceImpl implements ImageProcessingService {
     @Override
@@ -50,19 +51,18 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         float lowerLimit = contrastCorrector.calculateLowerLimit(distributions);
         float upperLimit = contrastCorrector.calculateUpperLimit(distributions);
         List<SingleChannelUnit> updatedUnits = new ArrayList<>();
-        for (int i = 0; i < channelUnits.size(); i++) {
-            if (colorSpace.usedInAutocorrection().contains(channelUnits.get(i).Channel()) &&
-            distributions.stream().map(Histogram::ChannelName).toList().contains(channelUnits.get(i).Channel().name())) {
-                for (Histogram hist: distributions) {
-                    if (hist.ValueDistribution().stream().filter(value -> value > 0f).count() > 1)
-                        updatedUnits.add(contrastCorrector.correctContrast(channelUnits.get(i), lowerLimit, upperLimit));
-                    else {
-                        updatedUnits.add(channelUnits.get(i));
-                    }
+
+        for (var unit: channelUnits) {
+            if (colorSpace.usedInAutocorrection().contains(unit.Channel())) {
+                Optional<Histogram> current = distributions.stream().filter(d -> d.ChannelName().equals(unit.Channel().toString())).findAny();
+                if (current.isPresent() && current.get().ValueDistribution().stream().filter(value -> value > 0f).count() > 1)
+                    updatedUnits.add(contrastCorrector.correctContrast(unit, lowerLimit, upperLimit));
+                else {
+                    updatedUnits.add(unit);
                 }
             }
             else {
-                updatedUnits.add(channelUnits.get(i));
+                updatedUnits.add(unit);
             }
         }
 

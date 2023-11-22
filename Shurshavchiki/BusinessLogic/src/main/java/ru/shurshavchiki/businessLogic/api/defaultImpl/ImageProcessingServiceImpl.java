@@ -28,6 +28,8 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         UserProjectDataHolder sourceDataHolder = extractDataHolder(source);
         Context resultContext = new ServiceFactoryImpl().getBlankContext();
         UserProjectDataHolder destinationDataHolder = resultContext.getDataHolder();
+        sourceDataHolder.setStartingDisplayable(sourceDataHolder.getShownDisplayable());
+        dataHolderUpdateWizard.forceUpdateDataHolder(sourceDataHolder);
         if (sourceDataHolder.getDitheringAlgorithm().isInLineGamma()) {
             Displayable result = imageProcessingService.ditherImage(sourceDataHolder.getDitheringAlgorithm(), sourceDataHolder.getDisplayableWithLinearGamma());
             destinationDataHolder.setDisplayableWithLinearGamma(result);
