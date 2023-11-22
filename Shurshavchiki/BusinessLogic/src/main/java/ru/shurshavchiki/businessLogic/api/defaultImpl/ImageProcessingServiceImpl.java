@@ -69,6 +69,7 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         Displayable result = imageProcessingService.scaleImage(dataHolder.getDisplayableWithLinearGamma(), dataHolder.getScalingAlgorithm(), dataHolder.getScalingParameters());
         dataHolder.setDisplayableWithLinearGamma(result);
         dataHolderUpdateWizard.updateDisplayableWithDrawings(dataHolder);
+        dataHolder.setStartingDisplayable(dataHolder.getShownDisplayable());
         dataHolderUpdateWizard.forceUpdateDataHolder(dataHolder);
     }
 
