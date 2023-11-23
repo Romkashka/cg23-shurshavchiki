@@ -38,14 +38,14 @@ public class ImageCreateFrame extends JFrame {
         generateTypesBox.addActionListener(new CreateComboBoxListener(this, generateTypesBox));
         generateTypesBox.setPreferredSize(new Dimension(80, 30));
 
-        SpinnerModel modelWidth = new SpinnerNumberModel(1000, 1, 100000, 10);
+        SpinnerModel modelWidth = new SpinnerNumberModel(10, 1, 100000, 10);
         spinnerWidth = InputSetHelper.setJSpinner(modelWidth, "create width");
         mainWidthText = InputSetHelper.setJText();
         mainWidthText.setText("Width:");
         spinnerWidth.setVisible(true);
         mainWidthText.setVisible(true);
 
-        SpinnerModel modelHeight = new SpinnerNumberModel(500, 1, 100000, 10);
+        SpinnerModel modelHeight = new SpinnerNumberModel(10, 1, 100000, 10);
         spinnerHeight = InputSetHelper.setJSpinner(modelHeight, "create height");
         mainHeightText = InputSetHelper.setJText();
         mainHeightText.setText("Height:");

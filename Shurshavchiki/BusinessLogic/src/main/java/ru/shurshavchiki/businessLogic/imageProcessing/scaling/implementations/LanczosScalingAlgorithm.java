@@ -26,25 +26,25 @@ public class LanczosScalingAlgorithm extends ScalingAlgorithmBase {
 
     @Override
     protected RgbConvertable calculateColor(Point2D point, Window window) {
-        List<PositionedPixel> intermediatePixels = new ArrayList<>();
-        for (int i = 0; i < kernelRadius * 2; i++) {
-            RgbConvertable resultColor = new RgbPixel(0);
-            for (int j = 0; j < kernelRadius * 2; j++) {
+        double [][] mask = new double[window.Pixels().size()][window.Pixels().get(0).size()];
+        double sum = 0;
+
+        for (int i = 0; i < window.Pixels().size(); i++) {
+            for (int j = 0; j <  window.Pixels().get(0).size(); j++) {
                 PositionedPixel currentPixel = window.Pixels().get(i).get(j);
-                RgbConvertable tmp = calculateColor(currentPixel.Color(), (currentPixel.coordinates().getX() - point.getX()) / sourcePixelWidth);
-                resultColor = colorSum(resultColor, tmp);
+                mask[i][j] = calculateCoefficient((currentPixel.coordinates().getX() - point.getX()) / windowPixelWidth)
+                    * calculateCoefficient((currentPixel.coordinates().getY() - point.getY()) / windowPixelHeight);
+                sum += mask[i][j];
             }
-
-            resultColor = validateColor(resultColor);
-
-            intermediatePixels.add(new PositionedPixel(resultColor, new Point2D.Double(point.getX(), window.Pixels().get(i).get(0).coordinates().getY())));
         }
 
         RgbConvertable resultColor = new RgbPixel(0);
-        for (int i = 0; i < kernelRadius * 2; i++) {
-            PositionedPixel currentPixel = intermediatePixels.get(i);
-            RgbConvertable tmp = calculateColor(currentPixel.Color(), (currentPixel.coordinates().getY() - point.getY()) / sourcePixelHeight);
-            resultColor = colorSum(resultColor, tmp);
+
+        for (int i = 0; i < window.Pixels().size(); i++) {
+            for (int j = 0; j <  window.Pixels().get(0).size(); j++) {
+                PositionedPixel currentPixel = window.Pixels().get(i).get(j);
+                resultColor = colorSum(resultColor, currentPixel.Color(), mask[i][j] / sum);
+            }
         }
 
         resultColor = validateColor(resultColor);
@@ -52,29 +52,21 @@ public class LanczosScalingAlgorithm extends ScalingAlgorithmBase {
         return resultColor;
     }
 
-    private RgbConvertable calculateColor(RgbConvertable pixel, double dist) {
-        return new RgbPixel(
-                calculateChannel(pixel.FloatRed(), dist),
-                calculateChannel(pixel.FloatGreen(), dist),
-                calculateChannel(pixel.FloatBlue(), dist)
-        );
+    double calculateCoefficient(double dist) {
+            if (Math.abs(dist) < 0.0000001) {
+                return 1;
+            }
+            if (Math.abs(dist) > kernelRadius) {
+                return 0;
+            }
+
+            return (float) (kernelRadius * Math.sin(Math.PI * dist) * Math.sin(Math.PI * dist / kernelRadius) / (Math.PI * Math.PI * dist * dist));
     }
 
-    float calculateChannel(float value, double dist) {
-        if (Math.abs(dist) < 0.0000001) {
-            return value;
-        }
-        if (Math.abs(dist) > kernelRadius) {
-            return 0;
-        }
-
-        return (float) (value * kernelRadius * Math.sin(Math.PI * dist) * Math.sin(Math.PI * dist / kernelRadius) / (Math.PI * Math.PI * dist * dist));
-    }
-
-    RgbConvertable colorSum(RgbConvertable color1, RgbConvertable color2) {
-        return new RgbPixel(color1.FloatRed() + color2.FloatRed(),
-                color1.FloatGreen() + color2.FloatGreen(),
-                color1.FloatBlue() + color2.FloatBlue());
+    RgbConvertable colorSum(RgbConvertable color1, RgbConvertable color2, double coefficient) {
+        return new RgbPixel(color1.FloatRed() + (float) coefficient * color2.FloatRed(),
+                color1.FloatGreen() + (float) coefficient * color2.FloatGreen(),
+                color1.FloatBlue() + (float) coefficient * color2.FloatBlue());
     }
 
     RgbConvertable validateColor(RgbConvertable color) {

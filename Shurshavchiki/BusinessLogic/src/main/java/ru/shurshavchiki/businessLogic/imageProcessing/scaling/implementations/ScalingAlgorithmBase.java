@@ -14,11 +14,17 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.max;
+
 public abstract class ScalingAlgorithmBase implements ScalingAlgorithm {
     protected Displayable source;
     protected double kernelRadius;
     protected double sourcePixelWidth;
     protected double sourcePixelHeight;
+
+    protected double windowPixelWidth;
+
+    protected double windowPixelHeight;
 
     protected double leftWindowBound = 0;
     protected double rightWindowBound = 1;
@@ -30,8 +36,6 @@ public abstract class ScalingAlgorithmBase implements ScalingAlgorithm {
     protected int maxY;
     protected int minY = 0;
 
-    protected double currentWindowWidth;
-    protected double currentWindowHeight;
 
     @Override
     public Displayable scale(ScalingParameters scalingParameters, Displayable source) {
@@ -48,32 +52,23 @@ public abstract class ScalingAlgorithmBase implements ScalingAlgorithm {
         bottomWindowBound = 0;
         topWindowBound = 1;
 
-        if (scalingParameters.OffsetX() < 0.0) {
-            rightWindowBound += scalingParameters.OffsetX() * 2;
-        }
-        else if (scalingParameters.OffsetX() > 0.0) {
-            leftWindowBound += scalingParameters.OffsetX() * 2;
-        }
-
-        if (scalingParameters.OffsetY() > 0.0) {
-            bottomWindowBound += scalingParameters.OffsetY() * 2;
-        }
-        else if (scalingParameters.OffsetY() < 0.0) {
-            topWindowBound += scalingParameters.OffsetY() * 2;
-        }
+        rightWindowBound += scalingParameters.OffsetX();
+        leftWindowBound += scalingParameters.OffsetX();
+        bottomWindowBound += scalingParameters.OffsetY();
+        topWindowBound += scalingParameters.OffsetY();
 
         sourcePixelWidth = 1.0 / (double) (maxX - minX + 1);
         sourcePixelHeight = 1.0 / (double) (maxY - minY + 1);
 
-//        System.out.println("Source pixel width: " + sourcePixelWidth);
-//        System.out.println("Source pixel height: " + sourcePixelHeight);
+        windowPixelWidth = max(sourcePixelWidth, 1.0 / (double) (scalingParameters.NewWidth()));
+        windowPixelHeight = max(sourcePixelHeight, 1.0 / (double) (scalingParameters.NewHeight()));
+
         for (int y = 0; y < scalingParameters.NewHeight(); y++) {
             List<RgbConvertable> currentRow = new ArrayList<>();
             for (int x = 0; x < scalingParameters.NewWidth(); x++) {
                 Point2D coordinates = getCoordinates(new Point(x, y), scalingParameters.NewWidth(), scalingParameters.NewHeight());
                 Window window = createWindow(coordinates);
                 RgbPixel color = (RgbPixel) calculateColor(coordinates, window);
-//                System.out.println("x: " + x + ", y: " + y + ", Color=[" + color.FloatRed() + ", " + color.FloatGreen() + ", " + color.FloatBlue() + "]");
                 currentRow.add(color);
             }
 
@@ -87,18 +82,11 @@ public abstract class ScalingAlgorithmBase implements ScalingAlgorithm {
     }
 
     protected Window createWindow(Point2D windowCenter) {
-//        System.out.println("Window creation");
-//        System.out.println("center: " + windowCenter);
-        int rightBorder = (int) Math.floor(windowCenter.getX() / sourcePixelWidth + kernelRadius - 0.5);
-        int leftBorder = (int) Math.ceil(windowCenter.getX() / sourcePixelWidth - kernelRadius - 0.5);
+        int rightBorder = (int) Math.floor(windowCenter.getX() / sourcePixelWidth + kernelRadius * windowPixelWidth / sourcePixelWidth - 0.5);
+        int leftBorder = (int) Math.ceil(windowCenter.getX() / sourcePixelWidth - kernelRadius * windowPixelWidth / sourcePixelWidth - 0.5);
 
-        int upperBorder = (int) Math.floor(windowCenter.getY() / sourcePixelHeight + kernelRadius - 0.5);
-        int bottomBorder = (int) Math.ceil(windowCenter.getY() / sourcePixelHeight - kernelRadius - 0.5);
-
-//        System.out.println("r: " + rightBorder);
-//        System.out.println("l: " + leftBorder);
-//        System.out.println("u: " + upperBorder);
-//        System.out.println("b: " + bottomBorder);
+        int upperBorder = (int) Math.floor(windowCenter.getY() / sourcePixelHeight + kernelRadius * windowPixelHeight / sourcePixelHeight - 0.5);
+        int bottomBorder = (int) Math.ceil(windowCenter.getY() / sourcePixelHeight - kernelRadius * windowPixelHeight / sourcePixelHeight - 0.5);
 
         List<List<PositionedPixel>> windowPixels = new ArrayList<>();
 
@@ -106,17 +94,14 @@ public abstract class ScalingAlgorithmBase implements ScalingAlgorithm {
             List<PositionedPixel> row = new ArrayList<>();
             for (int x = leftBorder; x <= rightBorder; x++) {
                 PositionedPixel currentPixel = new PositionedPixel(
-                        source.getPixel(Math.max(minX, Math.min(maxX, x)), Math.max(minY, Math.min(maxY, y))),
+                        source.getPixel(max(minX, Math.min(maxX, x)), max(minY, Math.min(maxY, y))),
                         getPixelSourceCoordinates(x, y)
                 );
-//                System.out.println(currentPixel);
 
                 row.add(currentPixel);
             }
-//            System.out.println("EOL");
             windowPixels.add(row);
         }
-//        System.out.println("window size: " + windowPixels.size() * windowPixels.get(0).size());
 
         return new Window(windowPixels);
     }
