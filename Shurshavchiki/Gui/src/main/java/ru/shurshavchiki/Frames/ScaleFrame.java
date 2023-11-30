@@ -67,14 +67,14 @@ public class ScaleFrame extends JFrame {
         panel.createPanel(PanelMediator.getInstance().getScaleAlgorithm(algorithms.get(algorithmBox.getSelectedIndex())));
         panel.setVisible(true);
 
-        SpinnerModel modelWidth = new SpinnerNumberModel(100, 1, 100000, 10);
+        SpinnerModel modelWidth = new SpinnerNumberModel(500, 1, 100000, 10);
         spinnerWidth = InputSetHelper.setJSpinner(modelWidth, "create width");
         mainWidthText = InputSetHelper.setJText();
         mainWidthText.setText("New Width:");
         spinnerWidth.setVisible(true);
         mainWidthText.setVisible(true);
 
-        SpinnerModel modelHeight = new SpinnerNumberModel(100, 1, 100000, 10);
+        SpinnerModel modelHeight = new SpinnerNumberModel(500, 1, 100000, 10);
         spinnerHeight = InputSetHelper.setJSpinner(modelHeight, "create height");
         mainHeightText = InputSetHelper.setJText();
         mainHeightText.setText("New Height:");

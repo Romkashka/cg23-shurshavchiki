@@ -55,14 +55,16 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
     @Override
     public void autocorrectImage(@NonNull Context context) {
         UserProjectDataHolder dataHolder = extractDataHolder(context);
-        List<SingleChannelUnit> channelUnits = fileService.splitToChannels(dataHolder.getShownDisplayable(), dataHolder.getColorSpaceFactory());
+        List<SingleChannelUnit> channelUnits = fileService.splitToChannels(dataHolder.getDisplayableWithDrawings(), dataHolder.getColorSpaceFactory());
         channelUnits = imageProcessingService.autocorrectImage(channelUnits,
                 dataHolder.getColorSpaceFactory().getColorSpace(),
                 dataHolder.getHistograms(),
                 dataHolder.getContrastCorrector());
-        Displayable result = fileService.concatenateChannelUnits(dataHolder.getShownDisplayable().getHeader(), channelUnits, dataHolder.getColorSpaceFactory());
-        dataHolder.setStartingDisplayable(result);
-        dataHolderUpdateWizard.updateDisplayableWithFilters(dataHolder);
+        Displayable result = fileService.concatenateChannelUnits(dataHolder.getDisplayableWithDrawings().getHeader(), channelUnits, dataHolder.getColorSpaceFactory());
+        dataHolder.setDisplayableWithDrawings(result);
+        dataHolderUpdateWizard.updateDisplayableWithDrawings(dataHolder);
+        dataHolder.setStartingDisplayable(dataHolder.getShownDisplayable());
+        dataHolderUpdateWizard.forceUpdateDataHolder(dataHolder);
     }
 
     @Override

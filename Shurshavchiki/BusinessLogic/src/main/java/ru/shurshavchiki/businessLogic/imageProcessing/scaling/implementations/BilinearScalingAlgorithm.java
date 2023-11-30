@@ -28,23 +28,27 @@ public class BilinearScalingAlgorithm extends ScalingAlgorithmBase {
 
     @Override
     protected RgbConvertable calculateColor(Point2D point, Window window) {
-        double [][] mask = new double[window.Pixels().size()][window.Pixels().get(0).size()];
+        int windowHeight = window.Pixels().size();
+        int windowWidth = window.Pixels().get(0).size();
+        double [][] mask = new double[windowHeight][windowWidth];
         double sum = 0;
-        for (int i = 0; i < window.Pixels().size(); i++) {
-            for (int j = 0; j <  window.Pixels().get(0).size(); j++) {
+        for (int i = 0; i < windowHeight; i++) {
+            for (int j = 0; j < windowWidth; j++) {
                 PositionedPixel currentPixel = window.Pixels().get(i).get(j);
-                PositionedPixel currentPixelX = window.Pixels().get(i).get(window.Pixels().get(0).size() - j - 1);
-                PositionedPixel currentPixelY = window.Pixels().get(window.Pixels().size() - i - 1).get(j);
-                mask[i][j] = calculateCoefficient(abs((currentPixel.coordinates().getX() - point.getX()) / windowPixelWidth), abs((currentPixelX.coordinates().getX() - point.getX()) / windowPixelWidth))
-                        * calculateCoefficient(abs((currentPixel.coordinates().getY() - point.getY()) / windowPixelHeight), abs((currentPixelY.coordinates().getY() - point.getY()) / windowPixelHeight));
+                PositionedPixel currentPixelX = window.Pixels().get(i).get(windowWidth - j - 1);
+                PositionedPixel currentPixelY = window.Pixels().get(windowHeight - i - 1).get(j);
+//                mask[i][j] = calculateCoefficient(abs((currentPixel.coordinates().getX() - point.getX()) / windowPixelWidth), abs((currentPixelX.coordinates().getX() - point.getX()) / windowPixelWidth))
+//                        * calculateCoefficient(abs((currentPixel.coordinates().getY() - point.getY()) / windowPixelHeight), abs((currentPixelY.coordinates().getY() - point.getY()) / windowPixelHeight));
+                mask[i][j] = calculateWeight(abs(currentPixel.coordinates().getX() - point.getX()), windowPixelHeight * (windowHeight) / 2.0) *
+                        calculateWeight(abs(currentPixel.coordinates().getY() - point.getY()), windowPixelWidth * (windowWidth) / 2.0);
                 sum += mask[i][j];
             }
         }
 
         RgbConvertable resultColor = new RgbPixel(0);
 
-        for (int i = 0; i < window.Pixels().size(); i++) {
-            for (int j = 0; j <  window.Pixels().get(0).size(); j++) {
+        for (int i = 0; i < windowHeight; i++) {
+            for (int j = 0; j < windowWidth; j++) {
                 PositionedPixel currentPixel = window.Pixels().get(i).get(j);
                 resultColor = colorSum(resultColor, currentPixel.Color(), mask[i][j] / sum);
             }
@@ -56,10 +60,14 @@ public class BilinearScalingAlgorithm extends ScalingAlgorithmBase {
     }
 
     protected double calculateCoefficient(double dist1, double dist2) {
-        if ((dist1 + dist2) == 0)
+        if ((dist1 + dist2) < 0.00001)
             return 0;
 
         return (float) (abs(dist2) / (dist1 + dist2));
+    }
+
+    protected double calculateWeight(double dist, double radius) {
+        return (radius - dist) / radius;
     }
 
     protected RgbConvertable colorSum(RgbConvertable color1, RgbConvertable color2, double coefficient) {

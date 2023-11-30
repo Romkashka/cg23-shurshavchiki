@@ -11,7 +11,8 @@ public class ScalingAlgorithmRepository extends ImplementationRepositoryBase<Sca
                 new NearestNeighbourScalingAlgorithm(),
                 new BilinearScalingAlgorithm(),
                 new LanczosScalingAlgorithm(),
-                new BCSplinesScalingAlgorithm()
+                new BCSplinesScalingAlgorithm(),
+                new BilinearSimpleScalingAlgorithm()
         ));
     }
 }
