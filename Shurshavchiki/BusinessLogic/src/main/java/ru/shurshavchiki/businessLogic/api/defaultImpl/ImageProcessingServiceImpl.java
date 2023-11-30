@@ -62,7 +62,7 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
                 dataHolder.getContrastCorrector());
         Displayable result = fileService.concatenateChannelUnits(dataHolder.getDisplayableWithDrawings().getHeader(), channelUnits, dataHolder.getColorSpaceFactory());
         dataHolder.setDisplayableWithDrawings(result);
-        dataHolderUpdateWizard.updateDisplayableWithDrawings(dataHolder);
+        dataHolderUpdateWizard.updateShownDisplayable(dataHolder);
         dataHolder.setStartingDisplayable(dataHolder.getShownDisplayable());
         dataHolderUpdateWizard.forceUpdateDataHolder(dataHolder);
     }
