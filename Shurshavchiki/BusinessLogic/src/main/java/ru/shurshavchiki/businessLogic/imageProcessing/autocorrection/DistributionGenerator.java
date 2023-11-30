@@ -10,7 +10,7 @@ public class DistributionGenerator {
         Arrays.fill(result, 0);
 
         for (float value: values) {
-            result[(int) (value * 255f)]++;
+            result[Math.round(value * 255f)]++;
         }
 
         return Arrays.asList(result);
