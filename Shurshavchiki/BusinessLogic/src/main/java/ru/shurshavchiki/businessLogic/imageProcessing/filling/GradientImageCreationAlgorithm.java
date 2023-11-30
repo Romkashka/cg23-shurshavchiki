@@ -19,10 +19,16 @@ public class GradientImageCreationAlgorithm implements ImageCreationAlgorithm {
     public Displayable create(int height, int width) {
         Header header = new Header("P6", width, height, 255);
 
+        double colorValueShift = 1.0 / (double) (width - 1);
+        double currentColorValue = 0;
+
         List<RgbConvertable> template = new ArrayList<>();
         for (int i = 0; i < width; i++) {
-            template.add(new RgbPixel((float) i / (float) (width - 1)));
+            template.add(new RgbPixel((float) currentColorValue));
+            currentColorValue += colorValueShift;
         }
+
+        System.out.println(currentColorValue - colorValueShift);
 
         List<List<RgbConvertable>> pixels = new ArrayList<>();
         for (int i = 0; i < height; i++) {
