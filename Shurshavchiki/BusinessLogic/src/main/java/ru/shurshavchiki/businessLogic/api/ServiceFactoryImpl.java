@@ -19,7 +19,7 @@ public class ServiceFactoryImpl implements ServicesFactory {
         imageProcessingService = new ImageProcessingServiceImpl();
         drawingService = new DrawingServiceImpl();
 
-        dataHolderUpdateWizard = new DataHolderUpdateWizard(fileService, drawingService);
+        dataHolderUpdateWizard = new DataHolderUpdateWizard(fileService, drawingService, imageProcessingService);
     }
 
 

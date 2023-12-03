@@ -1,18 +1,17 @@
 package ru.shurshavchiki.businessLogic.api.defaultImpl;
 
+import lombok.AllArgsConstructor;
+import ru.shurshavchiki.businessLogic.domain.services.ImageProcessingService;
 import ru.shurshavchiki.businessLogic.api.UserProjectDataHolder;
 import ru.shurshavchiki.businessLogic.domain.services.DrawingService;
 import ru.shurshavchiki.businessLogic.domain.services.FileService;
 import ru.shurshavchiki.businessLogic.exceptions.DataHolderUpdateException;
 
+@AllArgsConstructor
 public class DataHolderUpdateWizard {
     private final FileService fileService;
     private final DrawingService drawingService;
-
-    public DataHolderUpdateWizard(FileService fileService, DrawingService drawingService) {
-        this.fileService = fileService;
-        this.drawingService = drawingService;
-    }
+    private final ImageProcessingService imageProcessingService;
 
     public void forceUpdateDataHolder(UserProjectDataHolder dataHolder) {
         discardAllImages(dataHolder);
@@ -20,12 +19,12 @@ public class DataHolderUpdateWizard {
         updateShownDisplayable(dataHolder);
     }
 
-    public void updateDisplayableWithFilters(UserProjectDataHolder dataHolder) {
+    public void updateDisplayableWithColorSpaceAndChannels(UserProjectDataHolder dataHolder) {
         if (dataHolder.getStartingDisplayable() == null) {
             throw DataHolderUpdateException.NoImageToUpdate();
         }
 
-        dataHolder.setDisplayableWithFilters(fileService.applyColorFilters(dataHolder.getStartingDisplayable(),
+        dataHolder.setDisplayableWithColorSpaceAndChannels(fileService.applyColorFilters(dataHolder.getStartingDisplayable(),
                 dataHolder.getColorSpaceFactory().getColorSpaceConverter(),
                 dataHolder.getChannelChooser()));
         dataHolder.setColorSpaceChanged(false);
@@ -34,12 +33,12 @@ public class DataHolderUpdateWizard {
     }
 
     public void updateDisplayableWithLinearGamma(UserProjectDataHolder dataHolder) {
-        if (dataHolder.getDisplayableWithFilters() == null) {
-            updateDisplayableWithFilters(dataHolder);
+        if (dataHolder.getDisplayableWithColorSpaceAndChannels() == null) {
+            updateDisplayableWithColorSpaceAndChannels(dataHolder);
         }
 
         dataHolder.setDisplayableWithLinearGamma(
-                fileService.useGamma(dataHolder.getDisplayableWithFilters(), dataHolder.getInputGammaConverter()));
+                fileService.useGamma(dataHolder.getDisplayableWithColorSpaceAndChannels(), dataHolder.getInputGammaConverter()));
 
         updateDisplayableWithDrawings(dataHolder);
     }
@@ -59,7 +58,21 @@ public class DataHolderUpdateWizard {
                 drawingService.mergeDrawings(dataHolder.getDisplayableWithDrawings(), dataHolder.getDrawings()));
 
         dataHolder.deleteDrawing(0);
-//        updateDisplayableWithFilters(dataHolder);
+        updateShownDisplayable(dataHolder);
+    }
+
+    public void updateDisplayableWithFilters(UserProjectDataHolder dataHolder) {
+        if (dataHolder.getDisplayableWithDrawings() == null) {
+            updateDisplayableWithDrawings(dataHolder);
+        }
+
+        if (dataHolder.getImageFilter() == null) {
+            dataHolder.setDisplayableWithFilters(dataHolder.getDisplayableWithDrawings());
+        }
+        else {
+            dataHolder.setDisplayableWithFilters(imageProcessingService.applyFilter(dataHolder.getDisplayableWithDrawings(), dataHolder.getImageFilter()));
+        }
+
         updateShownDisplayable(dataHolder);
     }
 
@@ -73,7 +86,7 @@ public class DataHolderUpdateWizard {
     }
 
     private void discardAllImages(UserProjectDataHolder dataHolder) {
-        dataHolder.setDisplayableWithFilters(null);
+        dataHolder.setDisplayableWithColorSpaceAndChannels(null);
         dataHolder.setDisplayableWithLinearGamma(null);
         dataHolder.setDisplayableWithDrawings(null);
         dataHolder.setShownDisplayable(null);

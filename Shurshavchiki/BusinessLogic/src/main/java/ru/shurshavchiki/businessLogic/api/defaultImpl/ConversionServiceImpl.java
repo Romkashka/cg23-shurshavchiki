@@ -39,7 +39,7 @@ public class ConversionServiceImpl implements ConversionService {
     }
 
     private void applyColorFilters(UserProjectDataHolder dataHolder) {
-        dataHolderUpdateWizard.updateDisplayableWithFilters(dataHolder);
+        dataHolderUpdateWizard.updateDisplayableWithColorSpaceAndChannels(dataHolder);
     }
 
     private void applyGamma(@NonNull UserProjectDataHolder dataHolder) {

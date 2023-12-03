@@ -3,7 +3,6 @@ package ru.shurshavchiki;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.security.AlgorithmParameters;
 import java.util.List;
 
 import lombok.Getter;
@@ -21,7 +20,7 @@ import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 
 import javax.swing.*;
 
@@ -234,7 +233,7 @@ public class PanelMediator {
 		drawingPanel.loadImage(mainContext.getShownDisplayable());
 	}
 
-	public void scaleImage(String algorithm, List<ScalingAlgorithmParameter> algorithmParameters, ScalingParameters parameters){
+	public void scaleImage(String algorithm, List<AlgorithmParameter> algorithmParameters, ScalingParameters parameters){
 		mainContext.setScalingAlgorithm(algorithm);
 		mainContext.initScalingAlgorithm(algorithmParameters);
 		mainContext.setScalingParameters(parameters);

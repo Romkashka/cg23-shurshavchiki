@@ -2,11 +2,10 @@ package ru.shurshavchiki.businessLogic.imageProcessing.scaling.implementations;
 
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.FloatScalingAlgorithmParameter;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.FloatAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BCSplinesScalingAlgorithm extends ScalingAlgorithmBase {
@@ -21,24 +20,24 @@ public class BCSplinesScalingAlgorithm extends ScalingAlgorithmBase {
     }
 
     @Override
-    public void init(List<ScalingAlgorithmParameter> parameters) {
+    public void init(List<AlgorithmParameter> parameters) {
         kernelRadius = 2.5;
         for (var parameter : parameters){
             if (parameter.getName().equals("B")){
-                if (parameter instanceof FloatScalingAlgorithmParameter floatParameter)
+                if (parameter instanceof FloatAlgorithmParameter floatParameter)
                     parameterB = floatParameter.getValue();
             }
             if (parameter.getName().equals("C")){
-                if (parameter instanceof FloatScalingAlgorithmParameter floatParameter)
+                if (parameter instanceof FloatAlgorithmParameter floatParameter)
                     parameterC = floatParameter.getValue();
             }
         }
     }
 
     @Override
-    public List<ScalingAlgorithmParameter> getParametersToInit() {
-        return List.of(new FloatScalingAlgorithmParameter("B", 0, 1, 0),
-                new FloatScalingAlgorithmParameter("C", 0, 1, 0.5f));
+    public List<AlgorithmParameter> getParametersToInit() {
+        return List.of(new FloatAlgorithmParameter("B", 0, 1, 0),
+                new FloatAlgorithmParameter("C", 0, 1, 0.5f));
     }
 
     @Override

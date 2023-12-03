@@ -2,10 +2,9 @@ package ru.shurshavchiki.businessLogic.imageProcessing.scaling.implementations;
 
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.abs;
@@ -17,12 +16,12 @@ public class BilinearScalingAlgorithm extends ScalingAlgorithmBase {
     }
 
     @Override
-    public void init(List<ScalingAlgorithmParameter> parameters) {
+    public void init(List<AlgorithmParameter> parameters) {
         kernelRadius = 1;
     }
 
     @Override
-    public List<ScalingAlgorithmParameter> getParametersToInit() {
+    public List<AlgorithmParameter> getParametersToInit() {
         return List.of();
     }
 

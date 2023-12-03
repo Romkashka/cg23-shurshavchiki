@@ -21,6 +21,8 @@ import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorit
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithmRepository;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilterRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
@@ -39,9 +41,10 @@ public interface UserProjectDataHolder {
     boolean isColorSpaceChanged();
     ChannelChooser getChannelChooser();
     Displayable getStartingDisplayable();
-    Displayable getDisplayableWithFilters();
+    Displayable getDisplayableWithColorSpaceAndChannels();
     Displayable getDisplayableWithLinearGamma();
     Displayable getDisplayableWithDrawings();
+    Displayable getDisplayableWithFilters();
     ColorSpaceConverter getStartingColorSpaceConverter();
     ChannelChooser getStartingChannelChooser();
     ColorSpaceRepository getColorSpaceRepository();
@@ -71,6 +74,9 @@ public interface UserProjectDataHolder {
     ScalingParameters getScalingParameters();
     ScalingAlgorithmRepository getScalingAlgorithmRepository();
 
+    ImageFilter getImageFilter();
+    ImageFilterRepository getImageFilterRepository();
+
 
     void setFile(File file);
     void setShownDisplayable(Displayable displayable);
@@ -81,9 +87,10 @@ public interface UserProjectDataHolder {
     void setColorSpaceChanged(boolean value);
     void setChannelChooser(ChannelChooser channelChooser);
     void setStartingDisplayable(Displayable displayable);
-    void setDisplayableWithFilters(Displayable displayable);
+    void setDisplayableWithColorSpaceAndChannels(Displayable displayable);
     void setDisplayableWithLinearGamma(Displayable displayable);
     void setDisplayableWithDrawings(Displayable displayable);
+    void setDisplayableWithFilters(Displayable displayable);
     void setStartingColorSpaceConverter(ColorSpaceConverter converter);
     void setStartingChannelChooser(ChannelChooser channelChooser);
 
@@ -105,4 +112,7 @@ public interface UserProjectDataHolder {
 
     void setScalingAlgorithm(ScalingAlgorithm scalingAlgorithm);
     void setScalingParameters(ScalingParameters scalingParameters);
+
+    void setImageFilter(ImageFilter filter);
+
 }

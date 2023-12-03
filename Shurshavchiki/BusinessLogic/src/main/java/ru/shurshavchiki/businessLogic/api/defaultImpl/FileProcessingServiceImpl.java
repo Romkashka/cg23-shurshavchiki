@@ -43,7 +43,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
                         userProjectDataHolder.getChannelChooser(),
                         userProjectDataHolder.getInputGammaConverter()
                 )));
-        userProjectDataHolder.setDisplayableWithFilters(userProjectDataHolder.getStartingDisplayable());
+        userProjectDataHolder.setDisplayableWithColorSpaceAndChannels(userProjectDataHolder.getStartingDisplayable());
         dataHolderUpdateWizard.updateDisplayableWithLinearGamma(userProjectDataHolder);
     }
 

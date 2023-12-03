@@ -6,7 +6,7 @@ import ru.shurshavchiki.businessLogic.domain.models.Header;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -23,10 +23,10 @@ public class NearestNeighbourScalingPrototype implements ScalingAlgorithm {
     double resultPixelHeight;
 
     @Override
-    public void init(List<ScalingAlgorithmParameter> parameters) {}
+    public void init(List<AlgorithmParameter> parameters) {}
 
     @Override
-    public List<ScalingAlgorithmParameter> getParametersToInit() {
+    public List<AlgorithmParameter> getParametersToInit() {
         return new ArrayList<>();
     }
 

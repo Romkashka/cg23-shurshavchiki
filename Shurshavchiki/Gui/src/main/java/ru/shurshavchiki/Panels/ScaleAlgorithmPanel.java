@@ -3,8 +3,8 @@ package ru.shurshavchiki.Panels;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.FloatScalingAlgorithmParameter;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.FloatAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class ScaleAlgorithmPanel extends JPanel {
 
-	private List<ScalingAlgorithmParameter> algorithmParameters;
+	private List<AlgorithmParameter> algorithmParameters;
 
 	private List<JSpinner> spinners;
 
@@ -23,9 +23,9 @@ public class ScaleAlgorithmPanel extends JPanel {
 		setSize(new Dimension(300, 100));
 	}
 
-	public List<ScalingAlgorithmParameter> getParameterValues(){
+	public List<AlgorithmParameter> getParameterValues(){
 		for (int i = 0; i < algorithmParameters.size(); ++i){
-			if (algorithmParameters.get(i) instanceof FloatScalingAlgorithmParameter parameter){
+			if (algorithmParameters.get(i) instanceof FloatAlgorithmParameter parameter){
 				System.out.println(((Double)spinners.get(i).getValue()).floatValue());
 				parameter.setValue(((Double)spinners.get(i).getValue()).floatValue());
 			}
@@ -48,7 +48,7 @@ public class ScaleAlgorithmPanel extends JPanel {
 			parameterText.setVisible(true);
 			this.add(parameterText, gridSetter.get());
 
-			if (parameter instanceof FloatScalingAlgorithmParameter floatParameter){
+			if (parameter instanceof FloatAlgorithmParameter floatParameter){
 				SpinnerModel model = new SpinnerNumberModel(floatParameter.getValue(), floatParameter.getLowerLimit(), floatParameter.getUpperLimit(), (floatParameter.getUpperLimit() - floatParameter.getLowerLimit()) / 50.f);
 				JSpinner spinnerModel = new JSpinner(model);
 				spinnerModel.setPreferredSize(new Dimension(48, 28));

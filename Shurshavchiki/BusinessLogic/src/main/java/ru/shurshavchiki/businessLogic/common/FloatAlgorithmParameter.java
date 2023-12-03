@@ -1,9 +1,9 @@
-package ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters;
+package ru.shurshavchiki.businessLogic.common;
 
 import lombok.Getter;
 import ru.shurshavchiki.businessLogic.exceptions.ScalingException;
 
-public class FloatScalingAlgorithmParameter extends ScalingAlgorithmParameter {
+public class FloatAlgorithmParameter extends AlgorithmParameter {
     @Getter
     private final float lowerLimit;
     @Getter
@@ -11,14 +11,14 @@ public class FloatScalingAlgorithmParameter extends ScalingAlgorithmParameter {
     @Getter
     private float value;
 
-    public FloatScalingAlgorithmParameter(String name, float lowerLimit, float upperLimit) {
+    public FloatAlgorithmParameter(String name, float lowerLimit, float upperLimit) {
         super(name);
         this.lowerLimit = lowerLimit;
         this.upperLimit = upperLimit;
         this.value = lowerLimit;
     }
 
-    public FloatScalingAlgorithmParameter(String name, float lowerLimit, float upperLimit, float value) {
+    public FloatAlgorithmParameter(String name, float lowerLimit, float upperLimit, float value) {
         super(name);
         this.lowerLimit = lowerLimit;
         this.upperLimit = upperLimit;

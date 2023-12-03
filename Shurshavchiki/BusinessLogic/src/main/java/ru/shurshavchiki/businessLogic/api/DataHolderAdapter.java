@@ -8,14 +8,13 @@ import ru.shurshavchiki.businessLogic.drawing.lineBaseDrawers.LineBaseDrawer;
 import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
-import ru.shurshavchiki.businessLogic.exceptions.DitheringException;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.PlainContrastCorrector;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 
 import java.io.File;
 import java.util.List;
@@ -187,7 +186,7 @@ public class DataHolderAdapter implements Context {
     }
 
     @Override
-    public void initScalingAlgorithm(List<ScalingAlgorithmParameter> parameters) {
+    public void initScalingAlgorithm(List<AlgorithmParameter> parameters) {
         dataHolder.getScalingAlgorithm().init(parameters);
     }
 
@@ -195,6 +194,16 @@ public class DataHolderAdapter implements Context {
     @Override
     public void setScalingParameters(ScalingParameters scalingParameters) {
         dataHolder.setScalingParameters(scalingParameters);
+    }
+
+    @Override
+    public void setImageFilter(String filterName) {
+        dataHolder.setImageFilter(dataHolder.getImageFilterRepository().getImplementationByName(filterName));
+    }
+
+    @Override
+    public void initImageFilter(List<AlgorithmParameter> parameters) {
+        dataHolder.getImageFilter().init(parameters);
     }
 
     private Channel getChannelFromName(String channelName) {

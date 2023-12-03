@@ -8,7 +8,7 @@ import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.algorithmParameters.ScalingAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 
 import java.io.File;
 import java.util.List;
@@ -51,6 +51,9 @@ public interface Context {
 
     ScalingAlgorithm getScalingAlgorithm();
     void setScalingAlgorithm(String algorithmName);
-    void initScalingAlgorithm(List<ScalingAlgorithmParameter> parameters);
+    void initScalingAlgorithm(List<AlgorithmParameter> parameters);
     void setScalingParameters(ScalingParameters scalingParameters);
+
+    void setImageFilter(String filterName);
+    void initImageFilter(List<AlgorithmParameter> parameters);
 }

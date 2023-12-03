@@ -27,6 +27,8 @@ import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorit
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithmRepository;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilterRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithmRepository;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
@@ -42,11 +44,13 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     @Getter @Setter
     private Displayable startingDisplayable;
     @Getter @Setter
-    private Displayable displayableWithFilters;
+    private Displayable displayableWithColorSpaceAndChannels;
     @Getter @Setter
     private Displayable displayableWithLinearGamma;
     @Getter @Setter
     private Displayable displayableWithDrawings;
+    @Getter @Setter
+    private Displayable displayableWithFilters;
     @Getter @Setter
     private Displayable shownDisplayable;
 
@@ -110,6 +114,11 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
     @Getter @Setter
     private ScalingParameters scalingParameters;
 
+    @Getter
+    private final ImageFilterRepository imageFilterRepository;
+    @Getter @Setter
+    private ImageFilter imageFilter;
+
     public UserProjectDataHolderImpl() {
         this.gammaConvertersRegistry = new PlainGammaConvertersRegistry();
         this.colorSpaceRepository = new ColorSpaceRepository();
@@ -118,6 +127,7 @@ public class UserProjectDataHolderImpl implements UserProjectDataHolder {
         this.lineBaseRepository = new LineBaseRepository();
         this.lineTipRepository = new LineTipRepository();
         this.scalingAlgorithmRepository = new ScalingAlgorithmRepository();
+        this.imageFilterRepository = new ImageFilterRepository();
 
         this.lineDrawer = new SimpleLineDrawer();
         setLineBaseDrawer(lineBaseRepository.getImplementationByName(lineBaseRepository.getAllImplementations().get(0)));

@@ -10,6 +10,7 @@ import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.services.FileService;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 
+import java.nio.file.ClosedDirectoryStreamException;
 import java.util.List;
 
 public class ImageProcessingServiceImpl implements ImageProcessingService {
@@ -77,6 +78,12 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         dataHolderUpdateWizard.updateDisplayableWithDrawings(dataHolder);
         dataHolder.setStartingDisplayable(dataHolder.getShownDisplayable());
         dataHolderUpdateWizard.forceUpdateDataHolder(dataHolder);
+    }
+
+    @Override
+    public void applyFilterToImage(@NonNull Context context) {
+        UserProjectDataHolder dataHolder = extractDataHolder(context);
+        Displayable result = imageProcessingService.applyFilter(dataHolder.getDisplayableWithDrawings(), dataHolder.getImageFilter());
     }
 
     private UserProjectDataHolder extractDataHolder(Context context) {

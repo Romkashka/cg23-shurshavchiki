@@ -9,6 +9,7 @@ import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Distributio
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.filling.ImageCreationAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 
@@ -71,5 +72,9 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
 
     public Displayable scaleImage(Displayable source, ScalingAlgorithm scalingAlgorithm, ScalingParameters scalingParameters) {
         return scalingAlgorithm.scale(scalingParameters, source);
+    }
+
+    public Displayable applyFilter(Displayable source, ImageFilter filter) {
+        return filter.applyFilter(source);
     }
 }
