@@ -1,16 +1,15 @@
 package ru.shurshavchiki.businessLogic.colorSpace.converters;
 
-import ru.shurshavchiki.businessLogic.models.RgbConvertable;
-import ru.shurshavchiki.businessLogic.models.RgbPixel;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
 public class PredicateBasedConverter implements ColorSpaceConverter {
-    public Function<Float[], Float[]> toRgb;
-    public Function<Float[], Float[]> fromRgb;
+    public final Function<Float[], Float[]> toRgb;
+    public final Function<Float[], Float[]> fromRgb;
 
     public PredicateBasedConverter(Function<Float[], Float[]> toRgb, Function<Float[], Float[]> fromRgb) {
         this.toRgb = toRgb;

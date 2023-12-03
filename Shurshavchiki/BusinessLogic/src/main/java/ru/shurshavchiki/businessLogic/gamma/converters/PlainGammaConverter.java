@@ -8,7 +8,7 @@ import static java.lang.Math.pow;
 @AllArgsConstructor
 public class PlainGammaConverter implements GammaConverter {
     @Getter
-    private float gamma;
+    private Float gamma;
     @Override
     public float useGamma(float value) {
         return (float) pow(value, gamma);

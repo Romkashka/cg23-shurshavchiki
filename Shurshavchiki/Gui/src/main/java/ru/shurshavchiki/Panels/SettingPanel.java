@@ -2,11 +2,12 @@ package ru.shurshavchiki.Panels;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Frames.GammaInputFrame;
+import ru.shurshavchiki.Frames.HistogramFrame;
+import ru.shurshavchiki.Frames.ScaleFrame;
 import ru.shurshavchiki.Listeners.ColorChannelListener;
 import ru.shurshavchiki.Listeners.ColorSpaceListener;
-import ru.shurshavchiki.Listeners.FileButtonListener;
+import ru.shurshavchiki.Listeners.ActionListeners.FileButtonListener;
 import ru.shurshavchiki.PanelMediator;
 
 import java.awt.*;
@@ -40,6 +41,12 @@ public class SettingPanel extends JPanel{
 
 	private AbstractAction gammaAssignButton;
 
+	private AbstractAction handleHistogramButton;
+
+	private AbstractAction handleScaleButton;
+
+	private JTextPane fileTitle;
+
 	@Setter
 	private float fileGamma = 0;
 
@@ -51,6 +58,9 @@ public class SettingPanel extends JPanel{
 	public SettingPanel(){
 		configureMenuFile();
 		configureMenuEdit();
+		fileTitle = new JTextPane();
+		fileTitle.setEnabled(false);
+		menuBar.add(fileTitle);
 	}
 
 	private void configureMenuFile(){
@@ -67,6 +77,9 @@ public class SettingPanel extends JPanel{
 		JMenuItem saveAsMenuItem = new JMenuItem("Save As");
 		saveAsMenuItem.setActionCommand("SaveAs");
 
+		JMenuItem exportMenuItem = new JMenuItem("Dither");
+		exportMenuItem.setActionCommand("Dither");
+
 		JMenuItem closeMenuItem = new JMenuItem("Close");
 		closeMenuItem.setActionCommand("Close");
 
@@ -77,6 +90,7 @@ public class SettingPanel extends JPanel{
 		openMenuItem.addActionListener(new FileButtonListener());
 		saveMenuItem.addActionListener(new FileButtonListener());
 		saveAsMenuItem.addActionListener(new FileButtonListener());
+		exportMenuItem.addActionListener(new FileButtonListener());
 		closeMenuItem.addActionListener(new FileButtonListener());
 		exitMenuItem.addActionListener(new FileButtonListener());
 
@@ -85,6 +99,7 @@ public class SettingPanel extends JPanel{
 		fileMenu.addSeparator();
 		fileMenu.add(saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
+		fileMenu.add(exportMenuItem);
 		fileMenu.add(closeMenuItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitMenuItem);
@@ -99,9 +114,34 @@ public class SettingPanel extends JPanel{
 		editMenu.addSeparator();
 		createGammaConvert(editMenu);
 		createGammaAssign(editMenu);
+		editMenu.addSeparator();
+		createHistogram(editMenu);
+		createScale(editMenu);
 
-		disableGammaButtons();
+		disableImageButtons();
 		menuBar.add(editMenu);
+	}
+
+	private void createScale(JMenu editMenu){
+		handleScaleButton = new AbstractAction("Scale") {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				new ScaleFrame();
+			}
+		};
+
+		editMenu.add(handleScaleButton);
+	}
+
+	private void createHistogram(JMenu editMenu){
+		handleHistogramButton = new AbstractAction("Autocorrection") {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				new HistogramFrame();
+			}
+		};
+
+		editMenu.add(handleHistogramButton);
 	}
 
 	private void createColorSpace(JMenu editMenu){
@@ -113,7 +153,7 @@ public class SettingPanel extends JPanel{
 		}
 
 		chosenColorSpace = list.get(0);
-		PanelMediator.getInstance().getFileService().chooseColorSpace(chosenColorSpace);
+		PanelMediator.getInstance().changeColorSpace(chosenColorSpace);
 		menuColorSpace.getItem(0).setBackground(selected);
 		editMenu.add(menuColorSpace);
 	}
@@ -128,7 +168,7 @@ public class SettingPanel extends JPanel{
 		}
 
 		chosenChannels = list;
-		PanelMediator.getInstance().getFileService().chooseChannel(chosenChannels);
+		PanelMediator.getInstance().changeChannel(chosenChannels);
 		editMenu.add(menuColorChannels);
 	}
 
@@ -172,8 +212,7 @@ public class SettingPanel extends JPanel{
 		gammaConvertButton = new AbstractAction("Convert Gamma") {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-                GammaInputFrame gammaInputFrame = new GammaInputFrame("convert");
-
+                new GammaInputFrame("convert", fileGamma);
 			}
 		};
 
@@ -184,7 +223,7 @@ public class SettingPanel extends JPanel{
 		gammaAssignButton = new AbstractAction("Assign Gamma") {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-                GammaInputFrame gammaInputFrame = new GammaInputFrame("assign");
+                new GammaInputFrame("assign", displayGamma);
 			}
 		};
 
@@ -192,32 +231,37 @@ public class SettingPanel extends JPanel{
 	}
 
     public void handleInputGammaAssign(String input){
-        try {
-            displayGamma = Float.parseFloat(input);
-            PanelMediator.getInstance().assignGamma(displayGamma);
-            PanelMediator.getInstance().createGammaPreview();
-        }catch (Exception exception){
-            new ExceptionHandler().handleException(exception);
-        }
+		displayGamma = Float.parseFloat(input);
+		PanelMediator.getInstance().assignGamma(displayGamma);
+		PanelMediator.getInstance().createPreview();
     }
 
     public void handleInputGammaConvert(String input){
-        try {
-            fileGamma = Float.parseFloat(input);
-            PanelMediator.getInstance().convertGamma(fileGamma);
-            PanelMediator.getInstance().createGammaPreview();
-        }catch (Exception exception){
-            new ExceptionHandler().handleException(exception);
-        }
+		fileGamma = Float.parseFloat(input);
+		PanelMediator.getInstance().convertGamma(fileGamma);
+		PanelMediator.getInstance().createPreview();
     }
 
-	public void disableGammaButtons(){
+	public void disableImageButtons(){
 		gammaConvertButton.setEnabled(false);
 		gammaAssignButton.setEnabled(false);
+		handleHistogramButton.setEnabled(false);
+		handleScaleButton.setEnabled(false);
 	}
 
-	public void enableGammaButtons(){
+	public void enableImageButtons(){
 		gammaConvertButton.setEnabled(true);
 		gammaAssignButton.setEnabled(true);
+		handleHistogramButton.setEnabled(true);
+		handleScaleButton.setEnabled(true);
+	}
+
+	public void setFileTitle(String title){
+		fileTitle.setText(title);
+		fileTitle.setVisible(true);
+	}
+
+	public void eraseFileTitle(){
+		fileTitle.setVisible(false);
 	}
 }

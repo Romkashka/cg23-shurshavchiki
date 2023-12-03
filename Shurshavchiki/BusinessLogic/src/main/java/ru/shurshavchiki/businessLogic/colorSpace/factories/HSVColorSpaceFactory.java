@@ -14,13 +14,13 @@ public class HSVColorSpaceFactory implements ColorSpaceFactory {
     private static final String COLOR_SPACE_NAME = "HSV";
 
     @Override
-    public String getColorSpaceName() {
+    public String getName() {
         return COLOR_SPACE_NAME;
     }
 
     @Override
     public ColorSpace getColorSpace() {
-        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.HUE, Channel.SATURATION, Channel.BRIGHTNESS));
+        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.HUE, Channel.SATURATION, Channel.BRIGHTNESS), List.of(Channel.SATURATION, Channel.BRIGHTNESS));
     }
 
     @Override

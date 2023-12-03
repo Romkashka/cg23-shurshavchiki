@@ -1,8 +1,7 @@
 package ru.shurshavchiki.businessLogic.colorSpace.converters;
 
-import ru.shurshavchiki.businessLogic.models.RgbConvertable;
+import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ColorSpaceConverter {

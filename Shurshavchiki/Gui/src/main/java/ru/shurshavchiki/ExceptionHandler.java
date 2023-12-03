@@ -1,6 +1,5 @@
 package ru.shurshavchiki;
 
-import ru.shurshavchiki.businessLogic.exceptions.GeneralPhotoshopException;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 
@@ -13,7 +12,7 @@ public class ExceptionHandler {
     public void handleException(Throwable exp) {
         if (exp instanceof NullPointerException) {
             JOptionPane.showMessageDialog(null,
-                    "File or input missing" + Arrays.toString(exp.getStackTrace()), "Error 404",
+                    "File or input missing", "Error 404",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp instanceof WriteFileException) {
             javax.swing.JOptionPane.showMessageDialog(null,
@@ -51,7 +50,7 @@ public class ExceptionHandler {
             javax.swing.JOptionPane.showMessageDialog(null,
                     exp.getClass() + "\nMessage: " + exp.getMessage(), "Unexpected exception",
                     JOptionPane.ERROR_MESSAGE);
-            exp.printStackTrace();
+//            exp.printStackTrace();
         }
 
         exp.printStackTrace();

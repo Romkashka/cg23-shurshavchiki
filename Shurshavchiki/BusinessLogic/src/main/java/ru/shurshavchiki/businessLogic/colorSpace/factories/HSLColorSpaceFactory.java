@@ -13,13 +13,13 @@ import java.util.List;
 public class HSLColorSpaceFactory implements ColorSpaceFactory {
     private static final String COLOR_SPACE_NAME = "HSL";
     @Override
-    public String getColorSpaceName() {
+    public String getName() {
         return COLOR_SPACE_NAME;
     }
 
     @Override
     public ColorSpace getColorSpace() {
-        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.HUE, Channel.SATURATION, Channel.LIGHTNESS));
+        return new ColorSpace(COLOR_SPACE_NAME, List.of(Channel.HUE, Channel.SATURATION, Channel.LIGHTNESS), List.of(Channel.SATURATION, Channel.LIGHTNESS));
     }
 
     @Override

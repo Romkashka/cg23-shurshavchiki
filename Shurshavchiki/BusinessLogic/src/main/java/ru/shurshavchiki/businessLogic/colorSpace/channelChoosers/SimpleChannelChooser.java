@@ -1,8 +1,7 @@
 package ru.shurshavchiki.businessLogic.colorSpace.channelChoosers;
 
 import lombok.Getter;
-import lombok.Setter;
-import ru.shurshavchiki.businessLogic.exceptions.ChannelException;
+import ru.shurshavchiki.businessLogic.colorSpace.models.Channel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,18 +13,18 @@ public class SimpleChannelChooser implements ChannelChooser {
     @Getter
     private final List<Float> constants;
     private int chosenChannelsAmount;
+    @Getter
+    private List<Channel> channels;
 
-    public SimpleChannelChooser(List<Float> constants, List<Integer> channelMask) {
+    public SimpleChannelChooser(List<Float> constants, List<Integer> channelMask, List<Channel> channels) {
         this.constants = constants;
-        System.out.println("Constants: " + Arrays.toString(constants.toArray()));
         setChannelMask(channelMask);
-        System.out.println("chosenChannelsAmount: " + chosenChannelsAmount);
+        this.channels = channels;
     }
 
     public void setChannelMask(List<Integer> channelMask) {
         this.channelMask = channelMask;
         this.chosenChannelsAmount = (int) channelMask.stream().filter(num -> num == 1).count();
-        System.out.println("Channels mask: " + Arrays.toString(channelMask.toArray()));
     }
 
     @Override

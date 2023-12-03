@@ -21,7 +21,7 @@ public class ColorSpaceRegistry {
 
     public ColorSpaceFactory getFactoryByName(@NonNull String colorSpaceName) {
         for (ColorSpaceFactory factory: factories) {
-            if (factory.getColorSpaceName().equals(colorSpaceName)) {
+            if (factory.getName().equals(colorSpaceName)) {
                 return factory;
             }
         }
