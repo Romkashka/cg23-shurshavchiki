@@ -7,6 +7,8 @@ import ru.shurshavchiki.businessLogic.colorSpace.models.SingleChannelUnit;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ChannelRearranger;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
+import ru.shurshavchiki.businessLogic.domain.io.FileFormatSpecifier;
+import ru.shurshavchiki.businessLogic.domain.io.FileReader;
 import ru.shurshavchiki.businessLogic.domain.io.pnm.PnmFileReader;
 import ru.shurshavchiki.businessLogic.domain.io.pnm.PnmFileWriter;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
@@ -33,7 +35,10 @@ public class FileServiceImpl implements FileService {
     @Override
     public Displayable readFile(File file, ImageParametersChangers parametersChangers) throws IOException {
         checkFileIsReadable(file);
-        ImageDataHolder imageDataHolder = new PnmFileReader().getImageDataHolder(file);
+
+        FileReader fileReader = new FileFormatSpecifier().defineFileReader(file);
+
+        ImageDataHolder imageDataHolder = fileReader.getImageDataHolder(file);
 
         Displayable result = new PnmFile(imageDataHolder.getHeader(),
                 splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getFloatData(), parametersChangers.ColorSpaceConverter(), parametersChangers.ChannelChooser())));

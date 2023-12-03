@@ -24,4 +24,8 @@ public class OpenFileException extends GeneralPhotoshopException {
     public static OpenFileException invalidPngHeader() {
         return new OpenFileException("File is corrupted: png header is invalid");
     }
+
+    public static OpenFileException unsupportedFileFormat() {
+        return new OpenFileException("This file format isn't supported or file is corrupted");
+    }
 }

@@ -8,10 +8,13 @@ import java.util.List;
 
 public class EmptyPngChunkDataConverter extends PngChunkDataConverterBase {
     @Override
-    protected void handleChunk(PngChunk chunk, ImageDataHolder dataHolder) {}
+    protected void handleChunk(PngChunk chunk, ImageDataHolder dataHolder) {
+        System.out.println("Empty handling");
+    }
 
     @Override
     protected List<PngChunk> convertRawData(ImageDataHolder dataHolder) {
+        System.out.println("Empty converting");
         return new LinkedList<>();
     }
 }
