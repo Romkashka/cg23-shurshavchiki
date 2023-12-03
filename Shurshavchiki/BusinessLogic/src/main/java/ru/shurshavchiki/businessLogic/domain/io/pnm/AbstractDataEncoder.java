@@ -1,4 +1,4 @@
-package ru.shurshavchiki.businessLogic.domain.io;
+package ru.shurshavchiki.businessLogic.domain.io.pnm;
 
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;

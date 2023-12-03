@@ -6,6 +6,7 @@ import ru.shurshavchiki.businessLogic.api.FileProcessingService;
 import ru.shurshavchiki.businessLogic.api.UserProjectDataHolder;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.services.FileService;
+import ru.shurshavchiki.businessLogic.domain.services.ImageParametersChangers;
 import ru.shurshavchiki.businessLogic.domain.services.ImageProcessingService;
 
 import java.io.File;
@@ -37,9 +38,11 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     public void openImage(@NonNull Context context) throws IOException {
         UserProjectDataHolder userProjectDataHolder = context.getDataHolder();
         resetToDefaultSettings(userProjectDataHolder);
-        userProjectDataHolder.setStartingDisplayable(fileService.readFile(userProjectDataHolder.getFile(),
-                userProjectDataHolder.getColorSpaceFactory().getColorSpaceConverter(),
-                userProjectDataHolder.getChannelChooser()));
+        userProjectDataHolder.setStartingDisplayable(fileService.readFile(userProjectDataHolder.getFile(), new ImageParametersChangers(
+                        userProjectDataHolder.getColorSpaceFactory().getColorSpaceConverter(),
+                        userProjectDataHolder.getChannelChooser(),
+                        userProjectDataHolder.getInputGammaConverter()
+                )));
         userProjectDataHolder.setDisplayableWithFilters(userProjectDataHolder.getStartingDisplayable());
         dataHolderUpdateWizard.updateDisplayableWithLinearGamma(userProjectDataHolder);
     }
@@ -54,8 +57,8 @@ public class FileProcessingServiceImpl implements FileProcessingService {
         UserProjectDataHolder dataHolder = extractDataHolder(context);
         fileService.saveFile(dataHolder.getShownDisplayable(),
                 destination,
-                dataHolder.getColorSpaceFactory().getColorSpaceConverter(),
-                dataHolder.getChannelChooser());
+                new ImageParametersChangers(dataHolder.getColorSpaceFactory().getColorSpaceConverter(),
+                dataHolder.getChannelChooser(), dataHolder.getInputGammaConverter()));
     }
 
     private UserProjectDataHolder extractDataHolder(@NonNull Context context) {

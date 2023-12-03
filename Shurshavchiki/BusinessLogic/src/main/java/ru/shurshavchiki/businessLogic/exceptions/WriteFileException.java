@@ -20,4 +20,8 @@ public class WriteFileException extends GeneralPhotoshopException {
     public static WriteFileException noFile() {
         return new WriteFileException("Destination isn't chosen");
     }
+
+    public static WriteFileException criticalChunkIsAbsent(String chunkType) {
+        return new WriteFileException(chunkType + "chunk wasn't found!");
+    }
 }

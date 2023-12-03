@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 public interface FileService {
-    Displayable readFile(File file, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) throws IOException;
-    void saveFile(Displayable displayable, File file, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) throws IOException;
+    Displayable readFile(File file, ImageParametersChangers parametersChangers) throws IOException;
+    void saveFile(Displayable displayable, File file, ImageParametersChangers parametersChangers) throws IOException;
     Displayable applyColorFilters(Displayable source, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser);
     Displayable assignGamma(Displayable source, GammaConverter gammaConverter);
     Displayable convertGamma(Displayable source, GammaConverter gammaConverter);

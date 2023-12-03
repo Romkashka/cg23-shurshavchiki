@@ -1,8 +1,9 @@
-package ru.shurshavchiki.businessLogic.domain.io;
+package ru.shurshavchiki.businessLogic.domain.io.pnm;
 
 import lombok.Getter;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
+import ru.shurshavchiki.businessLogic.domain.io.FileReader;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
 import ru.shurshavchiki.businessLogic.domain.models.ImageDataHolder;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
@@ -15,15 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PnmFileReader {
+public class PnmFileReader implements FileReader {
     @Getter
-    private final Header header;
-    private final File file;
-
-    public PnmFileReader(java.io.File file) throws IOException {
-        this.file = file;
-        header = readHeader(file);
-    }
+    private Header header;
+    private File file;
 
     public Displayable getDisplayablePnmFile() throws IOException {
         List<List<RgbConvertable>> pixels;
@@ -46,14 +42,16 @@ public class PnmFileReader {
         return new PnmFile(header, pixels);
     }
 
-    public ImageDataHolder getImageDataHolder() throws IOException {
+    public ImageDataHolder getImageDataHolder(File file) throws IOException {
+        this.file = file;
+        header = readHeader(file);
         PixelDataReader dataReader;
         switch (header.getMagicNumber()) {
             case "P5" -> dataReader = new P5DataReader(header, file);
             case "P6" -> dataReader = new P6DataReader(header, file);
             default -> throw OpenFileException.unsupportedFileVersion(header.getMagicNumber());
         }
-        return new ImageDataHolder(header, dataReader.getFloatPixels());
+        return new ImageDataHolder(header, dataReader.getAllPixels());
     }
 
     private Header readHeader(java.io.File pnmFile) throws IOException {

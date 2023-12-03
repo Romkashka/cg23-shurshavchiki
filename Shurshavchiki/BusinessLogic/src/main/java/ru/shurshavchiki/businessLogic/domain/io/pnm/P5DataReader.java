@@ -1,4 +1,4 @@
-package ru.shurshavchiki.businessLogic.domain.io;
+package ru.shurshavchiki.businessLogic.domain.io.pnm;
 
 import ru.shurshavchiki.businessLogic.domain.models.Header;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
@@ -52,29 +52,29 @@ public class P5DataReader implements PixelDataReader {
     }
 
     @Override
-    public float[] getFloatPixels() throws IOException {
-        float[] floatPixelsArray = new float[totalPixels * 3];
+    public byte[] getAllPixels() throws IOException {
+        byte[] floatPixelsArray = new byte[totalPixels * 3];
         byte[] byteData = new byte[header.getHeight() * header.getWidth() * (((header.getMaxValue() < 256) ? 1 : 0) + 1)];
         dataInputStream.read(byteData);
         if (header.getMaxValue() < 256) {
             for (int i = 0; i < header.getHeight() * header.getWidth(); i++) {
-                floatPixelsArray[3*i] = (float) (byteData[i] & 0xff);
-                floatPixelsArray[3*i+1] = (float) (byteData[i] & 0xff);
-                floatPixelsArray[3*i+2] = (float) (byteData[i] & 0xff);
+                floatPixelsArray[3*i] = (byte) (byteData[i] & 0xff);
+                floatPixelsArray[3*i+1] = (byte) (byteData[i] & 0xff);
+                floatPixelsArray[3*i+2] = (byte) (byteData[i] & 0xff);
             }
         } else {
             for (int i = 0; i < header.getHeight() * header.getWidth(); i++) {
-                floatPixelsArray[i] = (float) ((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff);
-                floatPixelsArray[i+1] = (float) ((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff);
-                floatPixelsArray[i+2] = (float) ((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff);
+                floatPixelsArray[i] = (byte) ((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff);
+                floatPixelsArray[i+1] = (byte) ((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff);
+                floatPixelsArray[i+2] = (byte) ((byteData[2 * i]) & 0xff * 256 + byteData[2 * i + 1] & 0xff);
             }
         }
 
-        float[] result = new float[floatPixelsArray.length];
-        for (int i = 0; i < floatPixelsArray.length; i++) {
-            result[i] = normalizeChannel(floatPixelsArray[i]);
-        }
-        return result;
+//        byte[] result = new byte[floatPixelsArray.length];
+//        for (int i = 0; i < floatPixelsArray.length; i++) {
+//            result[i] = (byte) normalizeChannel(floatPixelsArray[i]);
+//        }
+        return floatPixelsArray;
     }
 
     private ArrayList<RgbConvertable> normalize(List<RgbConvertable> rawData) {

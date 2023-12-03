@@ -7,8 +7,8 @@ import ru.shurshavchiki.businessLogic.colorSpace.models.SingleChannelUnit;
 import ru.shurshavchiki.businessLogic.colorSpace.util.ChannelRearranger;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
-import ru.shurshavchiki.businessLogic.domain.io.PnmFileReader;
-import ru.shurshavchiki.businessLogic.domain.io.PnmFileWriter;
+import ru.shurshavchiki.businessLogic.domain.io.pnm.PnmFileReader;
+import ru.shurshavchiki.businessLogic.domain.io.pnm.PnmFileWriter;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
 import ru.shurshavchiki.businessLogic.domain.models.ImageDataHolder;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
@@ -17,6 +17,7 @@ import ru.shurshavchiki.businessLogic.exceptions.ColorSpaceException;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
+import ru.shurshavchiki.businessLogic.gamma.util.PlainGammaConvertersRegistry;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,23 +31,32 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Displayable readFile(File file, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) throws IOException {
+    public Displayable readFile(File file, ImageParametersChangers parametersChangers) throws IOException {
         checkFileIsReadable(file);
-        ImageDataHolder imageDataHolder = new PnmFileReader(file).getImageDataHolder();
+        ImageDataHolder imageDataHolder = new PnmFileReader().getImageDataHolder(file);
 
-        return new PnmFile(imageDataHolder.getHeader(),
-                splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getData(), colorSpaceConverter, channelChooser)));
+        Displayable result = new PnmFile(imageDataHolder.getHeader(),
+                splitToRows(imageDataHolder.getHeader(), convertToPixels(imageDataHolder.getFloatData(), parametersChangers.ColorSpaceConverter(), parametersChangers.ChannelChooser())));
+
+        if (imageDataHolder.getGamma() != null) {
+            GammaConverter innerGammaConverter = new PlainGammaConvertersRegistry().getGammaConverter(imageDataHolder.getGamma());
+            result = useGamma(result, innerGammaConverter);
+            result = correctGamma(result, parametersChangers.GammaConverter());
+        }
+
+        return result;
     }
 
     @Override
-    public void saveFile(Displayable displayable, File file, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser) throws IOException {
+    public void saveFile(Displayable displayable, File file, ImageParametersChangers parametersChangers) throws IOException {
         if (file == null) {
             throw WriteFileException.noFile();
         }
 
         new PnmFileWriter().saveFromRawData(file,
-                getHeaderForSave(displayable, channelChooser),
-                getByteData(convertToRawData(displayable.getAllPixels(), colorSpaceConverter, channelChooser), channelChooser));
+                new ImageDataHolder(
+                    getHeaderForSave(displayable, parametersChangers.ChannelChooser()),
+                    getByteData(convertToRawData(displayable.getAllPixels(), parametersChangers.ColorSpaceConverter(), parametersChangers.ChannelChooser()), parametersChangers.ChannelChooser())));
     }
 
     @Override

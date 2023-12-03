@@ -22,6 +22,11 @@ public class StandardRGBConverter implements GammaConverter {
     }
 
     @Override
+    public Float getGamma() {
+        return null;
+    }
+
+    @Override
     public String getName() {
         return "sRGB gamma";
     }

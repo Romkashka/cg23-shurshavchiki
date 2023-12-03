@@ -20,4 +20,8 @@ public class OpenFileException extends GeneralPhotoshopException {
     public static OpenFileException unsupportedFileVersion(String version) {
         return new OpenFileException(version + " version files are not supported!");
     }
+
+    public static OpenFileException invalidPngHeader() {
+        return new OpenFileException("File is corrupted: png header is invalid");
+    }
 }
