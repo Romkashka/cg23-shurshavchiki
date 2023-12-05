@@ -6,6 +6,7 @@ import ru.shurshavchiki.businessLogic.drawing.lineTipDrawers.LineTipDrawer;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
@@ -22,6 +23,7 @@ public interface Context {
     List<String> getAllImageCreationAlgorithms();
     List<String> getAllDitheringAlgorithms();
     List<String> getScalingAlgorithms();
+    List<String> getImageFilters();
     void setDitheringAlgorithmBitRate(int bitRate);
     void setLineBase(String name);
     void setStartLineTip(String name);
@@ -54,6 +56,7 @@ public interface Context {
     void initScalingAlgorithm(List<AlgorithmParameter> parameters);
     void setScalingParameters(ScalingParameters scalingParameters);
 
+    ImageFilter getImageFilter();
     void setImageFilter(String filterName);
     void initImageFilter(List<AlgorithmParameter> parameters);
 }

@@ -12,6 +12,7 @@ import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.PlainContrastCorrector;
 import ru.shurshavchiki.businessLogic.imageProcessing.dithering.DitheringAlgorithm;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
@@ -59,6 +60,11 @@ public class DataHolderAdapter implements Context {
     @Override
     public List<String> getScalingAlgorithms() {
         return dataHolder.getScalingAlgorithmRepository().getAllImplementations();
+    }
+
+    @Override
+    public List<String> getImageFilters() {
+        return dataHolder.getImageFilterRepository().getAllImplementations();
     }
 
     @Override
@@ -194,6 +200,11 @@ public class DataHolderAdapter implements Context {
     @Override
     public void setScalingParameters(ScalingParameters scalingParameters) {
         dataHolder.setScalingParameters(scalingParameters);
+    }
+
+    @Override
+    public ImageFilter getImageFilter() {
+        return dataHolder.getImageFilter();
     }
 
     @Override
