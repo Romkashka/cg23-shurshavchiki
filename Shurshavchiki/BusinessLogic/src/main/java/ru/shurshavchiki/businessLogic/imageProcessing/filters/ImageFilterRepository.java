@@ -1,9 +1,7 @@
 package ru.shurshavchiki.businessLogic.imageProcessing.filters;
 
 import ru.shurshavchiki.businessLogic.domain.util.ImplementationRepositoryBase;
-import ru.shurshavchiki.businessLogic.imageProcessing.filters.implementations.GaussianBlurFilter;
-import ru.shurshavchiki.businessLogic.imageProcessing.filters.implementations.MedianFilter;
-import ru.shurshavchiki.businessLogic.imageProcessing.filters.implementations.ThresholdFilter;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.implementations.*;
 
 import java.util.List;
 
@@ -12,7 +10,9 @@ public class ImageFilterRepository extends ImplementationRepositoryBase<ImageFil
         super(List.of(
                 new ThresholdFilter(),
                 new MedianFilter(),
-                new GaussianBlurFilter()
+                new GaussianBlurFilter(),
+                new BoxBlurFilter(),
+                new SobelFilter()
         ));
     }
 }

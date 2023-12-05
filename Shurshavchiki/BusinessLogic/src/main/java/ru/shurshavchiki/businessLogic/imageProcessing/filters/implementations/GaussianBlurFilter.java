@@ -37,6 +37,8 @@ public class GaussianBlurFilter extends ImageLinearFilterBase {
                 coefficient += weight;
             }
         }
+
+        coefficient = 1f / coefficient;
     }
 
     @Override

@@ -34,7 +34,7 @@ public abstract class ImageFilterBase implements ImageFilter {
             }
         }
 
-        return result;
+        return normalize(result);
     }
 
     protected abstract RgbConvertable applyMask(int x, int y);
@@ -69,6 +69,10 @@ public abstract class ImageFilterBase implements ImageFilter {
         }
 
         return x;
+    }
+
+    protected Displayable normalize(Displayable displayable) {
+        return displayable;
     }
 
     protected int extractIntValue(AlgorithmParameter parameter) {
