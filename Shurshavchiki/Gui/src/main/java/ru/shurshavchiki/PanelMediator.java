@@ -274,6 +274,13 @@ public class PanelMediator {
 		drawingPanel.loadImage(mainContext.getShownDisplayable());
 	}
 
+	public void filterImage(String algorithm, List<AlgorithmParameter> algorithmParameters){
+		mainContext.setImageFilter(algorithm);
+		mainContext.initImageFilter(algorithmParameters);
+		imageProcessingService.applyFilterToImage(mainContext);
+		drawingPanel.loadImage(mainContext.getShownDisplayable());
+	}
+
 	public static PanelMediator getInstance() {
 		return MediatorHolder.INSTANCE;
 	}

@@ -82,7 +82,7 @@ public class FilterFrame extends JFrame {
     private void handleOk(){
         try {
             var algorithmParameters = panel.getParameterValues();
-            PanelMediator.getInstance().filterImage(algorithms.get(algorithmBox.getSelectedIndex()), algorithmParameters, parameters);
+            PanelMediator.getInstance().filterImage(algorithms.get(algorithmBox.getSelectedIndex()), algorithmParameters);
             handleCancel();
         }catch (Exception exception){
             new ExceptionHandler().handleException(exception);

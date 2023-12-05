@@ -33,7 +33,7 @@ public class FilterAlgorithmPanel extends JPanel {
 		return algorithmParameters;
 	}
 
-	public void createPanel(ScalingAlgorithm algorithm){
+	public void createPanel(FilterAlgorithm algorithm){
 		algorithmParameters = new ArrayList<>();
 		spinners = new ArrayList<>();
 		this.removeAll();
