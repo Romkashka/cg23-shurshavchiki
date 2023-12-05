@@ -1,10 +1,16 @@
-package ru.shurshavchiki.businessLogic.imageProcessing.filters;
+package ru.shurshavchiki.businessLogic.imageProcessing.filters.implementations;
 
+import lombok.Setter;
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.FloatAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.IntegerAlgorithmParameter;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
+import ru.shurshavchiki.businessLogic.exceptions.FilterException;
+import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +18,9 @@ import java.util.List;
 public abstract class ImageFilterBase implements ImageFilter {
     protected Displayable grayscaleSource;
     protected float coefficient;
-    protected float[][] mask;
     protected int maskRadius;
-
-    @Override
-    public void init(List<AlgorithmParameter> parameterList) {
-    }
-
-    @Override
-    public List<AlgorithmParameter> getAlgorithmParameters() {
-        return List.of();
-    }
+    @Setter
+    protected GammaConverter gammaConverter;
 
     @Override
     public Displayable applyFilter(Displayable source) {
@@ -39,17 +37,7 @@ public abstract class ImageFilterBase implements ImageFilter {
         return result;
     }
 
-    protected RgbConvertable applyMask(int x, int y) {
-        float result = 0;
-        for (int i = -maskRadius; i <= maskRadius; i++) {
-            for (int j = -maskRadius; j <= maskRadius; j++) {
-                result += mask[i][j] * grayscaleSource.getPixel(returnToBorders(i + x - maskRadius, grayscaleSource.getWidth()),
-                        returnToBorders(j + y - maskRadius, grayscaleSource.getWidth())).FloatRed();
-            }
-        }
-
-        return new RgbPixel(result * coefficient);
-    }
+    protected abstract RgbConvertable applyMask(int x, int y);
 
     protected Displayable toGrayscale(Displayable source) {
         List<List<RgbConvertable>> newPixels = new ArrayList<>();
@@ -71,7 +59,7 @@ public abstract class ImageFilterBase implements ImageFilter {
         return new RgbPixel(0.3f * pixel.FloatRed() + 0.59f * pixel.FloatGreen() + 0.11f * pixel.FloatBlue());
     }
 
-    protected int returnToBorders(int x, int border) {
+    protected int returnPixelCoordinatesToBorders(int x, int border) {
         if (x < 0) {
             return 0;
         }
@@ -81,5 +69,21 @@ public abstract class ImageFilterBase implements ImageFilter {
         }
 
         return x;
+    }
+
+    protected int extractIntValue(AlgorithmParameter parameter) {
+        if (parameter instanceof IntegerAlgorithmParameter integerAlgorithmParameter) {
+            return integerAlgorithmParameter.getValue();
+        }
+
+        throw FilterException.InvalidParametersList();
+    }
+
+    protected float extractFloatValue(AlgorithmParameter parameter) {
+        if (parameter instanceof FloatAlgorithmParameter floatAlgorithmParameter) {
+            return floatAlgorithmParameter.getValue();
+        }
+
+        throw FilterException.InvalidParametersList();
     }
 }

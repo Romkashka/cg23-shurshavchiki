@@ -214,6 +214,7 @@ public class DataHolderAdapter implements Context {
 
     @Override
     public void initImageFilter(List<AlgorithmParameter> parameters) {
+        dataHolder.getImageFilter().setGammaConverter(dataHolder.getInputGammaConverter());
         dataHolder.getImageFilter().init(parameters);
     }
 
