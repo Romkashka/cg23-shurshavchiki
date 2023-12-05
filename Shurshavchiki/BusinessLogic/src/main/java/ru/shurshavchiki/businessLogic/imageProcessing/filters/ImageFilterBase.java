@@ -41,8 +41,8 @@ public abstract class ImageFilterBase implements ImageFilter {
 
     protected RgbConvertable applyMask(int x, int y) {
         float result = 0;
-        for (int i = 0; i <= x + maskRadius; i++) {
-            for (int j = y - maskRadius; j <= y + maskRadius; j++) {
+        for (int i = -maskRadius; i <= maskRadius; i++) {
+            for (int j = -maskRadius; j <= maskRadius; j++) {
                 result += mask[i][j] * grayscaleSource.getPixel(returnToBorders(i + x - maskRadius, grayscaleSource.getWidth()),
                         returnToBorders(j + y - maskRadius, grayscaleSource.getWidth())).FloatRed();
             }
