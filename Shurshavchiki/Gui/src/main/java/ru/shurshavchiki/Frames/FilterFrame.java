@@ -3,7 +3,7 @@ package ru.shurshavchiki.Frames;
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.PanelMediator;
-import ru.shurshavchiki.Panels.FilterAlgorithmPanel;
+import ru.shurshavchiki.Panels.AlgorithmPanels.FilterAlgorithmPanel;
 
 import javax.swing.*;
 import java.awt.*;

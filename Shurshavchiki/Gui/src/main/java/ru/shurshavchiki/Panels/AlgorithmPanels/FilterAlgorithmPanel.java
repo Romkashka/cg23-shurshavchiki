@@ -1,23 +1,24 @@
-package ru.shurshavchiki.Panels;
+package ru.shurshavchiki.Panels.AlgorithmPanels;
 
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
-import ru.shurshavchiki.businessLogic.common.FloatAlgorithmParameter;
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.FloatAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
+import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ScaleAlgorithmPanel extends JPanel {
+public class FilterAlgorithmPanel extends JPanel {
 
 	private List<AlgorithmParameter> algorithmParameters;
 
 	private List<JSpinner> spinners;
 
-	public ScaleAlgorithmPanel(){
+	public FilterAlgorithmPanel(){
 		setPreferredSize(new Dimension(300, 100));
 		setMinimumSize(new Dimension(300, 100));
 		setSize(new Dimension(300, 100));
@@ -33,14 +34,14 @@ public class ScaleAlgorithmPanel extends JPanel {
 		return algorithmParameters;
 	}
 
-	public void createPanel(ScalingAlgorithm algorithm){
+	public void createPanel(ImageFilter algorithm){
 		algorithmParameters = new ArrayList<>();
 		spinners = new ArrayList<>();
 		this.removeAll();
 		this.setLayout(new GridBagLayout());
 		GridBagHelper gridSetter = new GridBagHelper();
 
-		var parameters = algorithm.getParametersToInit();
+		var parameters = algorithm.getAlgorithmParameters();
 		for (var parameter : parameters){
 			gridSetter.nextRow().nextCell().alignCenter();
 			JTextPane parameterText = InputSetHelper.setJText();

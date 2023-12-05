@@ -2,8 +2,8 @@ package ru.shurshavchiki.Frames;
 
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.PanelMediator;
-import ru.shurshavchiki.Panels.InstrumentPanel;
-import ru.shurshavchiki.Panels.SettingPanel;
+import ru.shurshavchiki.Panels.appPanels.InstrumentPanel;
+import ru.shurshavchiki.Panels.appPanels.SettingPanel;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;

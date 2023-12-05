@@ -2,7 +2,7 @@ package ru.shurshavchiki.Listeners.ActionListeners;
 
 import ru.shurshavchiki.Frames.ColorChooserFrame;
 import ru.shurshavchiki.PanelMediator;
-import ru.shurshavchiki.Panels.OneToolPanel;
+import ru.shurshavchiki.Panels.appPanels.OneToolPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

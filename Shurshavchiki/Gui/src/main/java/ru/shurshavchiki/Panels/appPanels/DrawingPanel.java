@@ -1,4 +1,4 @@
-package ru.shurshavchiki.Panels;
+package ru.shurshavchiki.Panels.appPanels;
 
 import lombok.Getter;
 import ru.shurshavchiki.Listeners.MouseListener;
