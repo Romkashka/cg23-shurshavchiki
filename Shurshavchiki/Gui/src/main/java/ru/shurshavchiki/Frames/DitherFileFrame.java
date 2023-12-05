@@ -6,7 +6,7 @@ import ru.shurshavchiki.Helpers.InputSetHelper;
 import ru.shurshavchiki.Listeners.ChangeListeners.BitRateListener;
 import ru.shurshavchiki.Listeners.ActionListeners.DitheringComboBoxListener;
 import ru.shurshavchiki.PanelMediator;
-import ru.shurshavchiki.Panels.DrawingPanel;
+import ru.shurshavchiki.Panels.appPanels.DrawingPanel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,8 +1,8 @@
-package ru.shurshavchiki.Listeners;
+package ru.shurshavchiki.Listeners.ColorListeners;
 
 import lombok.Getter;
 import ru.shurshavchiki.ExceptionHandler;
-import ru.shurshavchiki.Panels.SettingPanel;
+import ru.shurshavchiki.Panels.appPanels.SettingPanel;
 
 import javax.swing.*;
 import java.awt.*;

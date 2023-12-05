@@ -3,22 +3,14 @@ package ru.shurshavchiki.Frames;
 import ru.shurshavchiki.ExceptionHandler;
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
-import ru.shurshavchiki.Listeners.ChangeListeners.HistogramListener;
 import ru.shurshavchiki.PanelMediator;
-import ru.shurshavchiki.Panels.HistogramPanel;
-import ru.shurshavchiki.Panels.ScaleAlgorithmPanel;
-import ru.shurshavchiki.businessLogic.domain.util.WithName;
-import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
-import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
+import ru.shurshavchiki.Panels.AlgorithmPanels.ScaleAlgorithmPanel;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.security.AlgorithmParameters;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class ScaleFrame extends JFrame {
 

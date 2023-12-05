@@ -1,4 +1,4 @@
-package ru.shurshavchiki.Panels;
+package ru.shurshavchiki.Panels.AlgorithmPanels;
 
 import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;

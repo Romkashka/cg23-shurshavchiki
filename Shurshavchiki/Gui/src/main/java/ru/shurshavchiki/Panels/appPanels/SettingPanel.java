@@ -1,4 +1,4 @@
-package ru.shurshavchiki.Panels;
+package ru.shurshavchiki.Panels.appPanels;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,8 +6,8 @@ import ru.shurshavchiki.Frames.FilterFrame;
 import ru.shurshavchiki.Frames.GammaInputFrame;
 import ru.shurshavchiki.Frames.HistogramFrame;
 import ru.shurshavchiki.Frames.ScaleFrame;
-import ru.shurshavchiki.Listeners.ColorChannelListener;
-import ru.shurshavchiki.Listeners.ColorSpaceListener;
+import ru.shurshavchiki.Listeners.ColorListeners.ColorChannelListener;
+import ru.shurshavchiki.Listeners.ColorListeners.ColorSpaceListener;
 import ru.shurshavchiki.Listeners.ActionListeners.FileButtonListener;
 import ru.shurshavchiki.PanelMediator;
 
