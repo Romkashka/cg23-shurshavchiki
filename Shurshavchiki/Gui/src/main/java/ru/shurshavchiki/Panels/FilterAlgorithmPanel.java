@@ -4,6 +4,7 @@ import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 import ru.shurshavchiki.businessLogic.common.FloatAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 
 import javax.swing.*;
@@ -33,14 +34,14 @@ public class FilterAlgorithmPanel extends JPanel {
 		return algorithmParameters;
 	}
 
-	public void createPanel(FilterAlgorithm algorithm){
+	public void createPanel(ImageFilter algorithm){
 		algorithmParameters = new ArrayList<>();
 		spinners = new ArrayList<>();
 		this.removeAll();
 		this.setLayout(new GridBagLayout());
 		GridBagHelper gridSetter = new GridBagHelper();
 
-		var parameters = algorithm.getParametersToInit();
+		var parameters = algorithm.getAlgorithmParameters();
 		for (var parameter : parameters){
 			gridSetter.nextRow().nextCell().alignCenter();
 			JTextPane parameterText = InputSetHelper.setJText();

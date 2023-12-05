@@ -18,6 +18,7 @@ import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 import ru.shurshavchiki.businessLogic.drawing.models.Line;
 import ru.shurshavchiki.businessLogic.imageProcessing.autocorrection.Histogram;
+import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingParameters;
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
@@ -172,7 +173,7 @@ public class PanelMediator {
 	}
 
 	public List<String> getFilterAlgorithms(){
-		return mainContext.getFilterAlgorithms();
+		return mainContext.getImageFilters();
 	}
 
 	public ScalingAlgorithm getScaleAlgorithm(String algorithm){
@@ -180,9 +181,9 @@ public class PanelMediator {
 		return mainContext.getScalingAlgorithm();
 	}
 
-	public FilterAlgorithm getFilterAlgorithm(String algorithm){
+	public ImageFilter getFilterAlgorithm(String algorithm){
 		mainContext.setImageFilter(algorithm);
-		return mainContext.getScalingAlgorithm();
+		return mainContext.getImageFilter();
 	}
 
 	public void setDisplayableDithered(String selectedAlgorithm, int selectedBitRate){
