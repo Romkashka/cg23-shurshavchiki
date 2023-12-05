@@ -62,7 +62,7 @@ public class FilterAlgorithmPanel extends JPanel {
 			}
 
 			if (parameter instanceof IntegerAlgorithmParameter intParameter){
-				SpinnerModel model = new SpinnerNumberModel(intParameter.getValue(), intParameter.getLowerLimit(), intParameter.getUpperLimit(), (intParameter.getUpperLimit() + intParameter.getLowerLimit()) / 2);
+				SpinnerModel model = new SpinnerNumberModel(intParameter.getValue(), intParameter.getLowerLimit(), intParameter.getUpperLimit(), (intParameter.getUpperLimit() + intParameter.getLowerLimit()) / 50);
 				JSpinner spinnerModel = new JSpinner(model);
 				spinnerModel.setPreferredSize(new Dimension(48, 28));
 				spinnerModel.setOpaque(false);
