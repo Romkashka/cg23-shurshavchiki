@@ -28,8 +28,10 @@ public class FilterAlgorithmPanel extends JPanel {
 	public List<AlgorithmParameter> getParameterValues(){
 		for (int i = 0; i < algorithmParameters.size(); ++i){
 			if (algorithmParameters.get(i) instanceof FloatAlgorithmParameter parameter){
-				System.out.println(((Double)spinners.get(i).getValue()).floatValue());
 				parameter.setValue(((Double)spinners.get(i).getValue()).floatValue());
+			}
+			if (algorithmParameters.get(i) instanceof IntegerAlgorithmParameter parameter){
+				parameter.setValue(((Integer)spinners.get(i).getValue()));
 			}
 		}
 		return algorithmParameters;
