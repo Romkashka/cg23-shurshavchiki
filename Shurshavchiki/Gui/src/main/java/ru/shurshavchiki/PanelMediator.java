@@ -70,22 +70,38 @@ public class PanelMediator {
 	}
 
 	public void createImage(int width, int height, String type) throws IOException {
+		setGammaDefault();
 		mainContext.setNewImageParameters(height, width);
 		mainContext.setImageCreationAlgorithm(type);
 		fileProcessingService.createNewImage(mainContext);
 		drawingPanel.loadImage(mainContext.getShownDisplayable());
-		setGammaDefault();
 		settingPanel.enableImageButtons();
 		somethingChanged = true;
+
+		settingPanel.changeEnable("new", true);
+		settingPanel.changeEnable("open", true);
+		settingPanel.changeEnable("save", false);
+		settingPanel.changeEnable("saveAs", true);
+		settingPanel.changeEnable("export", true);
+		settingPanel.changeEnable("dither", true);
+		settingPanel.changeEnable("close", true);
 	}
 
 	public void openNewImage(File file) throws IOException {
+		setGammaDefault();
 		mainContext.setFile(file);
 		fileProcessingService.openImage(mainContext);
 		drawingPanel.loadImage(mainContext.getShownDisplayable());
-		setGammaDefault();
 		settingPanel.enableImageButtons();
 		settingPanel.setFileTitle(file.getAbsolutePath());
+
+		settingPanel.changeEnable("new", true);
+		settingPanel.changeEnable("open", true);
+		settingPanel.changeEnable("save", true);
+		settingPanel.changeEnable("saveAs", true);
+		settingPanel.changeEnable("export", true);
+		settingPanel.changeEnable("dither", true);
+		settingPanel.changeEnable("close", true);
 	}
 
 	public void saveImage() throws IOException {
@@ -120,6 +136,14 @@ public class PanelMediator {
 		newMainContext.chooseColorSpace(settingPanel.getChosenColorSpace());
 		newMainContext.chooseChannel(settingPanel.getChosenChannels());
 		mainContext = newMainContext;
+
+		settingPanel.changeEnable("new", true);
+		settingPanel.changeEnable("open", true);
+		settingPanel.changeEnable("save", false);
+		settingPanel.changeEnable("saveAs", false);
+		settingPanel.changeEnable("export", false);
+		settingPanel.changeEnable("dither", false);
+		settingPanel.changeEnable("close", false);
 	}
 
 	public void exit() {
@@ -147,8 +171,17 @@ public class PanelMediator {
 		return mainContext.getScalingAlgorithms();
 	}
 
+	public List<String> getFilterAlgorithms(){
+		return mainContext.getFilterAlgorithms();
+	}
+
 	public ScalingAlgorithm getScaleAlgorithm(String algorithm){
 		mainContext.setScalingAlgorithm(algorithm);
+		return mainContext.getScalingAlgorithm();
+	}
+
+	public FilterAlgorithm getFilterAlgorithm(String algorithm){
+		mainContext.setImageFilter(algorithm);
 		return mainContext.getScalingAlgorithm();
 	}
 

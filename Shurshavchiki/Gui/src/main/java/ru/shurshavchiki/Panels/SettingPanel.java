@@ -2,6 +2,7 @@ package ru.shurshavchiki.Panels;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.shurshavchiki.Frames.FilterFrame;
 import ru.shurshavchiki.Frames.GammaInputFrame;
 import ru.shurshavchiki.Frames.HistogramFrame;
 import ru.shurshavchiki.Frames.ScaleFrame;
@@ -45,6 +46,8 @@ public class SettingPanel extends JPanel{
 
 	private AbstractAction handleScaleButton;
 
+	private AbstractAction handleFilterButton;
+
 	private JTextPane fileTitle;
 
 	@Setter
@@ -54,6 +57,20 @@ public class SettingPanel extends JPanel{
 	private float displayGamma = 0;
 
 	private final Color selected = new Color(179, 255, 179);
+
+	JMenuItem newMenuItem = new JMenuItem("New");
+
+	JMenuItem openMenuItem = new JMenuItem("Open");
+
+	JMenuItem saveMenuItem = new JMenuItem("Save");
+
+	JMenuItem saveAsMenuItem = new JMenuItem("Save As");
+
+	JMenuItem exportMenuItem = new JMenuItem("Export");
+
+	JMenuItem ditherMenuItem = new JMenuItem("Dither");
+
+	JMenuItem closeMenuItem = new JMenuItem("Close");
 
 	public SettingPanel(){
 		configureMenuFile();
@@ -65,23 +82,19 @@ public class SettingPanel extends JPanel{
 
 	private void configureMenuFile(){
 		JMenu fileMenu = new JMenu("File");
-		JMenuItem newMenuItem = new JMenuItem("New");
+
 		newMenuItem.setActionCommand("New");
-
-		JMenuItem openMenuItem = new JMenuItem("Open");
 		openMenuItem.setActionCommand("Open");
-
-		JMenuItem saveMenuItem = new JMenuItem("Save");
 		saveMenuItem.setActionCommand("Save");
-
-		JMenuItem saveAsMenuItem = new JMenuItem("Save As");
 		saveAsMenuItem.setActionCommand("SaveAs");
-
-		JMenuItem exportMenuItem = new JMenuItem("Dither");
-		exportMenuItem.setActionCommand("Dither");
-
-		JMenuItem closeMenuItem = new JMenuItem("Close");
+		exportMenuItem.setActionCommand("Export");
+		ditherMenuItem.setActionCommand("Dither");
 		closeMenuItem.setActionCommand("Close");
+		saveMenuItem.setEnabled(false);
+		saveAsMenuItem.setEnabled(false);
+		exportMenuItem.setEnabled(false);
+		ditherMenuItem.setEnabled(false);
+		closeMenuItem.setEnabled(false);
 
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.setActionCommand("Exit");
@@ -91,6 +104,7 @@ public class SettingPanel extends JPanel{
 		saveMenuItem.addActionListener(new FileButtonListener());
 		saveAsMenuItem.addActionListener(new FileButtonListener());
 		exportMenuItem.addActionListener(new FileButtonListener());
+		ditherMenuItem.addActionListener(new FileButtonListener());
 		closeMenuItem.addActionListener(new FileButtonListener());
 		exitMenuItem.addActionListener(new FileButtonListener());
 
@@ -101,6 +115,8 @@ public class SettingPanel extends JPanel{
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(exportMenuItem);
 		fileMenu.add(closeMenuItem);
+		fileMenu.addSeparator();
+		fileMenu.add(ditherMenuItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitMenuItem);
 
@@ -117,9 +133,21 @@ public class SettingPanel extends JPanel{
 		editMenu.addSeparator();
 		createHistogram(editMenu);
 		createScale(editMenu);
+		createFilter(editMenu);
 
 		disableImageButtons();
 		menuBar.add(editMenu);
+	}
+
+	private void createFilter(JMenu editMenu){
+		handleFilterButton = new AbstractAction("Filter") {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				new FilterFrame();
+			}
+		};
+
+		editMenu.add(handleFilterButton);
 	}
 
 	private void createScale(JMenu editMenu){
@@ -247,6 +275,7 @@ public class SettingPanel extends JPanel{
 		gammaAssignButton.setEnabled(false);
 		handleHistogramButton.setEnabled(false);
 		handleScaleButton.setEnabled(false);
+		handleFilterButton.setEnabled(false);
 	}
 
 	public void enableImageButtons(){
@@ -254,6 +283,7 @@ public class SettingPanel extends JPanel{
 		gammaAssignButton.setEnabled(true);
 		handleHistogramButton.setEnabled(true);
 		handleScaleButton.setEnabled(true);
+		handleFilterButton.setEnabled(true);
 	}
 
 	public void setFileTitle(String title){
@@ -263,5 +293,17 @@ public class SettingPanel extends JPanel{
 
 	public void eraseFileTitle(){
 		fileTitle.setVisible(false);
+	}
+
+	public void changeEnable(String str, Boolean bool){
+		switch (str){
+			case "new" -> newMenuItem.setEnabled(bool);
+			case "open" -> openMenuItem.setEnabled(bool);
+			case "save" -> saveMenuItem.setEnabled(bool);
+			case "saveAs" -> saveAsMenuItem.setEnabled(bool);
+			case "export" -> exportMenuItem.setEnabled(bool);
+			case "dither" -> ditherMenuItem.setEnabled(bool);
+			case "close" -> closeMenuItem.setEnabled(bool);
+		}
 	}
 }

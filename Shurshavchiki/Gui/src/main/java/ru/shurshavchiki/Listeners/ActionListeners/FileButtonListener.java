@@ -92,7 +92,9 @@ public class FileButtonListener implements ActionListener {
                 } else {
                     return f.getName().toLowerCase().endsWith(".ppm");
                 }
-            }});
+            }
+        });
+
         fileChooser.addChoosableFileFilter(new FileFilter() {
             public String getDescription() {
                 return "P5 Documents (*.pgm)";
@@ -104,7 +106,22 @@ public class FileButtonListener implements ActionListener {
                 } else {
                     return f.getName().toLowerCase().endsWith(".pgm");
                 }
-            }});
+            }
+        });
+
+        fileChooser.addChoosableFileFilter(new FileFilter() {
+            public String getDescription() {
+                return "Portable Network Graphic (*.png)";
+            }
+
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(".png");
+                }
+            }
+        });
         return fileChooser;
     }
 
@@ -113,8 +130,7 @@ public class FileButtonListener implements ActionListener {
         int result = fileChooser.showSaveDialog(PanelMediator.getInstance().getSettingPanel());
 
         if (result == JFileChooser.APPROVE_OPTION) {
-            PanelMediator.getInstance().getSettingPanel().setSelectedFile(fileChooser.getSelectedFile());
-            PanelMediator.getInstance().saveAsImage(PanelMediator.getInstance().getSettingPanel().getSelectedFile());
+            PanelMediator.getInstance().saveAsImage(fileChooser.getSelectedFile());
         }
     }
 
