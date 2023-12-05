@@ -4,6 +4,7 @@ import ru.shurshavchiki.Helpers.GridBagHelper;
 import ru.shurshavchiki.Helpers.InputSetHelper;
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 import ru.shurshavchiki.businessLogic.common.FloatAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.IntegerAlgorithmParameter;
 import ru.shurshavchiki.businessLogic.imageProcessing.filters.ImageFilter;
 import ru.shurshavchiki.businessLogic.imageProcessing.scaling.ScalingAlgorithm;
 
@@ -51,6 +52,17 @@ public class FilterAlgorithmPanel extends JPanel {
 
 			if (parameter instanceof FloatAlgorithmParameter floatParameter){
 				SpinnerModel model = new SpinnerNumberModel(floatParameter.getValue(), floatParameter.getLowerLimit(), floatParameter.getUpperLimit(), (floatParameter.getUpperLimit() - floatParameter.getLowerLimit()) / 50.f);
+				JSpinner spinnerModel = new JSpinner(model);
+				spinnerModel.setPreferredSize(new Dimension(48, 28));
+				spinnerModel.setOpaque(false);
+				spinnerModel.setVisible(true);
+				gridSetter.nextCell().alignCenter();
+				this.add(spinnerModel, gridSetter.get());
+				spinners.add(spinnerModel);
+			}
+
+			if (parameter instanceof IntegerAlgorithmParameter intParameter){
+				SpinnerModel model = new SpinnerNumberModel(intParameter.getValue(), intParameter.getLowerLimit(), intParameter.getUpperLimit(), (intParameter.getUpperLimit() + intParameter.getLowerLimit()) / 2);
 				JSpinner spinnerModel = new JSpinner(model);
 				spinnerModel.setPreferredSize(new Dimension(48, 28));
 				spinnerModel.setOpaque(false);
