@@ -113,7 +113,7 @@ public class SettingPanel extends JPanel{
 		fileMenu.addSeparator();
 		fileMenu.add(saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
-		fileMenu.add(exportMenuItem);
+//		fileMenu.add(exportMenuItem);
 		fileMenu.add(closeMenuItem);
 		fileMenu.addSeparator();
 		fileMenu.add(ditherMenuItem);
