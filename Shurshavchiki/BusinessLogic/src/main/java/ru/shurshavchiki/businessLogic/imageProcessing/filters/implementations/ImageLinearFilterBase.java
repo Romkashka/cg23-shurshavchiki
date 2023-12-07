@@ -1,9 +1,11 @@
 package ru.shurshavchiki.businessLogic.imageProcessing.filters.implementations;
 
+import lombok.Getter;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
 
 public abstract class ImageLinearFilterBase extends ImageFilterBase {
+    @Getter
     float[][] mask;
 
     protected RgbConvertable applyMask(int x, int y) {

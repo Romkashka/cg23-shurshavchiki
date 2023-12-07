@@ -12,7 +12,8 @@ public class ImageFilterRepository extends ImplementationRepositoryBase<ImageFil
                 new MedianFilter(),
                 new GaussianBlurFilter(),
                 new BoxBlurFilter(),
-                new SobelFilter()
+                new SobelFilter(),
+                new UnsharpFilter()
         ));
     }
 }

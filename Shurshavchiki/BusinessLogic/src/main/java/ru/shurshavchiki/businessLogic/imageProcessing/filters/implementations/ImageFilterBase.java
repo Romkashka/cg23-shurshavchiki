@@ -1,5 +1,6 @@
 package ru.shurshavchiki.businessLogic.imageProcessing.filters.implementations;
 
+import lombok.Getter;
 import lombok.Setter;
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 import ru.shurshavchiki.businessLogic.common.FloatAlgorithmParameter;
@@ -17,7 +18,9 @@ import java.util.List;
 
 public abstract class ImageFilterBase implements ImageFilter {
     protected Displayable grayscaleSource;
+    @Getter
     protected float coefficient;
+    @Getter
     protected int maskRadius;
     @Setter
     protected GammaConverter gammaConverter;
@@ -30,7 +33,15 @@ public abstract class ImageFilterBase implements ImageFilter {
 
         for (int x = 0; x < grayscaleSource.getWidth(); x++) {
             for (int y = 0; y < grayscaleSource.getHeight(); y++) {
-                result.setPixel(x, y, applyMask(x, y));
+                RgbConvertable resultPixel;
+                if (isProcessingNeeded(x, y)) {
+                    resultPixel = applyMask(x, y);
+                }
+                else {
+                    resultPixel = grayscaleSource.getPixel(x, y);
+                }
+
+                result.setPixel(x, y, resultPixel);
             }
         }
 
@@ -73,6 +84,10 @@ public abstract class ImageFilterBase implements ImageFilter {
 
     protected Displayable normalize(Displayable displayable) {
         return displayable;
+    }
+
+    protected boolean isProcessingNeeded(int x, int y) {
+        return true;
     }
 
     protected int extractIntValue(AlgorithmParameter parameter) {

@@ -24,6 +24,10 @@ public class GaussianBlurFilter extends ImageLinearFilterBase {
 
         sigma = extractFloatValue(parameterList.get(0));
 
+        init(sigma);
+    }
+
+    protected void init(float sigma) {
         maskRadius = (int) Math.ceil(3f * sigma);
 
         mask = new float[2 * maskRadius + 1][2 * maskRadius + 1];
