@@ -9,6 +9,7 @@ import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
 import ru.shurshavchiki.businessLogic.domain.io.FileFormatSpecifier;
 import ru.shurshavchiki.businessLogic.domain.io.FileReader;
+import ru.shurshavchiki.businessLogic.domain.io.FileWriter;
 import ru.shurshavchiki.businessLogic.domain.io.pnm.PnmFileReader;
 import ru.shurshavchiki.businessLogic.domain.io.pnm.PnmFileWriter;
 import ru.shurshavchiki.businessLogic.domain.models.Header;
@@ -58,7 +59,9 @@ public class FileServiceImpl implements FileService {
             throw WriteFileException.noFile();
         }
 
-        new PnmFileWriter().saveFromRawData(file,
+        FileWriter fileWriter = new FileFormatSpecifier().defineFileWriter(file);
+
+        fileWriter.saveFromRawData(file,
                 new ImageDataHolder(
                     getHeaderForSave(displayable, parametersChangers.ChannelChooser()),
                     getByteData(convertToRawData(displayable.getAllPixels(), parametersChangers.ColorSpaceConverter(), parametersChangers.ChannelChooser()), parametersChangers.ChannelChooser())));

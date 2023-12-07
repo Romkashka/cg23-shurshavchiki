@@ -2,7 +2,9 @@ package ru.shurshavchiki.businessLogic.domain.io;
 
 import ru.shurshavchiki.businessLogic.domain.io.png.ChunkDataExtractorChainInitializer;
 import ru.shurshavchiki.businessLogic.domain.io.png.PngFileReader;
+import ru.shurshavchiki.businessLogic.domain.io.png.PngFileWriter;
 import ru.shurshavchiki.businessLogic.domain.io.pnm.PnmFileReader;
+import ru.shurshavchiki.businessLogic.domain.io.pnm.PnmFileWriter;
 import ru.shurshavchiki.businessLogic.exceptions.OpenFileException;
 
 import java.io.*;
@@ -19,6 +21,12 @@ public class FileFormatSpecifier {
         put("P5".getBytes(), new PnmFileReader());
     }};
 
+    public static final Map<String, FileWriter> SUPPORTED_EXTENSIONS = new HashMap<>() {{
+        put("pnm", new PnmFileWriter());
+        put("ppm", new PnmFileWriter());
+        put("png", new PngFileWriter(initializer.initializeChain()));
+    }};
+
     public FileReader defineFileReader(File file) throws IOException {
         DataInputStream stream = new DataInputStream(new FileInputStream(file));
 
@@ -32,6 +40,19 @@ public class FileFormatSpecifier {
         }
 
         stream.close();
+        throw OpenFileException.unsupportedFileFormat();
+    }
+
+    public FileWriter defineFileWriter(File file) {
+        String[] nameParts = file.getName().split("\\.");
+        String extension = nameParts[nameParts.length - 1];
+
+        for (var instance: SUPPORTED_EXTENSIONS.keySet()) {
+            if (extension.equals(instance)) {
+                return SUPPORTED_EXTENSIONS.get(instance);
+            }
+        }
+
         throw OpenFileException.unsupportedFileFormat();
     }
 }

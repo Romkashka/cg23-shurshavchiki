@@ -29,7 +29,12 @@ public abstract class PngChunkDataConverterBase implements PngChunkDataConverter
     @Override
     public List<PngChunk> storeData(List<PngChunk> storedChunks, ImageDataHolder dataHolder) {
         List<PngChunk> currentStageChinks = convertRawData(dataHolder);
-        return nextDataExtractor.storeData(Stream.concat(storedChunks.stream(), currentStageChinks.stream()).toList(), dataHolder);
+
+        if (nextDataExtractor != null) {
+            return nextDataExtractor.storeData(Stream.concat(storedChunks.stream(), currentStageChinks.stream()).toList(), dataHolder);
+        }
+
+        return currentStageChinks;
     }
 
     protected abstract void handleChunk(PngChunk chunk, ImageDataHolder dataHolder);
