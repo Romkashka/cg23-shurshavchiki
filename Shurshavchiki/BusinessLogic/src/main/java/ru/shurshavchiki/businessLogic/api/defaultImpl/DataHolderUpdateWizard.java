@@ -58,7 +58,7 @@ public class DataHolderUpdateWizard {
                 drawingService.mergeDrawings(dataHolder.getDisplayableWithDrawings(), dataHolder.getDrawings()));
 
         dataHolder.deleteDrawing(0);
-        updateShownDisplayable(dataHolder);
+        updateDisplayableWithFilters(dataHolder);
     }
 
     public void updateDisplayableWithFilters(UserProjectDataHolder dataHolder) {
@@ -69,26 +69,24 @@ public class DataHolderUpdateWizard {
         if (dataHolder.getImageFilter() == null) {
             dataHolder.setDisplayableWithFilters(dataHolder.getDisplayableWithDrawings());
         }
-        else {
-            dataHolder.setDisplayableWithFilters(imageProcessingService.applyFilter(dataHolder.getDisplayableWithDrawings(), dataHolder.getImageFilter()));
-        }
 
         updateShownDisplayable(dataHolder);
     }
 
     public void updateShownDisplayable(UserProjectDataHolder dataHolder) {
-        if (dataHolder.getDisplayableWithDrawings() == null) {
-            updateDisplayableWithDrawings(dataHolder);
+        if (dataHolder.getDisplayableWithFilters() == null) {
+            updateDisplayableWithFilters(dataHolder);
         }
 
         dataHolder.setShownDisplayable(
-                fileService.correctGamma(dataHolder.getDisplayableWithDrawings(), dataHolder.getShownGammaConverter()));
+                fileService.correctGamma(dataHolder.getDisplayableWithFilters(), dataHolder.getShownGammaConverter()));
     }
 
     private void discardAllImages(UserProjectDataHolder dataHolder) {
         dataHolder.setDisplayableWithColorSpaceAndChannels(null);
         dataHolder.setDisplayableWithLinearGamma(null);
         dataHolder.setDisplayableWithDrawings(null);
+        dataHolder.setDisplayableWithFilters(null);
         dataHolder.setShownDisplayable(null);
     }
 }
