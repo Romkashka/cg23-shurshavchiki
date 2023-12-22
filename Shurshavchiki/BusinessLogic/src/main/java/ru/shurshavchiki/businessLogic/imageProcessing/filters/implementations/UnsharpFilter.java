@@ -23,20 +23,25 @@ public class UnsharpFilter extends ImageLinearFilterBase {
 
     @Override
     public void init(List<AlgorithmParameter> parameterList) {
-        if (parameterList.size() != 3) {
+        if (parameterList.size() != 4) {
             throw FilterException.InvalidParametersList();
         }
 
         float amount = extractFloatValue(parameterList.get(0));
-        float radius = extractFloatValue(parameterList.get(1));
+        float sigma = extractFloatValue(parameterList.get(1));
         int threshold = extractIntValue(parameterList.get(2));
+        int value = extractIntValue(parameterList.get(3));
 
-        minDifference = threshold / 255f;
+        isGrayFilter = value == 1;
+
+        minDifference = (float) threshold / 255f;
 
         blurFilter = new GaussianBlurFilter();
-        blurFilter.init(List.of(new FloatAlgorithmParameter("Sigma", 0f, 5f, radius / 3f)));
+        blurFilter.init(List.of(new FloatAlgorithmParameter("Sigma", 0f, 5f, sigma),
+                new IntegerAlgorithmParameter("Is monochrome", 0, 1, value)));
 
         maskRadius = blurFilter.maskRadius;
+
         mask = new float[blurFilter.mask.length][blurFilter.mask.length];
 
         float[][] equalityMask = new float[mask.length][mask.length];
@@ -53,38 +58,25 @@ public class UnsharpFilter extends ImageLinearFilterBase {
 
         for (int i = 0; i < mask.length; i++) {
             for (int j = 0; j < mask.length; j++) {
-                mask[i][j] = equalityMask[i][j] + (equalityMask[i][j] - blurFilter.mask[i][j] / amount) * amount;
+                mask[i][j] = equalityMask[i][j] + (equalityMask[i][j] - blurFilter.mask[i][j] * amount) / amount;
                 coefficient += mask[i][j];
             }
-
-            System.out.println(Arrays.toString(mask[i]));
         }
         coefficient = 1f / coefficient;
     }
 
     @Override
     protected boolean isProcessingNeeded(int x, int y) {
-        List<Float> differences = List.of(
-            diffWithNeighbour(x, y, x-1, y),
-            diffWithNeighbour(x, y, x, y-1),
-            diffWithNeighbour(x, y, x+1, y),
-            diffWithNeighbour(x, y, x, y+1)
-        );
-        differences = differences.stream().sorted().toList();
+        RgbConvertable current = grayscaleSource.getPixel(x, y);
+        RgbConvertable resultPixel = applyMask(x, y);
 
-        return true;
-
-//        return differences.get(3) > minDifference;
+        return diff(current, resultPixel) >= minDifference;
     }
 
-    protected float diffWithNeighbour(int x, int y, int neighbourX, int neighbourY) {
-        RgbConvertable current = grayscaleSource.getPixel(x, y);
-        RgbConvertable neighbour = grayscaleSource.getPixel(returnPixelCoordinatesToBorders(neighbourX, grayscaleSource.getWidth()),
-                returnPixelCoordinatesToBorders(neighbourY, grayscaleSource.getHeight()));
-        float result = 0f;
-        for (int i = 0; i < 3; i++) {
-            result = Math.max(result, Math.abs(current.getByIndex(i) - neighbour.getByIndex(i)));
-        }
+    protected float diff(RgbConvertable current, RgbConvertable neighbour) {
+        float result = Math.max(Math.abs(current.FloatRed() - neighbour.FloatRed()),
+                Math.max(Math.abs(current.FloatGreen() - neighbour.FloatGreen()),
+                        Math.abs(current.FloatBlue() - neighbour.FloatBlue())));
 
         return result;
     }
@@ -96,7 +88,8 @@ public class UnsharpFilter extends ImageLinearFilterBase {
         for (var row: displayable.getAllPixels()) {
             List<RgbConvertable> currentRow = new ArrayList<>();
             for (var pixel: row) {
-                RgbConvertable newPixel = new RgbPixel(Math.min(1f, Math.max(0f, pixel.FloatRed())));
+                RgbConvertable newPixel = new RgbPixel(Math.min(1f, Math.max(0f, pixel.FloatRed())),
+                        Math.min(1f, Math.max(0f, pixel.FloatGreen())), Math.min(1f, Math.max(0f, pixel.FloatBlue())));
 
                 currentRow.add(newPixel);
             }
@@ -109,9 +102,10 @@ public class UnsharpFilter extends ImageLinearFilterBase {
     @Override
     public List<AlgorithmParameter> getAlgorithmParameters() {
         return List.of(
-                new FloatAlgorithmParameter("Amount", 0f, 5f, 5f),
-                new FloatAlgorithmParameter("Radius", 0.1f, 120f, 2.5f),
-                new IntegerAlgorithmParameter("Threshold", 0, 256, 0)
+                new FloatAlgorithmParameter("Amount", 0.01f, 5f, 0.5f),
+                new FloatAlgorithmParameter("Sigma", 0.1f, 12f, 5f),
+                new IntegerAlgorithmParameter("Threshold", 0, 256, 0),
+                new IntegerAlgorithmParameter("Is monochrome", 0, 1, 0)
         );
     }
 }

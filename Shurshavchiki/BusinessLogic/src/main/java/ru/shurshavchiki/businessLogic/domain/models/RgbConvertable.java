@@ -9,5 +9,7 @@ public interface RgbConvertable {
     float FloatGreen();
     float FloatBlue();
 
+    float FloatMean();
+
     float getByIndex(int index);
 }

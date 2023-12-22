@@ -17,12 +17,13 @@ public class ThresholdFilter extends ImageLinearFilterBase {
 
     @Override
     public void init(List<AlgorithmParameter> parameterList) {
-        if (parameterList.size() != 2) {
+        if (parameterList.size() != 3) {
             throw FilterException.InvalidParametersList();
         }
 
         int value1 = extractIntValue(parameterList.get(0));
         int value2 = extractIntValue(parameterList.get(1));
+        int value3 = extractIntValue(parameterList.get(2));
 
         if (value2 < value1) {
             int tmp = value1;
@@ -35,13 +36,15 @@ public class ThresholdFilter extends ImageLinearFilterBase {
 
         maskRadius = 0;
         coefficient = 1f;
+        isGrayFilter = value3 == 1;
     }
 
     @Override
     public List<AlgorithmParameter> getAlgorithmParameters() {
         return List.of(
                 new IntegerAlgorithmParameter("Threshold 1", 0, 256, 100),
-                new IntegerAlgorithmParameter("Threshold 2", 0, 256, 200)
+                new IntegerAlgorithmParameter("Threshold 2", 0, 256, 200),
+                new IntegerAlgorithmParameter("Is monochrome", 0, 1, 0)
         );
     }
 

@@ -24,10 +24,15 @@ public abstract class ImageFilterBase implements ImageFilter {
     protected int maskRadius;
     @Setter
     protected GammaConverter gammaConverter;
+    @Setter
+    protected boolean isGrayFilter;
 
     @Override
     public Displayable applyFilter(Displayable source) {
-        this.grayscaleSource = toGrayscale(source);
+        if (isGrayFilter)
+            this.grayscaleSource = toGrayscale(source);
+        else
+            this.grayscaleSource = source.clone();
 
         Displayable result = grayscaleSource.clone();
 

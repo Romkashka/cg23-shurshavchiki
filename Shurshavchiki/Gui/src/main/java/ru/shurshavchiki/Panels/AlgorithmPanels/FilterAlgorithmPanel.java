@@ -20,9 +20,9 @@ public class FilterAlgorithmPanel extends JPanel {
 	private List<JSpinner> spinners;
 
 	public FilterAlgorithmPanel(){
-		setPreferredSize(new Dimension(300, 100));
-		setMinimumSize(new Dimension(300, 100));
-		setSize(new Dimension(300, 100));
+		setPreferredSize(new Dimension(300, 200));
+		setMinimumSize(new Dimension(300, 200));
+		setSize(new Dimension(300, 200));
 	}
 
 	public List<AlgorithmParameter> getParameterValues(){
@@ -64,7 +64,7 @@ public class FilterAlgorithmPanel extends JPanel {
 			}
 
 			if (parameter instanceof IntegerAlgorithmParameter intParameter){
-				SpinnerModel model = new SpinnerNumberModel(intParameter.getValue(), intParameter.getLowerLimit(), intParameter.getUpperLimit(), (intParameter.getUpperLimit() + intParameter.getLowerLimit()) / 50);
+				SpinnerModel model = new SpinnerNumberModel(intParameter.getValue(), intParameter.getLowerLimit(), intParameter.getUpperLimit(), Math.max(1, (intParameter.getUpperLimit() + intParameter.getLowerLimit()) / 50));
 				JSpinner spinnerModel = new JSpinner(model);
 				spinnerModel.setPreferredSize(new Dimension(48, 28));
 				spinnerModel.setOpaque(false);

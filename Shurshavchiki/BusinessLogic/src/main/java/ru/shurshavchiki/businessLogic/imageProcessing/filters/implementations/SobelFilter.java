@@ -1,10 +1,12 @@
 package ru.shurshavchiki.businessLogic.imageProcessing.filters.implementations;
 
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.IntegerAlgorithmParameter;
 import ru.shurshavchiki.businessLogic.domain.entities.Displayable;
 import ru.shurshavchiki.businessLogic.domain.entities.PnmFile;
 import ru.shurshavchiki.businessLogic.domain.models.RgbConvertable;
 import ru.shurshavchiki.businessLogic.domain.models.RgbPixel;
+import ru.shurshavchiki.businessLogic.exceptions.FilterException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,29 +22,53 @@ public class SobelFilter extends ImageFilterBase {
 
     @Override
     public void init(List<AlgorithmParameter> parameterList) {
+        if (parameterList.size() != 1) {
+            throw FilterException.InvalidParametersList();
+        }
+
         maskRadius = 1;
         coefficient = 1f;
+        isGrayFilter = extractIntValue(parameterList.get(0)) == 1;
     }
 
     @Override
     public List<AlgorithmParameter> getAlgorithmParameters() {
-        return List.of();
+        return List.of(new IntegerAlgorithmParameter("Is monochrome", 0, 1, 0));
     }
 
     @Override
     protected RgbConvertable applyMask(int x, int y) {
-        float xResult = 0;
-        float yResult = 0;
+        float xResultR = 0;
+        float yResultR = 0;
+        float xResultG = 0;
+        float yResultG = 0;
+        float xResultB = 0;
+        float yResultB = 0;
         for (int i = -maskRadius; i <= maskRadius; i++) {
             for (int j = -maskRadius; j <= maskRadius; j++) {
-                xResult += applyMaskValue(i, j, grayscaleSource.getPixel(returnPixelCoordinatesToBorders(i + x, grayscaleSource.getWidth()),
+                xResultR += applyMaskValue(i, j, grayscaleSource.getPixel(returnPixelCoordinatesToBorders(i + x, grayscaleSource.getWidth()),
                         returnPixelCoordinatesToBorders(j + y, grayscaleSource.getHeight())).FloatRed(), xGradient);
-                yResult += applyMaskValue(i, j, grayscaleSource.getPixel(returnPixelCoordinatesToBorders(i + x, grayscaleSource.getWidth()),
+                yResultR += applyMaskValue(i, j, grayscaleSource.getPixel(returnPixelCoordinatesToBorders(i + x, grayscaleSource.getWidth()),
                         returnPixelCoordinatesToBorders(j + y, grayscaleSource.getHeight())).FloatRed(), yGradient);
+                if (!isGrayFilter){
+                    xResultG += applyMaskValue(i, j, grayscaleSource.getPixel(returnPixelCoordinatesToBorders(i + x, grayscaleSource.getWidth()),
+                            returnPixelCoordinatesToBorders(j + y, grayscaleSource.getHeight())).FloatGreen(), xGradient);
+                    yResultG += applyMaskValue(i, j, grayscaleSource.getPixel(returnPixelCoordinatesToBorders(i + x, grayscaleSource.getWidth()),
+                            returnPixelCoordinatesToBorders(j + y, grayscaleSource.getHeight())).FloatGreen(), yGradient);
+                    xResultB += applyMaskValue(i, j, grayscaleSource.getPixel(returnPixelCoordinatesToBorders(i + x, grayscaleSource.getWidth()),
+                            returnPixelCoordinatesToBorders(j + y, grayscaleSource.getHeight())).FloatBlue(), xGradient);
+                    yResultB += applyMaskValue(i, j, grayscaleSource.getPixel(returnPixelCoordinatesToBorders(i + x, grayscaleSource.getWidth()),
+                            returnPixelCoordinatesToBorders(j + y, grayscaleSource.getHeight())).FloatBlue(), yGradient);
+                }
             }
         }
 
-        return new RgbPixel((float) Math.sqrt(xResult * xResult + yResult * yResult));
+        if (isGrayFilter)
+            return new RgbPixel((float) Math.sqrt(xResultR * xResultR + yResultR * yResultR));
+
+        return new RgbPixel((float) Math.sqrt(xResultR * xResultR + yResultR * yResultR),
+                (float) Math.sqrt(xResultG * xResultG + yResultG * yResultG),
+                (float) Math.sqrt(xResultB * xResultB + yResultB * yResultB));
     }
 
     protected float applyMaskValue(int i, int j, float sourceValue, float[][] mask) {
@@ -66,7 +92,8 @@ public class SobelFilter extends ImageFilterBase {
         for (var row: pixels) {
             List<RgbConvertable> currentRow = new ArrayList<>();
             for (var pixel: row) {
-                RgbConvertable newPixel = new RgbPixel(pixel.FloatRed() / maxValue);
+                RgbConvertable newPixel = new RgbPixel(pixel.FloatRed() / maxValue,
+                        pixel.FloatGreen() / maxValue, pixel.FloatBlue() / maxValue);
 
                 if (newPixel.FloatRed() > 1f || newPixel.FloatRed() < 0f) {
                     System.out.println("aboba");

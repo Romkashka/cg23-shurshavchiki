@@ -2,6 +2,7 @@ package ru.shurshavchiki.businessLogic.imageProcessing.filters.implementations;
 
 import ru.shurshavchiki.businessLogic.common.AlgorithmParameter;
 import ru.shurshavchiki.businessLogic.common.FloatAlgorithmParameter;
+import ru.shurshavchiki.businessLogic.common.IntegerAlgorithmParameter;
 import ru.shurshavchiki.businessLogic.exceptions.FilterException;
 
 import javax.swing.plaf.basic.BasicBorders;
@@ -18,11 +19,14 @@ public class GaussianBlurFilter extends ImageLinearFilterBase {
 
     @Override
     public void init(List<AlgorithmParameter> parameterList) {
-        if (parameterList.size() != 1) {
+        if (parameterList.size() != 2) {
             throw FilterException.InvalidParametersList();
         }
 
         sigma = extractFloatValue(parameterList.get(0));
+        int value = extractIntValue(parameterList.get(1));
+
+        isGrayFilter = value == 1;
 
         init(sigma);
     }
@@ -48,7 +52,8 @@ public class GaussianBlurFilter extends ImageLinearFilterBase {
     @Override
     public List<AlgorithmParameter> getAlgorithmParameters() {
         return List.of(
-                new FloatAlgorithmParameter("Sigma", 0f, 10f, 0.84089642f)
+                new FloatAlgorithmParameter("Sigma", 0.1f, 10f, 0.84089642f),
+                new IntegerAlgorithmParameter("Is monochrome", 0, 1, 0)
         );
     }
 

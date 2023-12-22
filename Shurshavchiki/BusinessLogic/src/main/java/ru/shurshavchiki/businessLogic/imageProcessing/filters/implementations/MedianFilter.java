@@ -20,12 +20,14 @@ public class MedianFilter extends ImageFilterBase {
         }
 
         maskRadius = extractIntValue(parameterList.get(0));
+
+        isGrayFilter = false;
     }
 
     @Override
     public List<AlgorithmParameter> getAlgorithmParameters() {
         return List.of(
-                new IntegerAlgorithmParameter("Mask radius", 0, 100)
+                new IntegerAlgorithmParameter("Mask radius", 1, 100)
         );
     }
 

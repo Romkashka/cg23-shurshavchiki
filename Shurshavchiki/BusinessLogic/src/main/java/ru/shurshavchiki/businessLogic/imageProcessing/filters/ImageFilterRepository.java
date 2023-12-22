@@ -9,11 +9,14 @@ public class ImageFilterRepository extends ImplementationRepositoryBase<ImageFil
     public ImageFilterRepository() {
         super(List.of(
                 new ThresholdFilter(),
+                new ThresholdOtsuFilter(),
                 new MedianFilter(),
                 new GaussianBlurFilter(),
                 new BoxBlurFilter(),
+                new UnsharpFilter(),
+                new CASFilter(),
                 new SobelFilter(),
-                new UnsharpFilter()
+                new CannyFilter()
         ));
     }
 }

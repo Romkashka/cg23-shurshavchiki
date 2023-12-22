@@ -48,6 +48,12 @@ public class RgbPixel implements RgbConvertable {
     }
 
     @Override
+    public float FloatMean() {
+        return (blueComponent + redComponent + greenComponent) / 3;
+    }
+
+
+    @Override
     public float getByIndex(int index) {
         return 0;
     }
