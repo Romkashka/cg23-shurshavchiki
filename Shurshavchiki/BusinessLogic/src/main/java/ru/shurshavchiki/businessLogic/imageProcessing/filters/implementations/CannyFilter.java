@@ -50,8 +50,8 @@ public class CannyFilter extends ImageFilterBase {
 
         isGrayFilter = true;
 
-        threshold1 = extractFloatValue(parameterList.get(1)) / 100;
-        threshold2 = extractFloatValue(parameterList.get(2)) / 100;
+        threshold1 = extractFloatValue(parameterList.get(1));
+        threshold2 = extractFloatValue(parameterList.get(2));
         if (threshold2 < threshold1) {
             var tmp = threshold1;
             threshold1 = threshold2;
@@ -87,7 +87,7 @@ public class CannyFilter extends ImageFilterBase {
         return List.of(
                 new FloatAlgorithmParameter("Sigma", 0.1f, 12f, 5f),
                 new FloatAlgorithmParameter("Threshold 1", 0f, 1f, 0.1f),
-                new FloatAlgorithmParameter("Threshold 2", 0f, 1f, 0.3f)
+                new FloatAlgorithmParameter("Threshold 2", 0f, 1f, 0.2f)
         );
     }
 

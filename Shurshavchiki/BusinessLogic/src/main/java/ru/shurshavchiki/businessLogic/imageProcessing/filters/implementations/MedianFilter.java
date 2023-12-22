@@ -42,7 +42,7 @@ public class MedianFilter extends ImageFilterBase {
             }
         }
 
-        pixels.sort(Comparator.comparingDouble(RgbConvertable::FloatRed));
+        pixels.sort(Comparator.comparingDouble(RgbConvertable::FloatMean));
 
         return pixels.get(pixels.size() / 2);
     }
