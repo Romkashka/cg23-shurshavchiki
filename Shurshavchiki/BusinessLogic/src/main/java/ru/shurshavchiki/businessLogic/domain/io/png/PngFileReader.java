@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.zip.DataFormatException;
 
 public class PngFileReader implements FileReader {
     private static final byte[] VALID_HEADER = new byte[] {-119, 80, 78, 71, 13, 10, 26, 10};
@@ -19,7 +20,7 @@ public class PngFileReader implements FileReader {
         this.pngChunkDataConverter = pngChunkDataConverter;
     }
 
-    public ImageDataHolder getImageDataHolder(File file) throws IOException {
+    public ImageDataHolder getImageDataHolder(File file) throws IOException, DataFormatException {
         stream = new DataInputStream(new FileInputStream(file));
         validateHeader();
 
@@ -31,6 +32,7 @@ public class PngFileReader implements FileReader {
             isFinished = chunk.ChunkType().equals("IEND");
             pngChunkDataConverter.extractData(chunk, imageDataHolder);
         }
+        pngChunkDataConverter.processIDATChunks(imageDataHolder);
 
         return imageDataHolder;
     }

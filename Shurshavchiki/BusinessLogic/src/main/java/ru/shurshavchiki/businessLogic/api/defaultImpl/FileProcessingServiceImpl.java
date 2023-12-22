@@ -11,6 +11,7 @@ import ru.shurshavchiki.businessLogic.domain.services.ImageProcessingService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 public class FileProcessingServiceImpl implements FileProcessingService {
     private final FileService fileService;
@@ -35,7 +36,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     }
 
     @Override
-    public void openImage(@NonNull Context context) throws IOException {
+    public void openImage(@NonNull Context context) throws IOException, DataFormatException {
         UserProjectDataHolder userProjectDataHolder = context.getDataHolder();
         resetToDefaultSettings(userProjectDataHolder);
         userProjectDataHolder.setStartingDisplayable(fileService.readFile(userProjectDataHolder.getFile(), new ImageParametersChangers(

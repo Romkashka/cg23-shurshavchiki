@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -88,7 +89,7 @@ public class PanelMediator {
 		settingPanel.changeEnable("close", true);
 	}
 
-	public void openNewImage(File file) throws IOException {
+	public void openNewImage(File file) throws IOException, DataFormatException {
 		setGammaDefault();
 		mainContext.setFile(file);
 		fileProcessingService.openImage(mainContext);

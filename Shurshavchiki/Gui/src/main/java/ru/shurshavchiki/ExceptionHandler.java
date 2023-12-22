@@ -6,6 +6,7 @@ import ru.shurshavchiki.businessLogic.exceptions.WriteFileException;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.zip.DataFormatException;
 
 public class ExceptionHandler {
 
@@ -45,6 +46,10 @@ public class ExceptionHandler {
         } else if (exp instanceof NumberFormatException) {
             javax.swing.JOptionPane.showMessageDialog(null,
                     exp.getMessage(), "Unsupported number format",
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (exp instanceof DataFormatException){
+                        javax.swing.JOptionPane.showMessageDialog(null,
+                    exp.getMessage(), "Хуйня",
                     JOptionPane.ERROR_MESSAGE);
         } else if (exp != null) {
             javax.swing.JOptionPane.showMessageDialog(null,
