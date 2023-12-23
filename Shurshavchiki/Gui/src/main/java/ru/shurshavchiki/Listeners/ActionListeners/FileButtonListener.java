@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 public class FileButtonListener implements ActionListener {
     @Override
@@ -63,7 +64,7 @@ public class FileButtonListener implements ActionListener {
         new ImageCreateFrame();
     }
 
-    private void openFile() throws IOException {
+    private void openFile() throws IOException, DataFormatException {
         if (PanelMediator.getInstance().getSomethingChanged())
             if (!PanelMediator.getInstance().getConfirm())
                 return;

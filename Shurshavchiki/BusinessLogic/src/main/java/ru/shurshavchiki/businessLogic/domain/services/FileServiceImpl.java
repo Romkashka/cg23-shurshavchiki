@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.zip.DataFormatException;
 
 public class FileServiceImpl implements FileService {
 
@@ -34,7 +35,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Displayable readFile(File file, ImageParametersChangers parametersChangers) throws IOException {
+    public Displayable readFile(File file, ImageParametersChangers parametersChangers) throws IOException, DataFormatException {
         checkFileIsReadable(file);
 
         FileReader fileReader = new FileFormatSpecifier().defineFileReader(file);

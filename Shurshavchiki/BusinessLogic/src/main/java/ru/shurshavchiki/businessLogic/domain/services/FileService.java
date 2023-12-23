@@ -11,9 +11,10 @@ import ru.shurshavchiki.businessLogic.gamma.converters.GammaConverter;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 public interface FileService {
-    Displayable readFile(File file, ImageParametersChangers parametersChangers) throws IOException;
+    Displayable readFile(File file, ImageParametersChangers parametersChangers) throws IOException, DataFormatException;
     void saveFile(Displayable displayable, File file, ImageParametersChangers parametersChangers) throws IOException;
     Displayable applyColorFilters(Displayable source, ColorSpaceConverter colorSpaceConverter, ChannelChooser channelChooser);
     Displayable assignGamma(Displayable source, GammaConverter gammaConverter);
