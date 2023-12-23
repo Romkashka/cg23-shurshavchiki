@@ -66,9 +66,13 @@ public class SobelFilter extends ImageFilterBase {
         if (isGrayFilter)
             return new RgbPixel((float) Math.sqrt(xResultR * xResultR + yResultR * yResultR));
 
-        return new RgbPixel((float) Math.sqrt(xResultR * xResultR + yResultR * yResultR),
-                (float) Math.sqrt(xResultG * xResultG + yResultG * yResultG),
-                (float) Math.sqrt(xResultB * xResultB + yResultB * yResultB));
+        return new RgbPixel(norm((float) Math.sqrt(xResultR * xResultR + yResultR * yResultR)),
+                norm((float) Math.sqrt(xResultG * xResultG + yResultG * yResultG)),
+                norm((float) Math.sqrt(xResultB * xResultB + yResultB * yResultB)));
+    }
+
+    protected float norm(float v) {
+        return Math.max(0, Math.min(1, v));
     }
 
     protected float applyMaskValue(int i, int j, float sourceValue, float[][] mask) {
